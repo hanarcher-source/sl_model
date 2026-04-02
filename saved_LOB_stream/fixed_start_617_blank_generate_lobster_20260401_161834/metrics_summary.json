@@ -1,0 +1,146 @@
+{
+  "event_type_counts": {
+    "1": 10139,
+    "2": 223,
+    "3": 2584,
+    "4": 3813
+  },
+  "event_type_fractions": {
+    "1": 0.605,
+    "2": 0.0133,
+    "3": 0.1542,
+    "4": 0.2275
+  },
+  "direction_counts": {
+    "-1": 8087,
+    "1": 8672
+  },
+  "direction_fractions": {
+    "-1": 0.4825,
+    "1": 0.5175
+  },
+  "iat_ms": {
+    "n": 12945,
+    "n_exec_excluded": 3813,
+    "mean": 46.35225955967555,
+    "median": 20.0,
+    "std": 90.05953329732714,
+    "p95": 180.0
+  },
+  "spread_ticks": {
+    "tick_size_cny": 0.01,
+    "tick_size_price_int": 100,
+    "n": 16759,
+    "mean": 1.6919267259383017,
+    "median": 2.0,
+    "std": 0.7030196614250048,
+    "pct_zero_spread": 0.0
+  },
+  "mid_price": {
+    "start_price_int": 93450.0,
+    "end_price_int": 93300.0,
+    "mean_price_int": 93616.35240766156,
+    "std_price_int": 392.3066031314098,
+    "start_cny": 9.345,
+    "end_cny": 9.33,
+    "mean_cny": 9.361635240766157,
+    "std_cny": 0.03923066031314098,
+    "mean_ticks_0p01": 936.1635240766155,
+    "std_ticks_0p01": 3.923066031314098,
+    "total_return_bps": -16.05136436597099
+  },
+  "returns_1min": {
+    "n": 10,
+    "mean": -0.00016064260482728798,
+    "std": 0.003301332695654782,
+    "skew": -1.144317605880548,
+    "kurtosis": 1.554029460735351
+  },
+  "acf_returns_1min": [
+    1.0,
+    -0.09295941236515308,
+    -0.28073926988906156,
+    0.4416901472422938,
+    -0.15263319218602495,
+    -0.3145277475147897,
+    0.01991657227766084,
+    -0.05651197892897415,
+    -0.06887362951693976
+  ],
+  "volatility_1min": 0.0033013326956547817,
+  "l1_volume": {
+    "ask_mean": 231405.37842353364,
+    "bid_mean": 92322.79091831254,
+    "ask_median": 113700.0,
+    "bid_median": 63600.0
+  },
+  "total_volume_5lvl": {
+    "ask_mean": 923856.7864431052,
+    "bid_mean": 521915.8084014559
+  },
+  "volume_per_minute": {
+    "n": 577,
+    "mean": 1537735.361704859,
+    "total": 887273303.7037036
+  },
+  "ob_imbalance": {
+    "mean": -0.19629115213330403,
+    "std": 0.66939590713713,
+    "median": -0.27537688442211056
+  },
+  "orderflow_imbalance": {
+    "n": 16659,
+    "mean": 96.51875862896934,
+    "std": 943.7992331847058
+  },
+  "capability_report": {
+    "computed_generated_only_metrics": [
+      "acf_returns_1min",
+      "direction_counts",
+      "direction_fractions",
+      "event_type_counts",
+      "event_type_fractions",
+      "iat_ms",
+      "l1_volume",
+      "mid_price",
+      "ob_imbalance",
+      "orderflow_imbalance",
+      "returns_1min",
+      "spread_ticks",
+      "total_volume_5lvl",
+      "volatility_1min",
+      "volume_per_minute"
+    ],
+    "not_attempted_requires_real_reference_lob_data": [
+      "spread",
+      "orderbook_imbalance",
+      "log_inter_arrival_time",
+      "log_time_to_cancel",
+      "ask_volume_touch",
+      "bid_volume_touch",
+      "ask_volume",
+      "bid_volume",
+      "limit_ask_order_depth",
+      "limit_bid_order_depth",
+      "ask_cancellation_depth",
+      "bid_cancellation_depth",
+      "limit_ask_order_levels",
+      "limit_bid_order_levels",
+      "ask_cancellation_levels",
+      "bid_cancellation_levels",
+      "vol_per_min",
+      "ofi",
+      "ofi_up",
+      "ofi_stay",
+      "ofi_down",
+      "ask_volume | spread",
+      "spread | time",
+      "spread | volatility"
+    ],
+    "not_attempted_requires_true_order_id_linkage": [
+      "time_to_first_fill",
+      "time_to_cancel"
+    ],
+    "policy": "Do not treat generated orderbook snapshots as real reference snapshots. Comparative benchmark metrics are intentionally skipped until real reference data is available."
+  }
+}
