@@ -353,12 +353,15 @@ def main():
                 "t_ms": int(cur_t_ms),
                 "token": int(tok_next),
                 "side_bin": int(ev.side_bin),
+                "event_kind": action.get("event_kind", None),
+                "resting_side": action.get("resting_side", None),
                 "ticks_from_mid": int(ev.ticks_from_mid),
                 "qty": int(ev.qty),
                 "abs_price": float(ev.abs_price),
                 "action": action.get("action", None),
                 "fills": json.dumps(action.get("fills", []), ensure_ascii=True),
                 "removed": int(action.get("removed", 0)),
+                "fill_qty": int(sum(int(fill.get("filled_qty", 0)) for fill in action.get("fills", []))),
                 "dt_ms": int(dt_ms),
                 "mid_after": None if cur_mid is None else float(cur_mid),
                 "best_bid_after": None if book.best_bid() is None else float(book.best_bid()),
@@ -371,22 +374,23 @@ def main():
         time_sec = _sec_after_midnight(event_ts)
 
         action_name = action.get("action", "")
+        event_kind = action.get("event_kind", "")
         price_int = _price_to_lobster_int(ev.abs_price)
 
-        # 1) Submission / cancel message (one per generated event)
+        # 1) Submission / cancel message for the decoded event itself.
         msg_type = None
         msg_size = None
         msg_direction = None
 
-        if action_name == "POST_BID":
+        if event_kind == "post" and action_name == "POST_BID":
             msg_type = 1
             msg_size = int(ev.qty)
             msg_direction = 1
-        elif action_name == "POST_ASK":
+        elif event_kind == "post" and action_name == "POST_ASK":
             msg_type = 1
             msg_size = int(ev.qty)
             msg_direction = -1
-        elif action_name.startswith("CANCEL"):
+        elif event_kind == "cancel":
             removed = int(action.get("removed", 0))
             if removed > 0:
                 msg_type = 3 if removed >= int(ev.qty) else 2

@@ -55,6 +55,8 @@ if _LOB_BENCH not in sys.path:
 
 import eval as ev          # noqa: E402  (after path setup)
 import data_loading as dl  # noqa: E402
+import metrics as lbm      # noqa: E402
+import partitioning as lbp # noqa: E402
 
 
 # Metrics from lob_bench-main/run_bench.py that are comparative by design.
@@ -92,6 +94,284 @@ REQUIRES_TRUE_ORDER_ID_LINKAGE = [
     'time_to_first_fill',
     'time_to_cancel',
 ]
+
+
+def _clean_numeric(values):
+    arr = np.asarray(values, dtype=float).reshape(-1)
+    return arr[np.isfinite(arr)]
+
+
+def _compare_unconditional_distribution(real_scores, gen_scores, discrete=False):
+    real_arr = _clean_numeric(real_scores)
+    gen_arr = _clean_numeric(gen_scores)
+    if len(real_arr) == 0 or len(gen_arr) == 0:
+        raise ValueError("empty real or generated sample after cleaning")
+
+    ws_df = pd.DataFrame({
+        'score': np.concatenate([real_arr, gen_arr]),
+        'type': (['real'] * len(real_arr)) + (['generated'] * len(gen_arr)),
+    })
+    wasserstein = float(lbm.wasserstein(ws_df, bootstrap_ci=False))
+
+    if discrete:
+        groups_real, groups_gen = lbp.group_by_score(real_arr, [gen_arr], discrete=True)
+    else:
+        groups_real, groups_gen = lbp.group_by_score(real_arr, [gen_arr], bin_method='fd')
+    l1_df = lbp.get_score_table(real_arr, [gen_arr], groups_real, groups_gen)
+    l1_by_group = float(lbm.l1_by_group(l1_df, bootstrap_ci=False))
+
+    return {
+        'n_real': int(len(real_arr)),
+        'n_generated': int(len(gen_arr)),
+        'wasserstein': wasserstein,
+        'l1_by_group': l1_by_group,
+    }
+
+
+def _compare_conditional_distribution(
+    eval_real,
+    cond_real,
+    eval_gen,
+    cond_gen,
+    cond_discrete=False,
+    cond_thresholds=None,
+):
+    eval_real = np.asarray(eval_real, dtype=float)
+    cond_real = np.asarray(cond_real, dtype=float)
+    eval_gen = np.asarray(eval_gen, dtype=float)
+    cond_gen = np.asarray(cond_gen, dtype=float)
+
+    mask_real = np.isfinite(eval_real) & np.isfinite(cond_real)
+    mask_gen = np.isfinite(eval_gen) & np.isfinite(cond_gen)
+    eval_real = eval_real[mask_real]
+    cond_real = cond_real[mask_real]
+    eval_gen = eval_gen[mask_gen]
+    cond_gen = cond_gen[mask_gen]
+
+    if len(eval_real) == 0 or len(eval_gen) == 0:
+        raise ValueError("empty real or generated conditional sample after cleaning")
+
+    if cond_thresholds is not None:
+        groups_real, groups_gen = lbp.group_by_score(
+            cond_real,
+            [cond_gen],
+            thresholds=cond_thresholds,
+        )
+    elif cond_discrete:
+        groups_real, groups_gen = lbp.group_by_score(
+            cond_real,
+            [cond_gen],
+            discrete=True,
+        )
+    else:
+        groups_real, groups_gen = lbp.group_by_score(
+            cond_real,
+            [cond_gen],
+            quantiles=np.arange(0.1, 1.0, 0.1),
+        )
+
+    grouped_df = lbp.get_score_table(eval_real, [eval_gen], groups_real, groups_gen)
+    weighted_ws = 0.0
+    total_weight = 0
+    per_group = {}
+
+    for group_id, group_df in grouped_df.groupby('group'):
+        n_group = int(len(group_df))
+        if n_group == 0:
+            continue
+        ws_group = float(lbm.wasserstein(group_df[['score', 'type']], bootstrap_ci=False))
+        weighted_ws += ws_group * n_group
+        total_weight += n_group
+        per_group[str(int(group_id))] = {
+            'n': n_group,
+            'wasserstein': ws_group,
+        }
+
+    if total_weight == 0:
+        raise ValueError("no non-empty conditional groups")
+
+    return {
+        'n_real': int(len(eval_real)),
+        'n_generated': int(len(eval_gen)),
+        'weighted_wasserstein': float(weighted_ws / total_weight),
+        'num_condition_groups': int(len(per_group)),
+        'per_group': per_group,
+    }
+
+
+def _compute_reference_comparison_metrics(messages, book, ref_messages, ref_book, logger=None):
+    def _log_time_to_cancel(msg_df):
+        vals = ev.time_to_cancel(msg_df).dt.total_seconds().replace({0: 1e-9}).values.astype(float)
+        return np.log(vals)
+
+    uncond_specs = {
+        'spread': {
+            'real_fn': lambda m, b: ev.spread(m, b).values,
+            'gen_fn': lambda m, b: ev.spread(m, b).values,
+            'discrete': True,
+        },
+        'orderbook_imbalance': {
+            'real_fn': lambda m, b: ev.orderbook_imbalance(m, b).values,
+            'gen_fn': lambda m, b: ev.orderbook_imbalance(m, b).values,
+            'discrete': False,
+        },
+        'log_inter_arrival_time': {
+            'real_fn': lambda m, b: np.log(ev.inter_arrival_time(m).replace({0: 1e-9}).values.astype(float)),
+            'gen_fn': lambda m, b: np.log(ev.inter_arrival_time(m).replace({0: 1e-9}).values.astype(float)),
+            'discrete': False,
+        },
+        'log_time_to_cancel': {
+            'real_fn': lambda m, b: _log_time_to_cancel(m),
+            'gen_fn': lambda m, b: _log_time_to_cancel(m),
+            'discrete': False,
+        },
+        'ask_volume_touch': {
+            'real_fn': lambda m, b: ev.l1_volume(m, b).ask_vol.values,
+            'gen_fn': lambda m, b: ev.l1_volume(m, b).ask_vol.values,
+            'discrete': False,
+        },
+        'bid_volume_touch': {
+            'real_fn': lambda m, b: ev.l1_volume(m, b).bid_vol.values,
+            'gen_fn': lambda m, b: ev.l1_volume(m, b).bid_vol.values,
+            'discrete': False,
+        },
+        'ask_volume': {
+            'real_fn': lambda m, b: ev.total_volume(m, b, 10).ask_vol_10.values,
+            'gen_fn': lambda m, b: ev.total_volume(m, b, 10).ask_vol_10.values,
+            'discrete': False,
+        },
+        'bid_volume': {
+            'real_fn': lambda m, b: ev.total_volume(m, b, 10).bid_vol_10.values,
+            'gen_fn': lambda m, b: ev.total_volume(m, b, 10).bid_vol_10.values,
+            'discrete': False,
+        },
+        'limit_ask_order_depth': {
+            'real_fn': lambda m, b: ev.limit_order_depth(m, b)[0].values,
+            'gen_fn': lambda m, b: ev.limit_order_depth(m, b)[0].values,
+            'discrete': False,
+        },
+        'limit_bid_order_depth': {
+            'real_fn': lambda m, b: ev.limit_order_depth(m, b)[1].values,
+            'gen_fn': lambda m, b: ev.limit_order_depth(m, b)[1].values,
+            'discrete': False,
+        },
+        'ask_cancellation_depth': {
+            'real_fn': lambda m, b: ev.cancellation_depth(m, b)[0].values,
+            'gen_fn': lambda m, b: ev.cancellation_depth(m, b)[0].values,
+            'discrete': False,
+        },
+        'bid_cancellation_depth': {
+            'real_fn': lambda m, b: ev.cancellation_depth(m, b)[1].values,
+            'gen_fn': lambda m, b: ev.cancellation_depth(m, b)[1].values,
+            'discrete': False,
+        },
+        'limit_ask_order_levels': {
+            'real_fn': lambda m, b: ev.limit_order_levels(m, b)[0].values,
+            'gen_fn': lambda m, b: ev.limit_order_levels(m, b)[0].values,
+            'discrete': True,
+        },
+        'limit_bid_order_levels': {
+            'real_fn': lambda m, b: ev.limit_order_levels(m, b)[1].values,
+            'gen_fn': lambda m, b: ev.limit_order_levels(m, b)[1].values,
+            'discrete': True,
+        },
+        'ask_cancellation_levels': {
+            'real_fn': lambda m, b: ev.cancel_order_levels(m, b)[0].values,
+            'gen_fn': lambda m, b: ev.cancel_order_levels(m, b)[0].values,
+            'discrete': True,
+        },
+        'bid_cancellation_levels': {
+            'real_fn': lambda m, b: ev.cancel_order_levels(m, b)[1].values,
+            'gen_fn': lambda m, b: ev.cancel_order_levels(m, b)[1].values,
+            'discrete': True,
+        },
+        'vol_per_min': {
+            'real_fn': lambda m, b: ev.volume_per_minute(m, b).values,
+            'gen_fn': lambda m, b: ev.volume_per_minute(m, b).values,
+            'discrete': False,
+        },
+        'ofi': {
+            'real_fn': lambda m, b: ev.orderflow_imbalance(m, b).values,
+            'gen_fn': lambda m, b: ev.orderflow_imbalance(m, b).values,
+            'discrete': False,
+        },
+        'ofi_up': {
+            'real_fn': lambda m, b: ev.orderflow_imbalance_cond_tick(m, b, 1).values,
+            'gen_fn': lambda m, b: ev.orderflow_imbalance_cond_tick(m, b, 1).values,
+            'discrete': False,
+        },
+        'ofi_stay': {
+            'real_fn': lambda m, b: ev.orderflow_imbalance_cond_tick(m, b, 0).values,
+            'gen_fn': lambda m, b: ev.orderflow_imbalance_cond_tick(m, b, 0).values,
+            'discrete': False,
+        },
+        'ofi_down': {
+            'real_fn': lambda m, b: ev.orderflow_imbalance_cond_tick(m, b, -1).values,
+            'gen_fn': lambda m, b: ev.orderflow_imbalance_cond_tick(m, b, -1).values,
+            'discrete': False,
+        },
+    }
+
+    cond_specs = {
+        'ask_volume | spread': {
+            'eval_real_fn': lambda m, b: ev.l1_volume(m, b).ask_vol.values,
+            'eval_gen_fn': lambda m, b: ev.l1_volume(m, b).ask_vol.values,
+            'cond_real_fn': lambda m, b: ev.spread(m, b).values,
+            'cond_gen_fn': lambda m, b: ev.spread(m, b).values,
+            'cond_discrete': True,
+            'cond_thresholds': None,
+        },
+        'spread | time': {
+            'eval_real_fn': lambda m, b: ev.spread(m, b).values,
+            'eval_gen_fn': lambda m, b: ev.spread(m, b).values,
+            'cond_real_fn': lambda m, b: ev.time_of_day(m).values,
+            'cond_gen_fn': lambda m, b: ev.time_of_day(m).values,
+            'cond_discrete': False,
+            'cond_thresholds': np.linspace(0, 24 * 60 * 60, 24),
+        },
+        'spread | volatility': {
+            'eval_real_fn': lambda m, b: ev.spread(m, b).values,
+            'eval_gen_fn': lambda m, b: ev.spread(m, b).values,
+            'cond_real_fn': lambda m, b: np.repeat(float(ev.volatility(m, b, '0.1s')), len(m)),
+            'cond_gen_fn': lambda m, b: np.repeat(float(ev.volatility(m, b, '0.1s')), len(m)),
+            'cond_discrete': True,
+            'cond_thresholds': None,
+        },
+    }
+
+    results = {}
+    failed = {}
+
+    for name, spec in uncond_specs.items():
+        try:
+            real_scores = spec['real_fn'](ref_messages, ref_book)
+            gen_scores = spec['gen_fn'](messages, book)
+            results[name] = _compare_unconditional_distribution(
+                real_scores,
+                gen_scores,
+                discrete=bool(spec.get('discrete', False)),
+            )
+        except Exception as exc:
+            failed[name] = str(exc)
+            if logger:
+                logger.warning("Reference metric %s skipped: %s", name, exc)
+
+    for name, spec in cond_specs.items():
+        try:
+            results[name] = _compare_conditional_distribution(
+                spec['eval_real_fn'](ref_messages, ref_book),
+                spec['cond_real_fn'](ref_messages, ref_book),
+                spec['eval_gen_fn'](messages, book),
+                spec['cond_gen_fn'](messages, book),
+                cond_discrete=bool(spec.get('cond_discrete', False)),
+                cond_thresholds=spec.get('cond_thresholds', None),
+            )
+        except Exception as exc:
+            failed[name] = str(exc)
+            if logger:
+                logger.warning("Reference conditional metric %s skipped: %s", name, exc)
+
+    return results, failed
 
 
 # ── logging ───────────────────────────────────────────────────────────────────
@@ -172,6 +452,25 @@ def _save_fig(fig, path, logger=None):
         print(f"  {msg}")
 
 
+def _log_all_metrics_summary(metrics: dict, logger) -> None:
+    """Print all computed metrics in a compact one-line-per-metric form."""
+    logger.info("\n── all computed metrics summary ─────────────────────")
+
+    computed = metrics.get('capability_report', {}).get('computed_generated_only_metrics', [])
+    for name in computed:
+        if name not in metrics:
+            continue
+        payload = json.dumps(_to_serializable(metrics[name]), sort_keys=True)
+        logger.info("  %s: %s", name, payload)
+
+    ref_metrics = metrics.get('reference_comparison', {}).get('metrics', {})
+    if ref_metrics:
+        logger.info("  [real-vs-generated comparative metrics]")
+        for name in sorted(ref_metrics.keys()):
+            payload = json.dumps(_to_serializable(ref_metrics[name]), sort_keys=True)
+            logger.info("  %s: %s", name, payload)
+
+
 # ── data loading ──────────────────────────────────────────────────────────────
 
 def load_lobster_pair(exp_dir: str, logger=None):
@@ -210,7 +509,13 @@ def load_lobster_pair(exp_dir: str, logger=None):
 
 # ── metric computation ────────────────────────────────────────────────────────
 
-def compute_metrics(messages: pd.DataFrame, book: pd.DataFrame, logger=None) -> dict:
+def compute_metrics(
+    messages: pd.DataFrame,
+    book: pd.DataFrame,
+    logger=None,
+    ref_messages: pd.DataFrame = None,
+    ref_book: pd.DataFrame = None,
+) -> dict:
     out = {}
     computed_now = []
 
@@ -372,13 +677,34 @@ def compute_metrics(messages: pd.DataFrame, book: pd.DataFrame, logger=None) -> 
         if logger:
             logger.debug("  ✓ orderflow imbalance")
 
+    reference_results = {}
+    reference_failed = {}
+    if ref_messages is not None and ref_book is not None:
+        reference_results, reference_failed = _compute_reference_comparison_metrics(
+            messages,
+            book,
+            ref_messages,
+            ref_book,
+            logger,
+        )
+        out['reference_comparison'] = {
+            'metrics': reference_results,
+            'failed_metrics': reference_failed,
+            'real_reference_rows': int(len(ref_messages)),
+            'generated_rows': int(len(messages)),
+        }
+
     out['capability_report'] = {
         'computed_generated_only_metrics': sorted(set(computed_now)),
-        'not_attempted_requires_real_reference_lob_data': LOB_BENCH_REAL_REFERENCE_METRICS,
+        'computed_reference_comparison_metrics': sorted(reference_results.keys()),
+        'not_attempted_requires_real_reference_lob_data': (
+            [] if (ref_messages is not None and ref_book is not None) else LOB_BENCH_REAL_REFERENCE_METRICS
+        ),
+        'failed_reference_comparison_metrics': reference_failed,
         'not_attempted_requires_true_order_id_linkage': REQUIRES_TRUE_ORDER_ID_LINKAGE,
         'policy': (
-            'Do not treat generated orderbook snapshots as real reference snapshots. '
-            'Comparative benchmark metrics are intentionally skipped until real reference data is available.'
+            'Generated-only metrics are always computed. Comparative benchmark metrics are computed '
+            'when real reference LOBSTER data is provided via --real_ref_dir.'
         ),
     }
 
@@ -387,10 +713,21 @@ def compute_metrics(messages: pd.DataFrame, book: pd.DataFrame, logger=None) -> 
             "Computed now (generated-only): %d metric groups",
             len(out['capability_report']['computed_generated_only_metrics'])
         )
-        logger.info(
-            "Skipped (needs real reference LOB data): %d benchmark metric configs",
-            len(LOB_BENCH_REAL_REFERENCE_METRICS)
-        )
+        if ref_messages is None or ref_book is None:
+            logger.info(
+                "Skipped (needs real reference LOB data): %d benchmark metric configs",
+                len(LOB_BENCH_REAL_REFERENCE_METRICS)
+            )
+        else:
+            logger.info(
+                "Computed (with real reference LOB data): %d benchmark metric configs",
+                len(reference_results)
+            )
+            if reference_failed:
+                logger.info(
+                    "Failed (with real reference LOB data): %d benchmark metric configs",
+                    len(reference_failed)
+                )
         logger.info(
             "Skipped (needs true order-ID linkage): %d metrics",
             len(REQUIRES_TRUE_ORDER_ID_LINKAGE)
@@ -630,6 +967,11 @@ def main():
         'exp_dir', nargs='?', default=None,
         help='Path to experiment directory (default: latest fixed_start_* in saved_LOB_stream/)'
     )
+    parser.add_argument(
+        '--real_ref_dir',
+        default=None,
+        help='Path to real reference LOBSTER experiment directory for comparative metrics.',
+    )
     args = parser.parse_args()
 
     if args.exp_dir:
@@ -658,14 +1000,25 @@ def main():
     logger.info("\n── loading data ───────────────────────────────────────")
     messages, book, notes = load_lobster_pair(exp_dir, logger)
 
+    ref_messages = None
+    ref_book = None
+    if args.real_ref_dir:
+        real_ref_dir = os.path.abspath(args.real_ref_dir)
+        logger.info(f"Loading real reference LOBSTER data from {real_ref_dir}")
+        ref_messages, ref_book, _ = load_lobster_pair(real_ref_dir, logger)
+
     logger.info("\n── computing metrics ──────────────────────────────────")
-    metrics = compute_metrics(messages, book, logger)
+    metrics = compute_metrics(messages, book, logger, ref_messages=ref_messages, ref_book=ref_book)
 
     logger.info("\n── capability split (strict) ─────────────────────────")
     for name in metrics['capability_report']['computed_generated_only_metrics']:
         logger.info("  [computed] %s", name)
+    for name in metrics['capability_report']['computed_reference_comparison_metrics']:
+        logger.info("  [computed: real-vs-generated] %s", name)
     for name in metrics['capability_report']['not_attempted_requires_real_reference_lob_data']:
         logger.info("  [skipped: needs real reference LOB data] %s", name)
+    for name, reason in metrics['capability_report'].get('failed_reference_comparison_metrics', {}).items():
+        logger.info("  [failed: real-vs-generated] %s | %s", name, reason)
     for name in metrics['capability_report']['not_attempted_requires_true_order_id_linkage']:
         logger.info("  [skipped: needs true order-ID linkage] %s", name)
 
@@ -695,6 +1048,8 @@ def main():
     if metrics.get('ob_imbalance'):
         o = metrics['ob_imbalance']
         logger.info(f"  OB imbalance  mean={o['mean']:.4f}  std={o['std']:.4f}")
+
+    _log_all_metrics_summary(metrics, logger)
     
     logger.info("\n" + "=" * 70)
     logger.info("Evaluation complete")

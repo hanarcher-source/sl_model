@@ -1,0 +1,82 @@
+2026-04-02 22:43:09 [INFO] ======================================================================
+2026-04-02 22:43:09 [INFO] eval_realflow_stream.py — stylized fact evaluation
+2026-04-02 22:43:09 [INFO] ======================================================================
+2026-04-02 22:43:09 [INFO] Evaluating: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215
+2026-04-02 22:43:09 [INFO] 
+── loading data ───────────────────────────────────────
+2026-04-02 22:43:09 [INFO] Loading LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215
+2026-04-02 22:43:10 [INFO] Loaded 72,762 rows | 10 book levels | date 2025-07-10
+2026-04-02 22:43:10 [INFO] 
+── computing metrics ──────────────────────────────────
+2026-04-02 22:43:10 [INFO] Computed now (generated-only): 15 metric groups
+2026-04-02 22:43:10 [INFO] Skipped (needs real reference LOB data): 24 benchmark metric configs
+2026-04-02 22:43:10 [INFO] Skipped (needs true order-ID linkage): 2 metrics
+2026-04-02 22:43:10 [INFO] 
+── capability split (strict) ─────────────────────────
+2026-04-02 22:43:10 [INFO]   [computed] acf_returns_1min
+2026-04-02 22:43:10 [INFO]   [computed] direction_counts
+2026-04-02 22:43:10 [INFO]   [computed] direction_fractions
+2026-04-02 22:43:10 [INFO]   [computed] event_type_counts
+2026-04-02 22:43:10 [INFO]   [computed] event_type_fractions
+2026-04-02 22:43:10 [INFO]   [computed] iat_ms
+2026-04-02 22:43:10 [INFO]   [computed] l1_volume
+2026-04-02 22:43:10 [INFO]   [computed] mid_price
+2026-04-02 22:43:10 [INFO]   [computed] ob_imbalance
+2026-04-02 22:43:10 [INFO]   [computed] orderflow_imbalance
+2026-04-02 22:43:10 [INFO]   [computed] returns_1min
+2026-04-02 22:43:10 [INFO]   [computed] spread_ticks
+2026-04-02 22:43:10 [INFO]   [computed] total_volume_5lvl
+2026-04-02 22:43:10 [INFO]   [computed] volatility_1min
+2026-04-02 22:43:10 [INFO]   [computed] volume_per_minute
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] spread
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] orderbook_imbalance
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] log_inter_arrival_time
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] log_time_to_cancel
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ask_volume_touch
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] bid_volume_touch
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ask_volume
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] bid_volume
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] limit_ask_order_depth
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] limit_bid_order_depth
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ask_cancellation_depth
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] bid_cancellation_depth
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] limit_ask_order_levels
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] limit_bid_order_levels
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ask_cancellation_levels
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] bid_cancellation_levels
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] vol_per_min
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ofi
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ofi_up
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ofi_stay
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ofi_down
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] ask_volume | spread
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] spread | time
+2026-04-02 22:43:10 [INFO]   [skipped: needs real reference LOB data] spread | volatility
+2026-04-02 22:43:10 [INFO]   [skipped: needs true order-ID linkage] time_to_first_fill
+2026-04-02 22:43:10 [INFO]   [skipped: needs true order-ID linkage] time_to_cancel
+2026-04-02 22:43:10 [INFO] 
+── generating plots ───────────────────────────────────
+2026-04-02 22:43:10 [INFO] saved mid_price.png
+2026-04-02 22:43:11 [INFO] saved spread.png
+2026-04-02 22:43:11 [INFO] saved returns_dist.png
+2026-04-02 22:43:12 [INFO] saved autocorr.png
+2026-04-02 22:43:12 [INFO] saved inter_arrival_time.png
+2026-04-02 22:43:13 [INFO] saved l1_volume.png
+2026-04-02 22:43:14 [INFO] saved volume_per_minute.png
+2026-04-02 22:43:15 [INFO] saved orderbook_imbalance.png
+2026-04-02 22:43:15 [INFO] saved orderflow_imbalance.png
+2026-04-02 22:43:15 [INFO] saved event_type_counts.png
+2026-04-02 22:43:15 [INFO] Skipped time-to-fill/time-to-cancel plots: requires true order-ID linkage (not available in synthetic IDs).
+2026-04-02 22:43:17 [INFO] saved overview_panel.png
+2026-04-02 22:43:17 [INFO] Wrote metrics summary: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215/metrics_summary.json
+2026-04-02 22:43:17 [INFO] 
+── key metrics ────────────────────────────────────────
+2026-04-02 22:43:17 [INFO]   spread        mean=1.00 ticks(0.01)  median=1.00 ticks(0.01)
+2026-04-02 22:43:17 [INFO]   vol (1min)    0.003818
+2026-04-02 22:43:17 [INFO]   returns       skew=0.902  kurt=-0.237
+2026-04-02 22:43:17 [INFO]   IAT           mean=18.9ms  median=10.0ms
+2026-04-02 22:43:17 [INFO]   OB imbalance  mean=0.4827  std=0.6955
+2026-04-02 22:43:17 [INFO] 
+======================================================================
+2026-04-02 22:43:17 [INFO] Evaluation complete
+2026-04-02 22:43:17 [INFO] ======================================================================

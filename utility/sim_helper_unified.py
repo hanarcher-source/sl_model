@@ -231,11 +231,6 @@ def process_lob_data_real_flow(
     final_result["Price"] = final_result["Price"].astype(float)
     final_result["MidPrice"] = final_result["MidPrice"].astype(float)
 
-    half_tick = 0.005
-    final_result["Price_Mid_diff"] = np.rint(
-        (final_result["Price"] - final_result["MidPrice"]) / half_tick
-    ).astype(np.int32)
-
     order_transac_col_names = [
         "ChannelNo", "ApplSeqNum", "MDStreamID", "BidApplSeqNum", "OfferApplSeqNum",
         "SecurityID", "SecurityIDSource", "LastPx", "LastQty", "ExecType",
@@ -272,17 +267,18 @@ def process_lob_data_real_flow(
     order_transac_expanded["ApplSeqNum"] = pd.to_numeric(order_transac_expanded["ApplSeqNum"], errors="coerce")
 
     print("Matching transaction rows back to posted orders...")
-    price_match_df = final_result[["ChannelNo", "ApplSeqNum", "SecurityID", "Price_Mid_diff", "Side"]].copy()
+    price_match_df = final_result[["ChannelNo", "ApplSeqNum", "SecurityID", "Price", "Side"]].copy()
     price_match_df = price_match_df.rename(columns={"Side": "OrigSide"})
     for col in ["ChannelNo", "ApplSeqNum", "OrigSide"]:
         price_match_df[col] = pd.to_numeric(price_match_df[col], errors="coerce")
+    price_match_df["Price"] = pd.to_numeric(price_match_df["Price"], errors="coerce")
 
     order_transac_expanded = order_transac_expanded.merge(
         price_match_df,
         how="left",
         on=["ChannelNo", "ApplSeqNum", "SecurityID"],
     )
-    order_transac_expanded.dropna(subset=["Price_Mid_diff"], inplace=True)
+    order_transac_expanded.dropna(subset=["Price"], inplace=True)
 
     order_transac_expanded["TransactDT"] = pd.to_datetime(
         order_transac_expanded["TransactTime"].str.slice(0, 8), format="%H:%M:%S"
@@ -306,7 +302,7 @@ def process_lob_data_real_flow(
     final_result_for_merge = final_result[
         [
             "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
-            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price_Mid_diff"
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price"
         ]
     ].copy()
     final_result_for_merge["ExecType"] = np.nan
@@ -315,7 +311,7 @@ def process_lob_data_real_flow(
     order_transac_expanded = order_transac_expanded[
         [
             "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
-            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price_Mid_diff",
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price",
             "ExecType", "OrigSide"
         ]
     ].copy()
@@ -608,6 +604,9 @@ class OrderBook:
         raise ValueError("post_limit called with cancel side")
 
     def cancel(self, side: str, price: float, qty: int):
+        return self.remove_passive(side, price, qty, reason="cancel")
+
+    def remove_passive(self, side: str, price: float, qty: int, *, reason: str):
         if qty <= 0:
             return 0
 
@@ -630,6 +629,12 @@ class OrderBook:
 
         self._clean_level(book, price)
         return int(removed)
+
+    def cancel_passive(self, side: str, price: float, qty: int):
+        return self.remove_passive(side, price, qty, reason="cancel")
+
+    def execute_against_resting(self, side: str, price: float, qty: int):
+        return self.remove_passive(side, price, qty, reason="execute")
 
 
 # ============================================================
@@ -828,35 +833,53 @@ def decode_event_from_token(
 # ============================================================
 
 def apply_event_to_book(book: OrderBook, ev: EventDecoded):
-    out = {"action": None, "fills": [], "removed": 0}
+    out = {
+        "event_kind": None,
+        "action": None,
+        "fills": [],
+        "removed": 0,
+        "resting_side": None,
+        "price": float(ev.abs_price),
+        "requested_qty": int(ev.qty),
+    }
 
     if ev.side_bin in (0, 1):
         fills = book.post_limit(ev.side_bin, ev.abs_price, ev.qty)
+        out["event_kind"] = "post"
         out["action"] = "POST_BID" if ev.side_bin == 0 else "POST_ASK"
         out["fills"] = fills
         return out
 
     if ev.ticks_from_mid > 0:
-        removed = book.cancel("ask", ev.abs_price, ev.qty)
+        removed = book.cancel_passive("ask", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
         out["action"] = "CANCEL_ASK"
         out["removed"] = removed
+        out["resting_side"] = "ask"
         return out
 
     if ev.ticks_from_mid < 0:
-        removed = book.cancel("bid", ev.abs_price, ev.qty)
+        removed = book.cancel_passive("bid", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
         out["action"] = "CANCEL_BID"
         out["removed"] = removed
+        out["resting_side"] = "bid"
         return out
 
     if book.asks:
-        removed = book.cancel("ask", ev.abs_price, ev.qty)
+        removed = book.cancel_passive("ask", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
         out["action"] = "CANCEL0_ASK"
         out["removed"] = removed
+        out["resting_side"] = "ask"
     elif book.bids:
-        removed = book.cancel("bid", ev.abs_price, ev.qty)
+        removed = book.cancel_passive("bid", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
         out["action"] = "CANCEL0_BID"
         out["removed"] = removed
+        out["resting_side"] = "bid"
     else:
+        out["event_kind"] = "cancel"
         out["action"] = "CANCEL0_EMPTY"
         out["removed"] = 0
     return out

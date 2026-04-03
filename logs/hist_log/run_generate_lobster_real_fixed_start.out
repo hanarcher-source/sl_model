@@ -1,0 +1,14 @@
+[2026-04-02 22:32:15] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215
+[2026-04-02 22:32:15] [INFO] Loading and normalizing snapshot table...
+scripts/generate_lobster_stream_real_fixed_start.py:143: DtypeWarning: Columns (1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,88) have mixed types. Specify dtype option on import or set low_memory=False.
+  lob_info = pd.read_csv(lob_snap_path, header=None, names=columns)
+[2026-04-02 22:37:37] [INFO] Loading processed real-flow orders...
+[2026-04-02 22:37:49] [INFO] Real events in window: 75742 side_counts={129: 43713, 50: 13655, 49: 12833, 99: 5541}
+[2026-04-02 22:37:55] [INFO] Exported message rows: 72762
+[2026-04-02 22:37:55] [INFO] Exported orderbook rows: 72762
+[2026-04-02 22:37:55] [INFO] Unmatched remove events cancel=292 exec=2688
+[2026-04-02 22:37:57] [DONE] Fixed-start real-flow export complete.
+[2026-04-02 22:37:57] [DONE] Raw real-flow log: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215/raw_realflow_log.csv
+[2026-04-02 22:37:57] [DONE] LOBSTER message CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215/000617XSHE_2025-07-10_36000000_36600000_message_10.csv
+[2026-04-02 22:37:57] [DONE] LOBSTER orderbook CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215/000617XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[2026-04-02 22:37:57] [DONE] Notes JSON: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_20260402_223215/generation_notes.json
