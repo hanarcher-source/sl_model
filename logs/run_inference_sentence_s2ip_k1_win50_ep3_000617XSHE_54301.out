@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "scripts/hist_script/inference_replay_blankgpt2_openbidanchor_txncomplete_fixed_start.py", line 662, in <module>
+    main()
+  File "scripts/hist_script/inference_replay_blankgpt2_openbidanchor_txncomplete_fixed_start.py", line 390, in main
+    model.load_state_dict(ckpt["model_state_dict"])
+  File "/finance_ML/zhanghaohan/mycondaenv/lib/python3.8/site-packages/torch/nn/modules/module.py", line 2215, in load_state_dict
+    raise RuntimeError('Error(s) in loading state_dict for {}:\n\t{}'.format(
+RuntimeError: Error(s) in loading state_dict for OrderGPT2_SentencePresetS2IP:
+	Missing key(s) in state_dict: "anchor_token_ids". 

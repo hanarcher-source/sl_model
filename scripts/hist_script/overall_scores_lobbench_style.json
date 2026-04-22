@@ -1,0 +1,24 @@
+[
+  {
+    "stock": "000981XSHE",
+    "before_setting": "T10_k50",
+    "before_w_n": 20,
+    "before_w_mean": 1.8676955568704756,
+    "before_w_median": 0.7093047293335994,
+    "before_w_iqm": 0.7922733109190443,
+    "after_w_n": 17,
+    "after_w_mean": 1.2804726562666822,
+    "after_w_median": 1.1172931314343246,
+    "after_w_iqm": 1.1520466732264854,
+    "before_l1_n": 18,
+    "before_l1_mean": 0.6754834923305739,
+    "before_l1_median": 0.6556746803894942,
+    "before_l1_iqm": 0.7128865857018306,
+    "after_l1_n": 16,
+    "after_l1_mean": 0.7633771469746682,
+    "after_l1_median": 0.8293277113578139,
+    "after_l1_iqm": 0.8190459158622986,
+    "before_metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_192338/metrics_summary.json",
+    "after_metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/best_T10_k50_pretrained_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260407_111738/metrics_summary.json"
+  }
+]

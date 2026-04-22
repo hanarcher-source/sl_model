@@ -1,0 +1,7 @@
+scripts/preprocess_bookstate_mdl628_anchor5m_bins_20250709.py:225: RuntimeWarning: invalid value encountered in cast
+  dp_ask = np.rint((ask_p - ask_pA) / tick_size).astype(np.int32)
+scripts/preprocess_bookstate_mdl628_anchor5m_bins_20250709.py:226: RuntimeWarning: invalid value encountered in cast
+  dp_bid = np.rint((bid_p - bid_pA) / tick_size).astype(np.int32)
+[ok] wrote /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_book_state/pool_0709_bookstate_anchor5m_mdl628/bookstate_20250709_mdl628_anchor5m_P41_V31_20260417_133803.joblib
+[ok] meta  /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_book_state/pool_0709_bookstate_anchor5m_mdl628/bookstate_20250709_mdl628_anchor5m_P41_V31_20260417_133803_meta.json
+[ok] rows 14845 K 1271

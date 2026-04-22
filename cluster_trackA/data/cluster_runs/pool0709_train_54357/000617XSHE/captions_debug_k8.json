@@ -1,0 +1,420 @@
+{
+  "stock": "000617XSHE",
+  "k": 8,
+  "edges": {
+    "pm_abs_mean": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "log_interval_mean": [
+      0.1429511854237891,
+      0.5819131805816136,
+      0.9452303926848549,
+      1.419538951157719
+    ],
+    "log_qty_mean": [
+      6.206471850769168,
+      6.504089250080155,
+      6.7081235792513025,
+      6.927370012303047
+    ],
+    "frac_side_99": [
+      0.0,
+      0.02,
+      0.06,
+      0.1
+    ],
+    "frac_side_129": [
+      0.2,
+      0.28,
+      0.34,
+      0.44
+    ],
+    "mid_return": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "captions": [
+    {
+      "stock": "000617XSHE",
+      "cluster": 0,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "medium",
+        "cancels": "normal cancels",
+        "executions": "high executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "less side49",
+        "more side130",
+        "more side50"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:medium|cxl:normal cancels|exe:high executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.7508309008051743,
+        "log_qty_mean": 6.625299576079839,
+        "frac_side_49": 0.12246329471608275,
+        "frac_side_50": 0.1103688047471713,
+        "frac_side_99": 0.03920067815764536,
+        "frac_side_129": 0.3627124046340422,
+        "frac_side_130": 0.3652548177450962,
+        "mid_return": 0.0,
+        "tod_hour": 9.72150343788353
+      },
+      "top_deltas": [
+        [
+          "frac_side_49",
+          -0.2192616054525694
+        ],
+        [
+          "frac_side_130",
+          0.1300247086858843
+        ],
+        [
+          "frac_side_50",
+          0.08161185392320162
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 1,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very fast",
+        "size": "large",
+        "cancels": "low cancels",
+        "executions": "very high executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "less side130",
+        "less side49",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:very fast|sz:large|cxl:low cancels|exe:very high executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.08499433419214997,
+        "log_qty_mean": 6.775408797935211,
+        "frac_side_49": 0.01646819338422443,
+        "frac_side_50": 0.01037659033078895,
+        "frac_side_99": 0.0069580152671755964,
+        "frac_side_129": 0.8823066157760606,
+        "frac_side_130": 0.08389058524172754,
+        "mid_return": 0.0,
+        "tod_hour": 10.639138040712181
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          -1.2011919712441481
+        ],
+        [
+          "frac_side_49",
+          -0.9005696439588651
+        ],
+        [
+          "frac_side_50",
+          -0.819726315861965
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 2,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very slow",
+        "size": "medium",
+        "cancels": "very high cancels",
+        "executions": "low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side50",
+        "less side130",
+        "more side49"
+      ],
+      "sig": "spr:very tight|tmp:very slow|sz:medium|cxl:very high cancels|exe:low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 1.6899665637565802,
+        "log_qty_mean": 6.6615961429476584,
+        "frac_side_49": 0.17304917925578717,
+        "frac_side_50": 0.22727944542544973,
+        "frac_side_99": 0.1490909685436197,
+        "frac_side_129": 0.22596658164934655,
+        "frac_side_130": 0.2246138251259004,
+        "mid_return": 0.0,
+        "tod_hour": 10.617639188629184
+      },
+      "top_deltas": [
+        [
+          "frac_side_50",
+          1.135454130668563
+        ],
+        [
+          "frac_side_130",
+          -0.535389063316385
+        ],
+        [
+          "frac_side_49",
+          0.1058908717732168
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 3,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "slow",
+        "size": "medium",
+        "cancels": "high cancels",
+        "executions": "low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side49",
+        "less side130",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:slow|sz:medium|cxl:high cancels|exe:low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 1.2850075820607676,
+        "log_qty_mean": 6.549313635176801,
+        "frac_side_49": 0.397701115785583,
+        "frac_side_50": 0.09690031095665513,
+        "frac_side_99": 0.07821766965424937,
+        "frac_side_129": 0.21895628315347576,
+        "frac_side_130": 0.20822462044998413,
+        "mid_return": 0.0,
+        "tod_hour": 10.041843485151086
+      },
+      "top_deltas": [
+        [
+          "frac_side_49",
+          1.5498931728281669
+        ],
+        [
+          "frac_side_130",
+          -0.612931195950837
+        ],
+        [
+          "frac_side_50",
+          -0.0397942736814472
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 4,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "large",
+        "cancels": "high cancels",
+        "executions": "high executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "less side50",
+        "less side49",
+        "more side130"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:large|cxl:high cancels|exe:high executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.731042095717812,
+        "log_qty_mean": 6.726136792210097,
+        "frac_side_49": 0.14048007722121997,
+        "frac_side_50": 0.08089031470466969,
+        "frac_side_99": 0.0672068363450428,
+        "frac_side_129": 0.36023279912552875,
+        "frac_side_130": 0.3511899726034656,
+        "mid_return": 0.0,
+        "tod_hour": 11.080709611477868
+      },
+      "top_deltas": [
+        [
+          "frac_side_50",
+          -0.18410971668125453
+        ],
+        [
+          "frac_side_49",
+          -0.10345456725428462
+        ],
+        [
+          "frac_side_130",
+          0.0634798025100528
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 5,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very fast",
+        "size": "large",
+        "cancels": "low cancels",
+        "executions": "very low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side130",
+        "less side49",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:very fast|sz:large|cxl:low cancels|exe:very low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.10453411578811454,
+        "log_qty_mean": 6.73204740175111,
+        "frac_side_49": 0.018059494819271216,
+        "frac_side_50": 0.014698944754811158,
+        "frac_side_99": 0.0068929952728836634,
+        "frac_side_129": 0.09765458625793398,
+        "frac_side_130": 0.8626939788950875,
+        "mid_return": 0.0,
+        "tod_hour": 10.39144901239822
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          2.4835552291842333
+        ],
+        [
+          "frac_side_49",
+          -0.8903411857965431
+        ],
+        [
+          "frac_side_50",
+          -0.7807642521808079
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 6,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "fast",
+        "size": "very small",
+        "cancels": "low cancels",
+        "executions": "low executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "more side130",
+        "less side49",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:fast|sz:very small|cxl:low cancels|exe:low executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.15796524429745948,
+        "log_qty_mean": 5.610108210403285,
+        "frac_side_49": 0.03422037223099168,
+        "frac_side_50": 0.019609588057987588,
+        "frac_side_99": 0.008475192574518318,
+        "frac_side_129": 0.2597263288837875,
+        "frac_side_130": 0.6779685182527109,
+        "mid_return": 0.0,
+        "tod_hour": 9.928270577164845
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          1.6095649134039705
+        ],
+        [
+          "frac_side_49",
+          -0.7864634069976224
+        ],
+        [
+          "frac_side_50",
+          -0.7364993034226809
+        ]
+      ]
+    },
+    {
+      "stock": "000617XSHE",
+      "cluster": 7,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very fast",
+        "size": "very small",
+        "cancels": "low cancels",
+        "executions": "very high executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "less side50",
+        "less side130",
+        "less side49"
+      ],
+      "sig": "spr:very tight|tmp:very fast|sz:very small|cxl:low cancels|exe:very high executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.1396245493774518,
+        "log_qty_mean": 5.868133218683037,
+        "frac_side_49": 0.04485808270676341,
+        "frac_side_50": 0.01324906015037631,
+        "frac_side_99": 0.009302631578947727,
+        "frac_side_129": 0.7586231203007625,
+        "frac_side_130": 0.1739671052631599,
+        "mid_return": 0.0,
+        "tod_hour": 9.853138314536059
+      },
+      "top_deltas": [
+        [
+          "frac_side_50",
+          -0.7938336330659951
+        ],
+        [
+          "frac_side_130",
+          -0.7750135445987264
+        ],
+        [
+          "frac_side_49",
+          -0.7180870616063891
+        ]
+      ]
+    }
+  ]
+}

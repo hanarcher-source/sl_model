@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /finance_ML/zhanghaohan/stock_language_model
+
+sbatch scripts/run_streamlined_lob_eval_000617XSHE_rawsampling0710.sh
+sbatch scripts/run_streamlined_lob_eval_000981XSHE_rawsampling0710.sh
+sbatch scripts/run_streamlined_lob_eval_002263XSHE_rawsampling0710.sh
+sbatch scripts/run_streamlined_lob_eval_002366XSHE_rawsampling0710.sh

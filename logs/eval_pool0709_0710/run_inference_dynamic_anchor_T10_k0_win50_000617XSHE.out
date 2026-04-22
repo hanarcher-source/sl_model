@@ -1,0 +1,5 @@
+[2026-04-07 17:06:52] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/dynamic_anchor/dynamic_anchor_T10_k0_win50/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_000617XSHE_20260407_170652
+[2026-04-07 17:06:52] [INFO] checkpoint: /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_0710_train0709_blank_gpt2_dynamic_anchor_win50/000617XSHE/model_cache/blankGPT2dyn_20250709_txncomplete_000617XSHE_win50_20260407_124338_best.pt
+[2026-04-07 17:06:52] [INFO] device: cuda greedy=False
+[2026-04-07 17:06:52] [INFO] vocab=40560 anchor_count=128
+slurmstepd-dgx015: error: *** JOB 54091 ON dgx015 CANCELLED AT 2026-04-07T17:07:42 ***

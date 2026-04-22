@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+cd /finance_ML/zhanghaohan/stock_language_model/scripts/hist_script
+
+sbatch run_eval_generated_stream_cleanref_txncomplete_000617XSHE.sh
+sbatch run_eval_generated_stream_cleanref_txncomplete_000981XSHE.sh
+sbatch run_eval_generated_stream_cleanref_txncomplete_002263XSHE.sh
+sbatch run_eval_generated_stream_cleanref_txncomplete_002366XSHE.sh

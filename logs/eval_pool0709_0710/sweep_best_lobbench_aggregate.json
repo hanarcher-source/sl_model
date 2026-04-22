@@ -1,0 +1,382 @@
+{
+  "winners": [
+    {
+      "stock": "000617XSHE",
+      "best_setting": "T13_k0",
+      "prior_zscore_setting": "T13_k0",
+      "same_as_prior": true,
+      "criterion": "mean",
+      "W_mean": 0.43751070582630575,
+      "W_median": 0.3886869998686949,
+      "W_iqm": 0.3965912912296383,
+      "n_w": 20
+    },
+    {
+      "stock": "000981XSHE",
+      "best_setting": "T13_k400",
+      "prior_zscore_setting": "T10_k50",
+      "same_as_prior": false,
+      "criterion": "mean",
+      "W_mean": 0.7754564330179536,
+      "W_median": 0.8939573642405647,
+      "W_iqm": 0.7395587613547799,
+      "n_w": 19
+    },
+    {
+      "stock": "002263XSHE",
+      "best_setting": "T13_k0",
+      "prior_zscore_setting": "T13_k0",
+      "same_as_prior": true,
+      "criterion": "mean",
+      "W_mean": 0.6859046763495149,
+      "W_median": 0.4396528408212187,
+      "W_iqm": 0.5017575211011395,
+      "n_w": 18
+    },
+    {
+      "stock": "002366XSHE",
+      "best_setting": "T13_k0",
+      "prior_zscore_setting": "T13_k0",
+      "same_as_prior": true,
+      "criterion": "mean",
+      "W_mean": 0.4427703150037505,
+      "W_median": 0.3890584179320484,
+      "W_iqm": 0.3738453736987017,
+      "n_w": 20
+    }
+  ],
+  "rows": [
+    {
+      "stock": "000617XSHE",
+      "setting": "T07_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 1.1923066500558495,
+      "W_median": 0.8248790048345246,
+      "W_iqm": 0.8061830716880212
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T10_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.4482518003539456,
+      "W_median": 0.3613702889398787,
+      "W_iqm": 0.4092271892039681
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T10_k50",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 20,
+      "n_l1": 19,
+      "W_mean": 1.169674335658766,
+      "W_median": 1.0816559104128847,
+      "W_iqm": 1.0796489021805606
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T12_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_201753/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.5288987229473145,
+      "W_median": 0.435521076951011,
+      "W_iqm": 0.4104310983433721
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T13_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 20,
+      "n_l1": 20,
+      "W_mean": 0.43751070582630575,
+      "W_median": 0.3886869998686949,
+      "W_iqm": 0.3965912912296383
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T13_k100",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_204122/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.7022725103790423,
+      "W_median": 0.69072903434498,
+      "W_iqm": 0.6375951182802307
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T13_k400",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_204122/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.523950805366807,
+      "W_median": 0.4282407009683313,
+      "W_iqm": 0.3982043451235688
+    },
+    {
+      "stock": "000617XSHE",
+      "setting": "T14_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_201753/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.7427642539148402,
+      "W_median": 0.6852078207108573,
+      "W_iqm": 0.6788360734396309
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T07_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 17,
+      "n_l1": 16,
+      "W_mean": 1.2384712196666345,
+      "W_median": 1.3680246927971575,
+      "W_iqm": 1.1613095926855639
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T10_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_192337/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.9511845094371185,
+      "W_median": 0.8175297002963522,
+      "W_iqm": 0.901562649254349
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T10_k50",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 20,
+      "n_l1": 18,
+      "W_mean": 1.8676955568704756,
+      "W_median": 0.7093047293335994,
+      "W_iqm": 0.7922733109190443
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T12_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_201803/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.7935633619178933,
+      "W_median": 0.7915420251737881,
+      "W_iqm": 0.7286761961943264
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T13_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 18,
+      "n_l1": 18,
+      "W_mean": 0.8574107589304586,
+      "W_median": 0.8209399672330637,
+      "W_iqm": 0.869083299900754
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T13_k100",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_204122/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.812500763864747,
+      "W_median": 0.7712269799013838,
+      "W_iqm": 0.7252574597472388
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T13_k400",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_204122/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.7754564330179536,
+      "W_median": 0.8939573642405647,
+      "W_iqm": 0.7395587613547799
+    },
+    {
+      "stock": "000981XSHE",
+      "setting": "T14_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_201754/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.8077433717987877,
+      "W_median": 0.8834918856746978,
+      "W_iqm": 0.7822192197230563
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T07_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 1.0743856830920515,
+      "W_median": 0.774924599943312,
+      "W_iqm": 0.7678202194744871
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T10_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.8262894748199774,
+      "W_median": 0.774924599943312,
+      "W_iqm": 0.7213956002408137
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T10_k50",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 1.000254255404233,
+      "W_median": 0.774924599943312,
+      "W_iqm": 0.7673785048132706
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T12_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_201803/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.8424607478872845,
+      "W_median": 0.774924599943312,
+      "W_iqm": 0.7489045728712205
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T13_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 18,
+      "n_l1": 18,
+      "W_mean": 0.6859046763495149,
+      "W_median": 0.4396528408212187,
+      "W_iqm": 0.5017575211011395
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T13_k100",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_204122/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.8616731073104936,
+      "W_median": 0.774924599943312,
+      "W_iqm": 0.7588629511459958
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T13_k400",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_204120/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.7464178840340557,
+      "W_median": 0.5412194847786672,
+      "W_iqm": 0.6555565865389561
+    },
+    {
+      "stock": "002263XSHE",
+      "setting": "T14_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_201751/metrics_summary.json",
+      "n_w": 19,
+      "n_l1": 18,
+      "W_mean": 0.8373567929240285,
+      "W_median": 0.774924599943312,
+      "W_iqm": 0.7421216648977735
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T07_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 17,
+      "n_l1": 16,
+      "W_mean": 0.852791599239775,
+      "W_median": 0.7286814807926228,
+      "W_iqm": 0.7559115772024309
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T10_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.8221484207243137,
+      "W_median": 0.6701694538075891,
+      "W_iqm": 0.6790653067591531
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T10_k50",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_192338/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 1.2471004219957993,
+      "W_median": 0.8420432848250027,
+      "W_iqm": 0.7993757720844933
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T12_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_201754/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.6110814765820044,
+      "W_median": 0.44509758288162554,
+      "W_iqm": 0.47261400185667585
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T13_k0",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_190358/metrics_summary.json",
+      "n_w": 20,
+      "n_l1": 20,
+      "W_mean": 0.4427703150037505,
+      "W_median": 0.3890584179320484,
+      "W_iqm": 0.3738453736987017
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T13_k100",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_204122/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.6494358584316269,
+      "W_median": 0.4415599907005056,
+      "W_iqm": 0.47867340442780026
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T13_k400",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_204121/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.6095700002556415,
+      "W_median": 0.42110260429756147,
+      "W_iqm": 0.4511561160381698
+    },
+    {
+      "stock": "002366XSHE",
+      "setting": "T14_k200",
+      "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_201752/metrics_summary.json",
+      "n_w": 21,
+      "n_l1": 20,
+      "W_mean": 0.6524460239856537,
+      "W_median": 0.4774386645113355,
+      "W_iqm": 0.49371053819700245
+    }
+  ],
+  "settings": [
+    "T07_k0",
+    "T10_k200",
+    "T10_k50",
+    "T12_k200",
+    "T13_k0",
+    "T13_k100",
+    "T13_k400",
+    "T14_k200",
+    "spread_hist_reports"
+  ],
+  "criterion": "mean"
+}

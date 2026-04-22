@@ -13,8 +13,9 @@ This file merges the common simulation/eval utilities from:
 
 import json
 import math
+import os
 import random
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from dataclasses import dataclass
 from typing import Optional
 
@@ -51,6 +52,62 @@ def get_lob_snapshot_by_time(lob_info, target_time, stock, stock_col="SecurityID
     ].copy()
 
     return result
+
+
+def get_l1_bid_anchor_by_time(lob_snap_path, target_time, selected_stocks=None):
+    lob_snap = pd.read_csv(lob_snap_path)
+    columns = list(lob_snap.columns) + ["MISC"]
+    lob_info = pd.read_csv(
+        lob_snap_path,
+        header=None,
+        names=columns,
+        usecols=["SecurityID", "BidPrice1", "AskPrice1", "UpdateTime"],
+    )
+    lob_info = lob_info[1:].copy()
+    lob_info["SecurityID"] = lob_info["SecurityID"].astype(str).str.zfill(6) + "_XSHE"
+    if selected_stocks:
+        lob_info = lob_info[lob_info["SecurityID"].isin(selected_stocks)].copy()
+
+    lob_info["BidPrice1"] = pd.to_numeric(lob_info["BidPrice1"], errors="coerce")
+    lob_info["AskPrice1"] = pd.to_numeric(lob_info["AskPrice1"], errors="coerce")
+    lob_info = lob_info.dropna(subset=["BidPrice1", "AskPrice1"]).copy()
+    lob_info["UpdateTime"] = lob_info["UpdateTime"].astype(str)
+    lob_info = lob_info[lob_info["UpdateTime"].str.len() >= 8].copy()
+    lob_info["TransactDT_SEC"] = pd.to_datetime(
+        lob_info["UpdateTime"].str.slice(0, 8),
+        format="%H:%M:%S",
+        errors="coerce",
+    ).dt.floor("S")
+    lob_info = lob_info.dropna(subset=["TransactDT_SEC"]).copy()
+
+    target_ts = pd.Timestamp(f"1900-01-01 {target_time}")
+    anchors = lob_info.loc[lob_info["TransactDT_SEC"] == target_ts].copy()
+    if anchors.empty:
+        raise RuntimeError(f"No L1 snapshot found at {target_time} in {lob_snap_path}")
+
+    anchors = (
+        anchors.sort_values(["SecurityID", "UpdateTime"], kind="mergesort")
+        .groupby("SecurityID", as_index=False)
+        .tail(1)
+        .reset_index(drop=True)
+    )
+
+    anchor_map = {}
+    for row in anchors.itertuples(index=False):
+        bid_price = float(row.BidPrice1)
+        anchor_map[row.SecurityID] = {
+            "anchor_time": target_time,
+            "anchor_bid_price": bid_price,
+            "anchor_bid_tick": int(round(bid_price / 0.01)),
+            "anchor_ask_price": float(row.AskPrice1),
+            "anchor_update_time": str(row.UpdateTime),
+        }
+
+    missing = sorted(set(selected_stocks or []) - set(anchor_map.keys()))
+    if missing:
+        raise RuntimeError(f"Missing 09:31 L1 anchors for stocks: {missing}")
+
+    return anchor_map
 
 
 def get_order_window_ending_at_second(processed_LOB_data, target_time, stock, order_num, stock_col="SecurityID"):
@@ -92,6 +149,187 @@ def get_order_window_ending_at_second(processed_LOB_data, target_time, stock, or
     return df_stock.loc[window_indices].copy()
 
 
+def apply_existing_bins(df: pd.DataFrame, field: str, bins) -> pd.Series:
+    bins = np.asarray(bins, dtype=float)
+    min_value = float(bins[0])
+
+    bin_indices = pd.Series(
+        np.digitize(df[field].astype(float).fillna(min_value - 1), bins, right=True) - 1,
+        index=df.index,
+        name=f"{field}_bin",
+    )
+    bin_indices = np.maximum(bin_indices, 0)
+    bin_indices = np.minimum(bin_indices, len(bins) - 2)
+    return pd.Series(bin_indices, index=df.index, name=f"{field}_bin").astype(np.int32)
+
+
+def build_bin_converter_samp(
+    df: pd.DataFrame,
+    field: str,
+    num_bins: int = 32,
+    max_values: int = 1_000_000,
+    return_bins: bool = True,
+    return_distribution: bool = True,
+):
+    values = df[field].dropna().astype(float).values
+
+    if len(values) == 0:
+        raise ValueError(f"No non-null values found for field={field}")
+
+    rng = np.random.default_rng(seed=42)
+    if len(values) > max_values:
+        values = rng.choice(values, size=max_values, replace=False)
+
+    values.sort()
+    value_freq = Counter(values)
+    avg_bin_sample_count = len(values) / num_bins
+
+    single_item_bins = set()
+    for value, count in value_freq.items():
+        if count > avg_bin_sample_count:
+            single_item_bins.add(value)
+
+    # Guard against degenerate cases where too many heavy hitters would consume
+    # all available bins and break the edge construction logic.
+    if len(single_item_bins) >= num_bins:
+        ranked_singletons = sorted(
+            single_item_bins,
+            key=lambda value: (-int(value_freq[value]), float(value)),
+        )
+        single_item_bins = set(ranked_singletons[: max(0, num_bins - 1)])
+
+    min_value = float(values.min())
+    if min_value in single_item_bins:
+        min_value = min_value - 1
+
+    values_wo_single = [x for x in values if x not in single_item_bins]
+    num_values = len(values_wo_single)
+    # We already have one lower edge plus one edge per isolated singleton.
+    # To reach exactly num_bins + 1 total edges, append only the remaining edge budget.
+    available_bins = num_bins - len(single_item_bins)
+    cur_index = 0
+
+    bins = [min_value] + list(single_item_bins)
+
+    while available_bins > 0 and cur_index < num_values:
+        steps = (
+            (num_values - cur_index) // (available_bins - 1)
+            if available_bins > 1 else
+            (num_values - cur_index)
+        )
+
+        start_value = values_wo_single[cur_index]
+
+        for end_index in range(cur_index + steps, num_values):
+            if values_wo_single[end_index] != start_value:
+                break
+        else:
+            end_index = num_values - 1
+
+        cur_index = end_index
+        available_bins -= 1
+        bins.append(values_wo_single[cur_index] if cur_index < num_values else values_wo_single[-1])
+
+    bins = np.sort(np.asarray(bins, dtype=float))
+    if len(bins) != num_bins + 1:
+        raise AssertionError(f"Expected {num_bins + 1} bin edges, got {len(bins)}")
+
+    filled = df[field].astype(float).fillna(min_value - 1)
+    bin_indices = pd.Series(
+        np.digitize(filled, bins, right=True) - 1,
+        index=df.index,
+        name=f"{field}_bin",
+    )
+    bin_indices = np.maximum(bin_indices, 0)
+    bin_indices = np.minimum(bin_indices, len(bins) - 2)
+    bin_indices = pd.Series(bin_indices, index=df.index, name=f"{field}_bin").astype(np.int32)
+
+    bin_distribution_record = None
+    if return_distribution:
+        tmp = pd.DataFrame({
+            "value": df[field].astype(float),
+            "bin_idx": bin_indices,
+        }).dropna(subset=["value"])
+
+        bin_distribution_record = {}
+        for b in range(num_bins):
+            sub = tmp[tmp["bin_idx"] == b]["value"]
+            vc = sub.value_counts(dropna=True, sort=False).sort_index()
+
+            counts = vc.astype(int).tolist()
+            unique_values = [float(x) for x in vc.index.tolist()]
+            total = int(sum(counts))
+            probs = [c / total for c in counts] if total > 0 else []
+
+            bin_distribution_record[str(b)] = {
+                "bin_left": float(bins[b]),
+                "bin_right": float(bins[b + 1]),
+                "total_count": total,
+                "n_unique": len(unique_values),
+                "unique_values": unique_values,
+                "counts": counts,
+                "probs": probs,
+            }
+
+    if return_bins:
+        return bins, bin_indices, bin_distribution_record
+    return None, bin_indices, bin_distribution_record
+
+
+def make_order_token_id(
+    df: pd.DataFrame,
+    *,
+    price_col: str = "price_bin",
+    qty_col: str = "qty_bin",
+    interval_col: str = "interval_bin",
+    side_col: str = "Side",
+    n_price: int = 32,
+    n_qty: int = 32,
+    n_interval: int = 16,
+    n_side: int = 3,
+    side_to_bin: Optional[dict] = None,
+    out_col: str = "order_token",
+    side_bin_col: str = "side_bin",
+    valid_col: str = "tokenizable_event",
+):
+    if side_to_bin is None:
+        side_to_bin = {49: 0, 50: 1, 99: 2}
+
+    side_bin = df[side_col].map(side_to_bin)
+    valid_mask = (
+        df[price_col].notna()
+        & df[qty_col].notna()
+        & df[interval_col].notna()
+        & side_bin.notna()
+    )
+
+    df[valid_col] = valid_mask.astype(bool)
+    df[side_bin_col] = side_bin.astype("Int64")
+    df[out_col] = pd.Series(pd.array([pd.NA] * len(df), dtype="Int64"), index=df.index)
+
+    if not valid_mask.any():
+        return df
+
+    price = df.loc[valid_mask, price_col].astype(int).to_numpy()
+    qty = df.loc[valid_mask, qty_col].astype(int).to_numpy()
+    interval = df.loc[valid_mask, interval_col].astype(int).to_numpy()
+    side = side_bin.loc[valid_mask].astype(int).to_numpy()
+
+    assert price.min() >= 0 and price.max() < n_price
+    assert qty.min() >= 0 and qty.max() < n_qty
+    assert interval.min() >= 0 and interval.max() < n_interval
+    assert side.min() >= 0 and side.max() < n_side
+
+    token = (
+        price * (n_qty * n_interval * n_side)
+        + qty * (n_interval * n_side)
+        + interval * n_side
+        + side
+    )
+    df.loc[valid_mask, out_col] = pd.array(token.astype(np.int64), dtype="Int64")
+    return df
+
+
 def process_lob_data_real_flow(
     order_post_dir,
     lob_snap_dir,
@@ -100,6 +338,14 @@ def process_lob_data_real_flow(
     selected_stocks,
     filter_bo,
     date_num_str,
+    *,
+    price_bin_num: Optional[int] = None,
+    qty_bin_num: Optional[int] = None,
+    interval_bin_num: Optional[int] = None,
+    n_side: int = 3,
+    side_to_bin: Optional[dict] = None,
+    existing_bin_record_path: Optional[str] = None,
+    return_bin_record: bool = False,
 ):
     import gc
     import numpy as np
@@ -230,6 +476,10 @@ def process_lob_data_real_flow(
     final_result.dropna(subset=["MidPrice"], inplace=True)
     final_result["Price"] = final_result["Price"].astype(float)
     final_result["MidPrice"] = final_result["MidPrice"].astype(float)
+    half_tick = 0.005
+    final_result["Price_Mid_diff"] = np.rint(
+        (final_result["Price"] - final_result["MidPrice"]) / half_tick
+    ).astype(np.int32)
 
     order_transac_col_names = [
         "ChannelNo", "ApplSeqNum", "MDStreamID", "BidApplSeqNum", "OfferApplSeqNum",
@@ -267,7 +517,9 @@ def process_lob_data_real_flow(
     order_transac_expanded["ApplSeqNum"] = pd.to_numeric(order_transac_expanded["ApplSeqNum"], errors="coerce")
 
     print("Matching transaction rows back to posted orders...")
-    price_match_df = final_result[["ChannelNo", "ApplSeqNum", "SecurityID", "Price", "Side"]].copy()
+    price_match_df = final_result[
+        ["ChannelNo", "ApplSeqNum", "SecurityID", "Price", "MidPrice", "Price_Mid_diff", "Side"]
+    ].copy()
     price_match_df = price_match_df.rename(columns={"Side": "OrigSide"})
     for col in ["ChannelNo", "ApplSeqNum", "OrigSide"]:
         price_match_df[col] = pd.to_numeric(price_match_df[col], errors="coerce")
@@ -302,7 +554,7 @@ def process_lob_data_real_flow(
     final_result_for_merge = final_result[
         [
             "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
-            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price"
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price", "MidPrice", "Price_Mid_diff"
         ]
     ].copy()
     final_result_for_merge["ExecType"] = np.nan
@@ -311,7 +563,7 @@ def process_lob_data_real_flow(
     order_transac_expanded = order_transac_expanded[
         [
             "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
-            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price",
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price", "MidPrice", "Price_Mid_diff",
             "ExecType", "OrigSide"
         ]
     ].copy()
@@ -338,7 +590,837 @@ def process_lob_data_real_flow(
 
     final_result_for_merge = final_result_for_merge.dropna(subset=["Side"])
 
+    bin_record = None
+    if price_bin_num is not None and qty_bin_num is not None and interval_bin_num is not None:
+        if side_to_bin is None:
+            side_to_bin = {49: 0, 50: 1, 99: 2}
+
+        fit_sides = set(int(k) for k in side_to_bin.keys())
+        fit_df = final_result_for_merge[final_result_for_merge["Side"].isin(fit_sides)].copy()
+        if fit_df.empty:
+            raise RuntimeError("No rows available for training-compatible bin fitting in real-flow data.")
+
+        bin_record = None
+        if existing_bin_record_path:
+            with open(existing_bin_record_path, "r", encoding="utf-8") as fh:
+                bin_record = json.load(fh)
+
+            final_result_for_merge["price_bin"] = apply_existing_bins(
+                final_result_for_merge,
+                "Price_Mid_diff",
+                bin_record["price_mid_diff"]["bins"],
+            )
+            final_result_for_merge["qty_bin"] = apply_existing_bins(
+                final_result_for_merge,
+                "OrderQty",
+                bin_record["order_qty"]["bins"],
+            )
+            final_result_for_merge["interval_bin"] = apply_existing_bins(
+                final_result_for_merge,
+                "interval_ms",
+                bin_record["interval_ms"]["bins"],
+            )
+            bin_record = dict(bin_record)
+            bin_record["realflow_binning_mode"] = "applied_existing_bins"
+            bin_record["realflow_binning_source"] = existing_bin_record_path
+            bin_record["realflow_fit_side_values"] = sorted(fit_sides)
+        else:
+            bin_record = {
+                "half_tick": float(half_tick),
+                "price_mid_diff": None,
+                "order_qty": None,
+                "interval_ms": None,
+                "realflow_binning_mode": "fit_on_realflow",
+                "realflow_fit_side_values": sorted(fit_sides),
+            }
+
+            price_bins, _, price_dist = build_bin_converter_samp(
+                fit_df,
+                "Price_Mid_diff",
+                num_bins=price_bin_num,
+                return_bins=True,
+                return_distribution=True,
+            )
+            qty_bins, _, qty_dist = build_bin_converter_samp(
+                fit_df,
+                "OrderQty",
+                num_bins=qty_bin_num,
+                return_bins=True,
+                return_distribution=True,
+            )
+            interval_bins, _, interval_dist = build_bin_converter_samp(
+                fit_df,
+                "interval_ms",
+                num_bins=interval_bin_num,
+                return_bins=True,
+                return_distribution=True,
+            )
+
+            final_result_for_merge["price_bin"] = apply_existing_bins(final_result_for_merge, "Price_Mid_diff", price_bins)
+            final_result_for_merge["qty_bin"] = apply_existing_bins(final_result_for_merge, "OrderQty", qty_bins)
+            final_result_for_merge["interval_bin"] = apply_existing_bins(final_result_for_merge, "interval_ms", interval_bins)
+
+            bin_record["price_mid_diff"] = {
+                "field": "Price_Mid_diff",
+                "num_bins": int(price_bin_num),
+                "bins": [float(x) for x in np.asarray(price_bins).tolist()],
+                "unit": "half_ticks",
+                "notes": "Price_Mid_diff is rounded to integer half-ticks before binning.",
+                "bin_value_distributions": price_dist,
+            }
+            bin_record["order_qty"] = {
+                "field": "OrderQty",
+                "num_bins": int(qty_bin_num),
+                "bins": [float(x) for x in np.asarray(qty_bins).tolist()],
+                "unit": "shares/contracts(?)",
+                "notes": "Equal-frequency-ish binning with single-item heavy hitters isolated.",
+                "bin_value_distributions": qty_dist,
+            }
+            bin_record["interval_ms"] = {
+                "field": "interval_ms",
+                "num_bins": int(interval_bin_num),
+                "bins": [float(x) for x in np.asarray(interval_bins).tolist()],
+                "unit": "milliseconds",
+                "notes": "Computed on the unified real-flow stream within each SecurityID.",
+                "bin_value_distributions": interval_dist,
+            }
+
+        final_result_for_merge = make_order_token_id(
+            final_result_for_merge,
+            price_col="price_bin",
+            qty_col="qty_bin",
+            interval_col="interval_bin",
+            side_col="Side",
+            n_price=int(price_bin_num),
+            n_qty=int(qty_bin_num),
+            n_interval=int(interval_bin_num),
+            n_side=int(n_side),
+            side_to_bin=side_to_bin,
+            out_col="order_token",
+            side_bin_col="side_bin",
+            valid_col="tokenizable_event",
+        )
+
     print("Real-flow processing complete!")
+    if return_bin_record:
+        return final_result_for_merge, bin_record
+    return final_result_for_merge
+
+
+def process_lob_data_real_flow_open_anchor(
+    order_post_dir,
+    lob_snap_dir,
+    order_transac_dir,
+    liquidity_mask_dir,
+    selected_stocks,
+    filter_bo,
+    date_num_str,
+    *,
+    anchor_time: str = "09:31:00",
+    price_bin_num: Optional[int] = None,
+    qty_bin_num: Optional[int] = None,
+    interval_bin_num: Optional[int] = None,
+    n_side: int = 3,
+    side_to_bin: Optional[dict] = None,
+    return_bin_record: bool = False,
+):
+    import gc
+    import numpy as np
+    import pandas as pd
+
+    print("Reading Order Post data...")
+    col_names = [
+        "ChannelNo", "ApplSeqNum", "MDStreamID", "SecurityID", "SecurityIDSource",
+        "Price", "OrderQty", "Side", "TransactTime", "OrdType", "LocalTime", "SeqNo", "MISC"
+    ]
+    order_post = pd.read_csv(order_post_dir, header=None, names=col_names)
+    print("Cleaning Order Post data...")
+    order_post = order_post[1:]
+
+    order_post["ApplSeqNum"] = pd.to_numeric(order_post["ApplSeqNum"], errors="coerce").astype(int)
+    order_post["SecurityID"] = order_post["SecurityID"].astype(str).str.zfill(6) + "_XSHE"
+
+    if len(selected_stocks) > 0:
+        order_post = order_post[order_post["SecurityID"].isin(selected_stocks)]
+
+    print("Reading Liquidity Mask data...")
+    liquidity_mask = pd.read_csv(liquidity_mask_dir)
+    liquidity_mask_slice = liquidity_mask[liquidity_mask["Unnamed: 0"] == int(date_num_str)].reset_index()
+
+    print("Unpivoting Liquidity Mask data...")
+    melted = liquidity_mask_slice.melt(
+        id_vars=["index"],
+        var_name="SecurityID",
+        value_name="is_high_liquidity",
+    )
+    result_df = melted[["SecurityID", "is_high_liquidity"]][1:]
+
+    print("Merging DataFrames...")
+    merged_order_post = order_post.merge(result_df, how="left", on="SecurityID")
+    print("Merge complete!")
+
+    merged_order_post["TransactDT"] = pd.to_datetime(
+        merged_order_post["TransactTime"].str.slice(0, 8), format="%H:%M:%S"
+    )
+    merged_order_post["TransactDT_MS"] = pd.to_datetime(
+        merged_order_post["TransactTime"], format="%H:%M:%S.%f"
+    )
+
+    print("Filtering merged data for high liquidity...")
+    merged_order_post_filtered = merged_order_post[merged_order_post["is_high_liquidity"] == 1]
+    merged_order_post_filtered = merged_order_post_filtered.sort_values(
+        ["SecurityID", "TransactDT_MS"], kind="mergesort"
+    )
+
+    merged_order_post_filtered["TransactDT_SEC"] = merged_order_post_filtered["TransactDT_MS"].dt.floor("S")
+
+    if filter_bo:
+        print("Filtering out pre-market data (before 09:30:00)...")
+        merged_order_post_filtered = merged_order_post_filtered[
+            merged_order_post_filtered["TransactDT_SEC"].dt.time > pd.to_datetime("09:30:00").time()
+        ]
+
+    int_cols = ["ChannelNo", "ApplSeqNum", "Side", "OrderQty", "OrdType"]
+    for col in int_cols:
+        merged_order_post_filtered[col] = pd.to_numeric(merged_order_post_filtered[col], errors="coerce")
+
+    print("Filtering for specific OrdType...")
+    merged_order_post_filtered = merged_order_post_filtered[merged_order_post_filtered["OrdType"] == 50].copy()
+    merged_order_post_filtered["Price"] = pd.to_numeric(merged_order_post_filtered["Price"], errors="coerce")
+    merged_order_post_filtered = merged_order_post_filtered.dropna(subset=["Price"]).copy()
+
+    print(f"Looking up fixed L1 bid anchors at {anchor_time}...")
+    anchor_map = get_l1_bid_anchor_by_time(lob_snap_dir, anchor_time, selected_stocks=selected_stocks)
+
+    final_result = merged_order_post_filtered.copy()
+    final_result["OpenAnchorBidPrice"] = final_result["SecurityID"].map(
+        {k: v["anchor_bid_price"] for k, v in anchor_map.items()}
+    )
+    final_result["OpenAnchorBidTick"] = final_result["SecurityID"].map(
+        {k: v["anchor_bid_tick"] for k, v in anchor_map.items()}
+    )
+    final_result = final_result.dropna(subset=["OpenAnchorBidPrice", "OpenAnchorBidTick"]).copy()
+    final_result["Price_OpenBid_diff"] = np.rint(
+        (final_result["Price"].astype(float) - final_result["OpenAnchorBidPrice"].astype(float)) / 0.01
+    ).astype(np.int32)
+
+    del merged_order_post, merged_order_post_filtered, order_post
+    gc.collect()
+
+    order_transac_col_names = [
+        "ChannelNo", "ApplSeqNum", "MDStreamID", "BidApplSeqNum", "OfferApplSeqNum",
+        "SecurityID", "SecurityIDSource", "LastPx", "LastQty", "ExecType",
+        "TransactTime", "LocalTime", "SeqNo", "MISC"
+    ]
+    print("Reading Order Transaction data...")
+    order_transac = pd.read_csv(order_transac_dir, header=None, names=order_transac_col_names)
+    order_transac = order_transac[1:]
+    order_transac["SecurityID"] = order_transac["SecurityID"].astype(str).str.zfill(6) + "_XSHE"
+
+    if len(selected_stocks) > 0:
+        order_transac = order_transac[order_transac["SecurityID"].isin(selected_stocks)]
+
+    for col in ["ExecType", "BidApplSeqNum", "OfferApplSeqNum", "ChannelNo"]:
+        order_transac[col] = pd.to_numeric(order_transac[col], errors="coerce")
+
+    order_transac = order_transac[order_transac["ExecType"].isin([52, 70])].copy()
+    gc.collect()
+
+    print("Expanding transaction rows for bid/offer order matches...")
+    bid_transac = order_transac.loc[
+        order_transac["BidApplSeqNum"].notna() & (order_transac["BidApplSeqNum"] != 0),
+        ["ChannelNo", "SecurityID", "LastQty", "TransactTime", "ExecType", "BidApplSeqNum"],
+    ].rename(columns={"BidApplSeqNum": "ApplSeqNum"})
+    offer_transac = order_transac.loc[
+        order_transac["OfferApplSeqNum"].notna() & (order_transac["OfferApplSeqNum"] != 0),
+        ["ChannelNo", "SecurityID", "LastQty", "TransactTime", "ExecType", "OfferApplSeqNum"],
+    ].rename(columns={"OfferApplSeqNum": "ApplSeqNum"})
+
+    order_transac_expanded = pd.concat([bid_transac, offer_transac], ignore_index=True)
+    order_transac_expanded["ApplSeqNum"] = pd.to_numeric(order_transac_expanded["ApplSeqNum"], errors="coerce")
+
+    print("Matching transaction rows back to posted orders...")
+    price_match_df = final_result[
+        ["ChannelNo", "ApplSeqNum", "SecurityID", "Price", "Price_OpenBid_diff", "OpenAnchorBidPrice", "OpenAnchorBidTick", "Side"]
+    ].copy()
+    price_match_df = price_match_df.rename(columns={"Side": "OrigSide"})
+    for col in ["ChannelNo", "ApplSeqNum", "OrigSide"]:
+        price_match_df[col] = pd.to_numeric(price_match_df[col], errors="coerce")
+    price_match_df["Price"] = pd.to_numeric(price_match_df["Price"], errors="coerce")
+
+    order_transac_expanded = order_transac_expanded.merge(
+        price_match_df,
+        how="left",
+        on=["ChannelNo", "ApplSeqNum", "SecurityID"],
+    )
+    order_transac_expanded.dropna(subset=["Price"], inplace=True)
+
+    order_transac_expanded["TransactDT"] = pd.to_datetime(
+        order_transac_expanded["TransactTime"].str.slice(0, 8), format="%H:%M:%S"
+    )
+    order_transac_expanded["TransactDT_MS"] = pd.to_datetime(
+        order_transac_expanded["TransactTime"], format="%H:%M:%S.%f"
+    )
+    order_transac_expanded["TransactDT_SEC"] = order_transac_expanded["TransactDT_MS"].dt.floor("S")
+    order_transac_expanded = order_transac_expanded.rename(columns={"LastQty": "OrderQty"})
+    order_transac_expanded = order_transac_expanded.drop(columns=["TransactTime"])
+
+    order_transac_expanded["Side"] = np.where(
+        order_transac_expanded["ExecType"] == 52,
+        99,
+        np.where(order_transac_expanded["ExecType"] == 70, 129, np.nan),
+    )
+
+    final_result_for_merge = final_result[
+        [
+            "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price", "Price_OpenBid_diff",
+            "OpenAnchorBidPrice", "OpenAnchorBidTick"
+        ]
+    ].copy()
+    final_result_for_merge["ExecType"] = np.nan
+    final_result_for_merge["OrigSide"] = final_result_for_merge["Side"]
+
+    order_transac_expanded = order_transac_expanded[
+        [
+            "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price", "Price_OpenBid_diff",
+            "OpenAnchorBidPrice", "OpenAnchorBidTick", "ExecType", "OrigSide"
+        ]
+    ].copy()
+
+    final_result_for_merge = pd.concat([final_result_for_merge, order_transac_expanded], ignore_index=True)
+    final_result_for_merge = (
+        final_result_for_merge
+        .sort_values(["SecurityID", "TransactDT_MS", "ChannelNo", "ApplSeqNum"], kind="mergesort")
+        .reset_index(drop=True)
+    )
+    final_result_for_merge = final_result_for_merge[
+        (final_result_for_merge["TransactDT"].dt.time >= pd.to_datetime("09:25").time())
+        & (final_result_for_merge["TransactDT"].dt.time <= pd.to_datetime("15:00").time())
+    ].reset_index(drop=True)
+
+    final_result_for_merge["interval_ms"] = (
+        final_result_for_merge.groupby("SecurityID")["TransactDT_MS"]
+        .diff()
+        .dt.total_seconds() * 1000
+    )
+    final_result_for_merge["interval_ms"] = final_result_for_merge["interval_ms"].fillna(0).astype(int)
+    final_result_for_merge = final_result_for_merge.dropna(subset=["Side"]) 
+
+    bin_record = None
+    if price_bin_num is not None and qty_bin_num is not None and interval_bin_num is not None:
+        if side_to_bin is None:
+            side_to_bin = {49: 0, 50: 1, 99: 2}
+
+        fit_sides = set(int(k) for k in side_to_bin.keys())
+        fit_df = final_result_for_merge[final_result_for_merge["Side"].isin(fit_sides)].copy()
+        if fit_df.empty:
+            raise RuntimeError("No rows available for open-anchor bin fitting in real-flow data.")
+
+        price_bins, _, price_dist = build_bin_converter_samp(
+            fit_df,
+            "Price_OpenBid_diff",
+            num_bins=price_bin_num,
+            return_bins=True,
+            return_distribution=True,
+        )
+        qty_bins, _, qty_dist = build_bin_converter_samp(
+            fit_df,
+            "OrderQty",
+            num_bins=qty_bin_num,
+            return_bins=True,
+            return_distribution=True,
+        )
+        interval_bins, _, interval_dist = build_bin_converter_samp(
+            fit_df,
+            "interval_ms",
+            num_bins=interval_bin_num,
+            return_bins=True,
+            return_distribution=True,
+        )
+
+        final_result_for_merge["price_bin"] = apply_existing_bins(final_result_for_merge, "Price_OpenBid_diff", price_bins)
+        final_result_for_merge["qty_bin"] = apply_existing_bins(final_result_for_merge, "OrderQty", qty_bins)
+        final_result_for_merge["interval_bin"] = apply_existing_bins(final_result_for_merge, "interval_ms", interval_bins)
+
+        anchor_metadata = {
+            stock: {
+                "anchor_time": meta["anchor_time"],
+                "anchor_bid_price": float(meta["anchor_bid_price"]),
+                "anchor_bid_tick": int(meta["anchor_bid_tick"]),
+                "anchor_ask_price": float(meta["anchor_ask_price"]),
+                "anchor_update_time": meta["anchor_update_time"],
+            }
+            for stock, meta in anchor_map.items()
+        }
+
+        bin_record = {
+            "tick_size": 0.01,
+            "price_anchor_mode": "market_open_best_bid_fixed",
+            "price_anchor_time": anchor_time,
+            "price_anchor_by_stock": anchor_metadata,
+            "price_mid_diff": {
+                "field": "Price_OpenBid_diff",
+                "num_bins": int(price_bin_num),
+                "bins": [float(x) for x in np.asarray(price_bins).tolist()],
+                "unit": "full_ticks_from_open_bid_anchor",
+                "notes": "Price_OpenBid_diff is rounded to integer full ticks from the fixed 09:31:00 L1 bid anchor.",
+                "anchor_mode": "market_open_best_bid_fixed",
+                "bin_value_distributions": price_dist,
+            },
+            "order_qty": {
+                "field": "OrderQty",
+                "num_bins": int(qty_bin_num),
+                "bins": [float(x) for x in np.asarray(qty_bins).tolist()],
+                "unit": "shares/contracts(?)",
+                "notes": "Equal-frequency-ish binning with single-item heavy hitters isolated.",
+                "bin_value_distributions": qty_dist,
+            },
+            "interval_ms": {
+                "field": "interval_ms",
+                "num_bins": int(interval_bin_num),
+                "bins": [float(x) for x in np.asarray(interval_bins).tolist()],
+                "unit": "milliseconds",
+                "notes": "Computed on the unified real-flow stream within each SecurityID.",
+                "bin_value_distributions": interval_dist,
+            },
+            "realflow_binning_mode": "fit_on_realflow_open_anchor",
+            "realflow_fit_side_values": sorted(fit_sides),
+        }
+
+        final_result_for_merge = make_order_token_id(
+            final_result_for_merge,
+            price_col="price_bin",
+            qty_col="qty_bin",
+            interval_col="interval_bin",
+            side_col="Side",
+            n_price=int(price_bin_num),
+            n_qty=int(qty_bin_num),
+            n_interval=int(interval_bin_num),
+            n_side=int(n_side),
+            side_to_bin=side_to_bin,
+            out_col="order_token",
+            side_bin_col="side_bin",
+            valid_col="tokenizable_event",
+        )
+
+    print("Real-flow open-anchor processing complete!")
+    if return_bin_record:
+        return final_result_for_merge, bin_record
+    return final_result_for_merge
+
+
+def process_lob_data_real_flow_open_anchor_txn_complete(
+    order_post_dir,
+    lob_snap_dir,
+    order_transac_dir,
+    liquidity_mask_dir,
+    selected_stocks,
+    filter_bo,
+    date_num_str,
+    *,
+    anchor_time: str = "09:31:00",
+    price_bin_num: Optional[int] = None,
+    qty_bin_num: Optional[int] = None,
+    interval_bin_num: Optional[int] = None,
+    n_side: int = 5,
+    side_to_bin: Optional[dict] = None,
+    return_bin_record: bool = False,
+    split_cancel_sides: bool = False,
+    external_fit_dataframe=None,
+):
+    import gc
+    import numpy as np
+    import pandas as pd
+
+    print("Reading Order Post data...")
+    col_names = [
+        "ChannelNo", "ApplSeqNum", "MDStreamID", "SecurityID", "SecurityIDSource",
+        "Price", "OrderQty", "Side", "TransactTime", "OrdType", "LocalTime", "SeqNo", "MISC"
+    ]
+    order_post = pd.read_csv(order_post_dir, header=None, names=col_names)
+    print("Cleaning Order Post data...")
+    order_post = order_post[1:]
+
+    order_post["ApplSeqNum"] = pd.to_numeric(order_post["ApplSeqNum"], errors="coerce").astype(int)
+    order_post["SecurityID"] = order_post["SecurityID"].astype(str).str.zfill(6) + "_XSHE"
+
+    if len(selected_stocks) > 0:
+        order_post = order_post[order_post["SecurityID"].isin(selected_stocks)]
+
+    print("Reading Liquidity Mask data...")
+    liquidity_mask = pd.read_csv(liquidity_mask_dir)
+    liquidity_mask_slice = liquidity_mask[liquidity_mask["Unnamed: 0"] == int(date_num_str)].reset_index()
+
+    print("Unpivoting Liquidity Mask data...")
+    melted = liquidity_mask_slice.melt(
+        id_vars=["index"],
+        var_name="SecurityID",
+        value_name="is_high_liquidity",
+    )
+    result_df = melted[["SecurityID", "is_high_liquidity"]][1:]
+
+    print("Merging DataFrames...")
+    merged_order_post = order_post.merge(result_df, how="left", on="SecurityID")
+    print("Merge complete!")
+
+    merged_order_post["TransactDT"] = pd.to_datetime(
+        merged_order_post["TransactTime"].str.slice(0, 8), format="%H:%M:%S"
+    )
+    merged_order_post["TransactDT_MS"] = pd.to_datetime(
+        merged_order_post["TransactTime"], format="%H:%M:%S.%f"
+    )
+
+    print("Filtering merged data for high liquidity...")
+    merged_order_post_filtered = merged_order_post[merged_order_post["is_high_liquidity"] == 1]
+    merged_order_post_filtered = merged_order_post_filtered.sort_values(
+        ["SecurityID", "TransactDT_MS"], kind="mergesort"
+    )
+
+    merged_order_post_filtered["TransactDT_SEC"] = merged_order_post_filtered["TransactDT_MS"].dt.floor("S")
+
+    if filter_bo:
+        print("Filtering out pre-market data (before 09:30:00)...")
+        merged_order_post_filtered = merged_order_post_filtered[
+            merged_order_post_filtered["TransactDT_SEC"].dt.time > pd.to_datetime("09:30:00").time()
+        ]
+
+    int_cols = ["ChannelNo", "ApplSeqNum", "Side", "OrderQty", "OrdType"]
+    for col in int_cols:
+        merged_order_post_filtered[col] = pd.to_numeric(merged_order_post_filtered[col], errors="coerce")
+
+    print("Filtering for specific OrdType...")
+    merged_order_post_filtered = merged_order_post_filtered[merged_order_post_filtered["OrdType"] == 50].copy()
+    merged_order_post_filtered["Price"] = pd.to_numeric(merged_order_post_filtered["Price"], errors="coerce")
+    merged_order_post_filtered = merged_order_post_filtered.dropna(subset=["Price"]).copy()
+
+    print(f"Looking up fixed L1 bid anchors at {anchor_time}...")
+    anchor_map = get_l1_bid_anchor_by_time(lob_snap_dir, anchor_time, selected_stocks=selected_stocks)
+
+    final_result = merged_order_post_filtered.copy()
+    final_result["OpenAnchorBidPrice"] = final_result["SecurityID"].map(
+        {k: v["anchor_bid_price"] for k, v in anchor_map.items()}
+    )
+    final_result["OpenAnchorBidTick"] = final_result["SecurityID"].map(
+        {k: v["anchor_bid_tick"] for k, v in anchor_map.items()}
+    )
+    final_result = final_result.dropna(subset=["OpenAnchorBidPrice", "OpenAnchorBidTick"]).copy()
+    final_result["Price_OpenBid_diff"] = np.rint(
+        (final_result["Price"].astype(float) - final_result["OpenAnchorBidPrice"].astype(float)) / 0.01
+    ).astype(np.int32)
+
+    del merged_order_post, merged_order_post_filtered, order_post
+    gc.collect()
+
+    order_transac_col_names = [
+        "ChannelNo", "ApplSeqNum", "MDStreamID", "BidApplSeqNum", "OfferApplSeqNum",
+        "SecurityID", "SecurityIDSource", "LastPx", "LastQty", "ExecType",
+        "TransactTime", "LocalTime", "SeqNo", "MISC"
+    ]
+    print("Reading Order Transaction data...")
+    order_transac = pd.read_csv(order_transac_dir, header=None, names=order_transac_col_names)
+    order_transac = order_transac[1:]
+    order_transac["SecurityID"] = order_transac["SecurityID"].astype(str).str.zfill(6) + "_XSHE"
+
+    if len(selected_stocks) > 0:
+        order_transac = order_transac[order_transac["SecurityID"].isin(selected_stocks)]
+
+    for col in ["ExecType", "BidApplSeqNum", "OfferApplSeqNum", "ChannelNo"]:
+        order_transac[col] = pd.to_numeric(order_transac[col], errors="coerce")
+
+    order_transac = order_transac[order_transac["ExecType"].isin([52, 70])].copy()
+    gc.collect()
+
+    print("Expanding transaction rows for bid/offer order matches...")
+    bid_transac = order_transac.loc[
+        order_transac["BidApplSeqNum"].notna() & (order_transac["BidApplSeqNum"] != 0),
+        ["ChannelNo", "SecurityID", "LastQty", "TransactTime", "ExecType", "BidApplSeqNum"],
+    ].rename(columns={"BidApplSeqNum": "ApplSeqNum"})
+    offer_transac = order_transac.loc[
+        order_transac["OfferApplSeqNum"].notna() & (order_transac["OfferApplSeqNum"] != 0),
+        ["ChannelNo", "SecurityID", "LastQty", "TransactTime", "ExecType", "OfferApplSeqNum"],
+    ].rename(columns={"OfferApplSeqNum": "ApplSeqNum"})
+
+    order_transac_expanded = pd.concat([bid_transac, offer_transac], ignore_index=True)
+    order_transac_expanded["ApplSeqNum"] = pd.to_numeric(order_transac_expanded["ApplSeqNum"], errors="coerce")
+
+    print("Matching transaction rows back to posted orders...")
+    price_match_df = final_result[
+        ["ChannelNo", "ApplSeqNum", "SecurityID", "Price", "Price_OpenBid_diff", "OpenAnchorBidPrice", "OpenAnchorBidTick", "Side"]
+    ].copy()
+    price_match_df = price_match_df.rename(columns={"Side": "OrigSide"})
+    for col in ["ChannelNo", "ApplSeqNum", "OrigSide"]:
+        price_match_df[col] = pd.to_numeric(price_match_df[col], errors="coerce")
+    price_match_df["Price"] = pd.to_numeric(price_match_df["Price"], errors="coerce")
+
+    order_transac_expanded = order_transac_expanded.merge(
+        price_match_df,
+        how="left",
+        on=["ChannelNo", "ApplSeqNum", "SecurityID"],
+    )
+    order_transac_expanded.dropna(subset=["Price"], inplace=True)
+
+    order_transac_expanded["TransactDT"] = pd.to_datetime(
+        order_transac_expanded["TransactTime"].str.slice(0, 8), format="%H:%M:%S"
+    )
+    order_transac_expanded["TransactDT_MS"] = pd.to_datetime(
+        order_transac_expanded["TransactTime"], format="%H:%M:%S.%f"
+    )
+    order_transac_expanded["TransactDT_SEC"] = order_transac_expanded["TransactDT_MS"].dt.floor("S")
+    order_transac_expanded = order_transac_expanded.rename(columns={"LastQty": "OrderQty"})
+    order_transac_expanded = order_transac_expanded.drop(columns=["TransactTime"])
+
+    order_transac_expanded["EventSemantic"] = np.where(
+        order_transac_expanded["ExecType"] == 52,
+        "cancel",
+        np.where(order_transac_expanded["ExecType"] == 70, "transaction_complete", None),
+    )
+    order_transac_expanded["Side"] = np.where(
+        order_transac_expanded["ExecType"] == 52,
+        99,
+        np.where(
+            order_transac_expanded["OrigSide"] == 49,
+            129,
+            np.where(order_transac_expanded["OrigSide"] == 50, 130, np.nan),
+        ),
+    )
+
+    immediate_exec = order_transac_expanded[
+        order_transac_expanded["ExecType"] == 70
+    ][["ChannelNo", "ApplSeqNum", "SecurityID", "TransactDT_MS", "OrderQty"]].copy()
+    immediate_exec = (
+        immediate_exec
+        .groupby(["ChannelNo", "ApplSeqNum", "SecurityID", "TransactDT_MS"], as_index=False)["OrderQty"]
+        .sum()
+        .rename(columns={"OrderQty": "ImmediateExecQty"})
+    )
+
+    final_result["PostQtyOriginal"] = final_result["OrderQty"].astype(float)
+    final_result = final_result.merge(
+        immediate_exec,
+        how="left",
+        on=["ChannelNo", "ApplSeqNum", "SecurityID", "TransactDT_MS"],
+    )
+    final_result["ImmediateExecQty"] = final_result["ImmediateExecQty"].fillna(0)
+    final_result["ImmediateExecQty"] = np.minimum(
+        final_result["ImmediateExecQty"].astype(float),
+        final_result["PostQtyOriginal"].astype(float),
+    )
+    final_result["ResidualPostQty"] = final_result["PostQtyOriginal"] - final_result["ImmediateExecQty"]
+    final_result["ImmediateAggressivePost"] = final_result["ImmediateExecQty"] > 0
+    final_result["PassiveResidualPosted"] = final_result["ResidualPostQty"] > 0
+    final_result.loc[final_result["PassiveResidualPosted"], "OrderQty"] = final_result.loc[
+        final_result["PassiveResidualPosted"], "ResidualPostQty"
+    ].astype(int)
+    final_result["EventSemantic"] = "post"
+
+    post_rows = final_result[final_result["PassiveResidualPosted"]].copy()
+    post_rows["ExecType"] = np.nan
+    post_rows["OrigSide"] = post_rows["Side"]
+
+    final_result_for_merge = post_rows[
+        [
+            "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price", "Price_OpenBid_diff",
+            "OpenAnchorBidPrice", "OpenAnchorBidTick", "ExecType", "OrigSide",
+            "EventSemantic", "PostQtyOriginal", "ImmediateExecQty", "ResidualPostQty",
+            "ImmediateAggressivePost", "PassiveResidualPosted"
+        ]
+    ].copy()
+
+    order_transac_expanded["PostQtyOriginal"] = np.nan
+    order_transac_expanded["ImmediateExecQty"] = np.nan
+    order_transac_expanded["ResidualPostQty"] = np.nan
+    order_transac_expanded["ImmediateAggressivePost"] = False
+    order_transac_expanded["PassiveResidualPosted"] = False
+    order_transac_expanded = order_transac_expanded[
+        [
+            "ChannelNo", "ApplSeqNum", "SecurityID", "OrderQty", "Side",
+            "TransactDT", "TransactDT_MS", "TransactDT_SEC", "Price", "Price_OpenBid_diff",
+            "OpenAnchorBidPrice", "OpenAnchorBidTick", "ExecType", "OrigSide",
+            "EventSemantic", "PostQtyOriginal", "ImmediateExecQty", "ResidualPostQty",
+            "ImmediateAggressivePost", "PassiveResidualPosted"
+        ]
+    ].copy()
+
+    final_result_for_merge = pd.concat([final_result_for_merge, order_transac_expanded], ignore_index=True)
+    final_result_for_merge = (
+        final_result_for_merge
+        .sort_values(["SecurityID", "TransactDT_MS", "ChannelNo", "ApplSeqNum"], kind="mergesort")
+        .reset_index(drop=True)
+    )
+    final_result_for_merge = final_result_for_merge[
+        (final_result_for_merge["TransactDT"].dt.time >= pd.to_datetime("09:25").time())
+        & (final_result_for_merge["TransactDT"].dt.time <= pd.to_datetime("15:00").time())
+    ].reset_index(drop=True)
+
+    final_result_for_merge["interval_ms"] = (
+        final_result_for_merge.groupby("SecurityID")["TransactDT_MS"]
+        .diff()
+        .dt.total_seconds() * 1000
+    )
+    final_result_for_merge["interval_ms"] = final_result_for_merge["interval_ms"].fillna(0).astype(int)
+    final_result_for_merge = final_result_for_merge.dropna(subset=["Side"])
+
+    if split_cancel_sides:
+        if int(n_side) != 6:
+            raise ValueError("split_cancel_sides=True requires n_side=6")
+        final_result_for_merge = final_result_for_merge.copy()
+        side_series = pd.to_numeric(final_result_for_merge["Side"], errors="coerce")
+        orig_series = pd.to_numeric(final_result_for_merge["OrigSide"], errors="coerce")
+        m_cancel = side_series == 99
+        final_result_for_merge.loc[m_cancel & (orig_series == 49), "Side"] = 97
+        final_result_for_merge.loc[m_cancel & (orig_series == 50), "Side"] = 98
+
+    bin_record = None
+    if price_bin_num is not None and qty_bin_num is not None and interval_bin_num is not None:
+        if side_to_bin is None:
+            if split_cancel_sides:
+                side_to_bin = {49: 0, 50: 1, 97: 2, 98: 3, 129: 4, 130: 5}
+            else:
+                side_to_bin = {49: 0, 50: 1, 99: 2, 129: 3, 130: 4}
+
+        fit_sides = set(int(k) for k in side_to_bin.keys())
+        if external_fit_dataframe is not None:
+            fit_df = external_fit_dataframe[external_fit_dataframe["Side"].isin(fit_sides)].copy()
+            _req = {"Price_OpenBid_diff", "OrderQty", "interval_ms", "Side"}
+            _miss = _req - set(external_fit_dataframe.columns)
+            if _miss:
+                raise ValueError(f"external_fit_dataframe missing columns {_miss}")
+        else:
+            fit_df = final_result_for_merge[final_result_for_merge["Side"].isin(fit_sides)].copy()
+        if fit_df.empty:
+            raise RuntimeError("No rows available for open-anchor txn-complete bin fitting in real-flow data.")
+
+        price_bins, _, price_dist = build_bin_converter_samp(
+            fit_df,
+            "Price_OpenBid_diff",
+            num_bins=price_bin_num,
+            return_bins=True,
+            return_distribution=True,
+        )
+        qty_bins, _, qty_dist = build_bin_converter_samp(
+            fit_df,
+            "OrderQty",
+            num_bins=qty_bin_num,
+            return_bins=True,
+            return_distribution=True,
+        )
+        interval_bins, _, interval_dist = build_bin_converter_samp(
+            fit_df,
+            "interval_ms",
+            num_bins=interval_bin_num,
+            return_bins=True,
+            return_distribution=True,
+        )
+
+        final_result_for_merge["price_bin"] = apply_existing_bins(final_result_for_merge, "Price_OpenBid_diff", price_bins)
+        final_result_for_merge["qty_bin"] = apply_existing_bins(final_result_for_merge, "OrderQty", qty_bins)
+        final_result_for_merge["interval_bin"] = apply_existing_bins(final_result_for_merge, "interval_ms", interval_bins)
+
+        anchor_metadata = {
+            stock: {
+                "anchor_time": meta["anchor_time"],
+                "anchor_bid_price": float(meta["anchor_bid_price"]),
+                "anchor_bid_tick": int(meta["anchor_bid_tick"]),
+                "anchor_ask_price": float(meta["anchor_ask_price"]),
+                "anchor_update_time": meta["anchor_update_time"],
+            }
+            for stock, meta in anchor_map.items()
+        }
+
+        immediate_aggressive_stats = (
+            final_result[["SecurityID", "ImmediateAggressivePost", "PassiveResidualPosted"]]
+            .groupby("SecurityID")
+            .agg(
+                immediate_aggressive_posts=("ImmediateAggressivePost", "sum"),
+                residual_post_rows=("PassiveResidualPosted", "sum"),
+            )
+            .reset_index()
+        )
+
+        bin_record = {
+            "tick_size": 0.01,
+            "price_anchor_mode": "market_open_best_bid_fixed",
+            "price_anchor_time": anchor_time,
+            "price_anchor_by_stock": anchor_metadata,
+            "price_mid_diff": {
+                "field": "Price_OpenBid_diff",
+                "num_bins": int(price_bin_num),
+                "bins": [float(x) for x in np.asarray(price_bins).tolist()],
+                "unit": "full_ticks_from_open_bid_anchor",
+                "notes": "Price_OpenBid_diff is rounded to integer full ticks from the fixed 09:31:00 L1 bid anchor.",
+                "anchor_mode": "market_open_best_bid_fixed",
+                "bin_value_distributions": price_dist,
+            },
+            "order_qty": {
+                "field": "OrderQty",
+                "num_bins": int(qty_bin_num),
+                "bins": [float(x) for x in np.asarray(qty_bins).tolist()],
+                "unit": "shares/contracts(?)",
+                "notes": "Equal-frequency-ish binning with single-item heavy hitters isolated.",
+                "bin_value_distributions": qty_dist,
+            },
+            "interval_ms": {
+                "field": "interval_ms",
+                "num_bins": int(interval_bin_num),
+                "bins": [float(x) for x in np.asarray(interval_bins).tolist()],
+                "unit": "milliseconds",
+                "notes": "Computed on the unified real-flow stream within each SecurityID.",
+                "bin_value_distributions": interval_dist,
+            },
+            "realflow_binning_mode": "fit_on_realflow_open_anchor_txn_complete",
+            "realflow_fit_side_values": sorted(fit_sides),
+            "split_cancel_sides": bool(split_cancel_sides),
+            "token_side_mapping": (
+                {
+                    "49": "bid_post",
+                    "50": "ask_post",
+                    "97": "cancel_resting_bid",
+                    "98": "cancel_resting_ask",
+                    "129": "transaction_complete_resting_bid",
+                    "130": "transaction_complete_resting_ask",
+                }
+                if split_cancel_sides
+                else {
+                    "49": "bid_post",
+                    "50": "ask_post",
+                    "99": "cancel",
+                    "129": "transaction_complete_resting_bid",
+                    "130": "transaction_complete_resting_ask",
+                }
+            ),
+            "transaction_complete_mode": "split_by_resting_side",
+            "immediate_aggressive_order_rule": (
+                "Orders with execution rows sharing the same ChannelNo/ApplSeqNum/SecurityID/TransactDT_MS have "
+                "their immediate execution quantity removed from the standalone post token. Only residual passive "
+                "quantity remains as a post token; the removed quantity is represented by transaction_complete rows."
+            ),
+            "immediate_aggressive_stats_by_stock": immediate_aggressive_stats.to_dict(orient="records"),
+            "pooled_bin_fit_from_external_frame": bool(external_fit_dataframe is not None),
+            "pooled_bin_fit_row_count": int(len(fit_df)),
+        }
+
+        final_result_for_merge = make_order_token_id(
+            final_result_for_merge,
+            price_col="price_bin",
+            qty_col="qty_bin",
+            interval_col="interval_bin",
+            side_col="Side",
+            n_price=int(price_bin_num),
+            n_qty=int(qty_bin_num),
+            n_interval=int(interval_bin_num),
+            n_side=int(n_side),
+            side_to_bin=side_to_bin,
+            out_col="order_token",
+            side_bin_col="side_bin",
+            valid_col="tokenizable_event",
+        )
+
+    print("Real-flow open-anchor txn-complete processing complete!")
+    if return_bin_record:
+        return final_result_for_merge, bin_record
     return final_result_for_merge
 
 # ============================================================
@@ -641,10 +1723,31 @@ class OrderBook:
 # MODELS
 # ============================================================
 
+def _load_gpt2_backbone(gpt2_name: str = "gpt2"):
+    cache_dir = os.environ.get("HF_HOME", None)
+    try:
+        return GPT2Model.from_pretrained(
+            gpt2_name,
+            local_files_only=True,
+            cache_dir=cache_dir,
+        )
+    except Exception as local_exc:
+        try:
+            return GPT2Model.from_pretrained(
+                gpt2_name,
+                cache_dir=cache_dir,
+            )
+        except Exception as remote_exc:
+            raise RuntimeError(
+                "Failed to load GPT-2 backbone. Tried local Hugging Face cache first, "
+                "then online download. If running on a cluster without stable HTTPS/certificates, "
+                "make sure 'gpt2' is cached locally and use the local-only path."
+            ) from remote_exc
+
 class OrderGPT2NoAnchor(nn.Module):
     def __init__(self, vocab_size: int, gpt2_name: str = "gpt2"):
         super().__init__()
-        self.gpt2 = GPT2Model.from_pretrained(gpt2_name)
+        self.gpt2 = _load_gpt2_backbone(gpt2_name)
         hidden_size = self.gpt2.config.hidden_size
         self.order_embedding = nn.Embedding(vocab_size, hidden_size)
         self.head = nn.Linear(hidden_size, vocab_size)
@@ -660,7 +1763,7 @@ class OrderGPT2NoAnchor(nn.Module):
 class OrderGPT2Anchor(nn.Module):
     def __init__(self, vocab_size: int, anchor_count: int, gpt2_name: str = "gpt2"):
         super().__init__()
-        self.gpt2 = GPT2Model.from_pretrained(gpt2_name)
+        self.gpt2 = _load_gpt2_backbone(gpt2_name)
         hidden_size = self.gpt2.config.hidden_size
         self.order_embedding = nn.Embedding(vocab_size, hidden_size)
         self.dynamic_anchors = nn.Parameter(torch.randn(anchor_count, hidden_size) * 0.02)
@@ -828,6 +1931,55 @@ def decode_event_from_token(
     return ev, int(dt_ms)
 
 
+def decode_event_from_token_open_anchor(
+    token_id: int,
+    binpack: dict,
+    anchor_price: float,
+    cur_t_ms: int,
+    *,
+    price_bin_num: int,
+    qty_bin_num: int,
+    interval_bin_num: int,
+    n_side: int,
+    decode_method: str = "sample",
+    rng=None,
+):
+    pbin, qbin, ibin, sbin = decode_order_token(
+        token_id, price_bin_num, qty_bin_num, interval_bin_num, n_side
+    )
+
+    price_edges = binpack["price_edges"]
+    qty_edges = binpack["qty_edges"]
+    interval_edges = binpack["interval_edges"]
+
+    price_dist = binpack["price_dist"]
+    qty_dist = binpack["qty_dist"]
+    interval_dist = binpack["interval_dist"]
+
+    price_ticks_from_anchor = _decode_bin_value(
+        price_dist, price_edges, pbin, method=decode_method, rng=rng, min_val=None
+    )
+    qty = _decode_bin_value(qty_dist, qty_edges, qbin, method=decode_method, rng=rng, min_val=1)
+    dt_ms = _decode_bin_value(interval_dist, interval_edges, ibin, method=decode_method, rng=rng, min_val=0)
+
+    price_ticks_from_anchor = int(np.rint(price_ticks_from_anchor))
+    qty = int(np.rint(qty))
+    dt_ms = int(np.rint(dt_ms))
+
+    tick_size = float(binpack.get("raw", {}).get("tick_size", 0.01))
+    abs_price = float(anchor_price + price_ticks_from_anchor * tick_size)
+    abs_price = float(np.round(abs_price / tick_size) * tick_size)
+
+    ev = EventDecoded(
+        t_ms=int(cur_t_ms + dt_ms),
+        side_bin=int(sbin),
+        ticks_from_mid=int(price_ticks_from_anchor),
+        qty=int(qty),
+        abs_price=float(abs_price),
+    )
+    return ev, int(dt_ms)
+
+
 # ============================================================
 # BOOK APPLY
 # ============================================================
@@ -883,6 +2035,238 @@ def apply_event_to_book(book: OrderBook, ev: EventDecoded):
         out["action"] = "CANCEL0_EMPTY"
         out["removed"] = 0
     return out
+
+
+def apply_event_to_book_open_anchor(book: OrderBook, ev: EventDecoded):
+    out = {
+        "event_kind": None,
+        "action": None,
+        "fills": [],
+        "removed": 0,
+        "resting_side": None,
+        "price": float(ev.abs_price),
+        "requested_qty": int(ev.qty),
+    }
+
+    if ev.side_bin in (0, 1):
+        fills = book.post_limit(ev.side_bin, ev.abs_price, ev.qty)
+        out["event_kind"] = "post"
+        out["action"] = "POST_BID" if ev.side_bin == 0 else "POST_ASK"
+        out["fills"] = fills
+        return out
+
+    ask_has = ev.abs_price in book.asks and _qsum(book.asks[ev.abs_price]) > 0
+    bid_has = ev.abs_price in book.bids and _qsum(book.bids[ev.abs_price]) > 0
+
+    if ask_has and not bid_has:
+        removed = book.cancel_passive("ask", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
+        out["action"] = "CANCEL_ASK"
+        out["removed"] = removed
+        out["resting_side"] = "ask"
+        return out
+
+    if bid_has and not ask_has:
+        removed = book.cancel_passive("bid", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
+        out["action"] = "CANCEL_BID"
+        out["removed"] = removed
+        out["resting_side"] = "bid"
+        return out
+
+    if ask_has and bid_has:
+        removed_ask = book.cancel_passive("ask", ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
+        out["action"] = "CANCEL_BOTH_PREF_ASK"
+        out["removed"] = removed_ask
+        out["resting_side"] = "ask"
+        return out
+
+    midpoint = book.midpoint()
+    if midpoint is not None:
+        preferred_side = "ask" if ev.abs_price >= midpoint else "bid"
+        removed = book.cancel_passive(preferred_side, ev.abs_price, ev.qty)
+        out["event_kind"] = "cancel"
+        out["action"] = f"CANCEL_MISS_{preferred_side.upper()}"
+        out["removed"] = removed
+        out["resting_side"] = preferred_side
+        return out
+
+    out["event_kind"] = "cancel"
+    out["action"] = "CANCEL_MISS_EMPTY"
+    out["removed"] = 0
+    return out
+
+
+def apply_event_to_book_open_anchor_txn_complete(
+    book: OrderBook, ev: EventDecoded, *, split_cancel_sides: bool = False
+):
+    """
+    Txn-complete open-anchor book update.
+
+    When split_cancel_sides=False (5-way side bins): posts (0,1), ambiguous cancel (2),
+    transaction-complete against resting bid/ask (3,4).
+
+    When split_cancel_sides=True (6-way side bins): posts (0,1), explicit cancel resting
+    bid (2) / ask (3), transaction-complete against resting bid/ask (4,5).
+    """
+    out = {
+        "event_kind": None,
+        "action": None,
+        "fills": [],
+        "removed": 0,
+        "resting_side": None,
+        "price": float(ev.abs_price),
+        "requested_qty": int(ev.qty),
+        "rejected": False,
+    }
+
+    if ev.side_bin == 0:
+        best_ask = book.best_ask()
+        if best_ask is not None and ev.abs_price >= best_ask:
+            out["event_kind"] = "post"
+            out["action"] = "REJECT_CROSS_BID"
+            out["rejected"] = True
+            return out
+
+        fills = book.post_limit(ev.side_bin, ev.abs_price, ev.qty)
+        out["event_kind"] = "post"
+        out["action"] = "POST_BID"
+        out["fills"] = fills
+        return out
+
+    if ev.side_bin == 1:
+        best_bid = book.best_bid()
+        if best_bid is not None and ev.abs_price <= best_bid:
+            out["event_kind"] = "post"
+            out["action"] = "REJECT_CROSS_ASK"
+            out["rejected"] = True
+            return out
+
+        fills = book.post_limit(ev.side_bin, ev.abs_price, ev.qty)
+        out["event_kind"] = "post"
+        out["action"] = "POST_ASK"
+        out["fills"] = fills
+        return out
+
+    if split_cancel_sides:
+        if ev.side_bin == 2:
+            removed = book.cancel_passive("bid", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_BID"
+            out["removed"] = removed
+            out["resting_side"] = "bid"
+            return out
+
+        if ev.side_bin == 3:
+            removed = book.cancel_passive("ask", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_ASK"
+            out["removed"] = removed
+            out["resting_side"] = "ask"
+            return out
+
+        if ev.side_bin == 4:
+            removed = book.execute_against_resting("bid", ev.abs_price, ev.qty)
+            out["event_kind"] = "transaction_complete"
+            out["action"] = "EXEC_BID"
+            out["removed"] = removed
+            out["resting_side"] = "bid"
+            if removed > 0:
+                out["fills"] = [{"side": "bid", "price": float(ev.abs_price), "filled_qty": int(removed)}]
+            return out
+
+        if ev.side_bin == 5:
+            removed = book.execute_against_resting("ask", ev.abs_price, ev.qty)
+            out["event_kind"] = "transaction_complete"
+            out["action"] = "EXEC_ASK"
+            out["removed"] = removed
+            out["resting_side"] = "ask"
+            if removed > 0:
+                out["fills"] = [{"side": "ask", "price": float(ev.abs_price), "filled_qty": int(removed)}]
+            return out
+
+        raise ValueError(f"Unsupported txn-complete side_bin={ev.side_bin} (split_cancel_sides=True)")
+
+    if ev.side_bin == 2:
+        ask_has = ev.abs_price in book.asks and _qsum(book.asks[ev.abs_price]) > 0
+        bid_has = ev.abs_price in book.bids and _qsum(book.bids[ev.abs_price]) > 0
+
+        if ask_has and not bid_has:
+            removed = book.cancel_passive("ask", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_ASK"
+            out["removed"] = removed
+            out["resting_side"] = "ask"
+            return out
+
+        if bid_has and not ask_has:
+            removed = book.cancel_passive("bid", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_BID"
+            out["removed"] = removed
+            out["resting_side"] = "bid"
+            return out
+
+        if ask_has and bid_has:
+            removed_ask = book.cancel_passive("ask", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_BOTH_PREF_ASK"
+            out["removed"] = removed_ask
+            out["resting_side"] = "ask"
+            return out
+
+        midpoint = book.midpoint()
+        if midpoint is not None:
+            preferred_side = "ask" if ev.abs_price >= midpoint else "bid"
+            removed = book.cancel_passive(preferred_side, ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = f"CANCEL_MISS_{preferred_side.upper()}"
+            out["removed"] = removed
+            out["resting_side"] = preferred_side
+            return out
+
+        if book.asks:
+            removed = book.cancel_passive("ask", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_MISS_ASK_FALLBACK"
+            out["removed"] = removed
+            out["resting_side"] = "ask"
+            return out
+
+        if book.bids:
+            removed = book.cancel_passive("bid", ev.abs_price, ev.qty)
+            out["event_kind"] = "cancel"
+            out["action"] = "CANCEL_MISS_BID_FALLBACK"
+            out["removed"] = removed
+            out["resting_side"] = "bid"
+            return out
+
+        out["event_kind"] = "cancel"
+        out["action"] = "CANCEL_MISS_EMPTY"
+        return out
+
+    if ev.side_bin == 3:
+        removed = book.execute_against_resting("bid", ev.abs_price, ev.qty)
+        out["event_kind"] = "transaction_complete"
+        out["action"] = "EXEC_BID"
+        out["removed"] = removed
+        out["resting_side"] = "bid"
+        if removed > 0:
+            out["fills"] = [{"side": "bid", "price": float(ev.abs_price), "filled_qty": int(removed)}]
+        return out
+
+    if ev.side_bin == 4:
+        removed = book.execute_against_resting("ask", ev.abs_price, ev.qty)
+        out["event_kind"] = "transaction_complete"
+        out["action"] = "EXEC_ASK"
+        out["removed"] = removed
+        out["resting_side"] = "ask"
+        if removed > 0:
+            out["fills"] = [{"side": "ask", "price": float(ev.abs_price), "filled_qty": int(removed)}]
+        return out
+
+    raise ValueError(f"Unsupported txn-complete side_bin={ev.side_bin}")
 
 
 def _notna_scalar(x):

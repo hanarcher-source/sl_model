@@ -1,0 +1,4 @@
+[2026-04-07 17:06:52] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/openanchor_ep10pat3/openanchor_ep10pat3_T10_k0_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260407_170652
+[2026-04-07 17:06:52] [INFO] checkpoint: /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_0710_train0709_blank_gpt2_win50_ep10pat3/000981XSHE/model_cache/blankGPT2_20250709_txncomplete_000981XSHE_win50_20260407_124336_best.pt
+[2026-04-07 17:06:52] [INFO] device: cuda greedy=False
+slurmstepd-dgx015: error: *** JOB 54092 ON dgx015 CANCELLED AT 2026-04-07T17:07:42 ***

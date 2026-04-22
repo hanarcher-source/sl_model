@@ -1,0 +1,74 @@
+{
+  "stock": "000617_XSHE",
+  "experiment_name": "blankGPT2_multiday_continue_617_stock_win50",
+  "checkpoint_path": "/finance_ML/zhanghaohan/GPT2_new_head_multi_d/model_cache/blankGPT2_multiday_continue_617_stock_win50_20260325_202035.pt",
+  "metadata_path": "/finance_ML/zhanghaohan/GPT2_new_head_multi_d/model_cache/blankGPT2_multiday_continue_617_stock_win50_20260325_202035.json",
+  "device": "cuda",
+  "seed": 42,
+  "sample_seed": 1041,
+  "window_len": 50,
+  "batch_size": 256,
+  "num_samples": 296677,
+  "unique_predicted_tokens": 12692,
+  "unique_true_tokens": 15036,
+  "outputs": {
+    "predicted_plot": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_predicted_distribution.png",
+    "true_plot": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_true_distribution.png",
+    "predicted_counts_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_predicted_counts.csv",
+    "true_counts_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_true_counts.csv",
+    "predicted_samples_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_predicted_samples.csv",
+    "true_samples_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_true_samples.csv"
+  },
+  "days": [
+    {
+      "day": "20250703",
+      "data_path": "/finance_ML/zhanghaohan/LOB_data/20250703/final_result_for_merge_vocab24336_multidaypool(03_10)_samp_20260318_1743.joblib",
+      "observed": {
+        "seq_len": 104960,
+        "windows": 104910,
+        "test": 20982
+      },
+      "expected_test_windows": 20982
+    },
+    {
+      "day": "20250704",
+      "data_path": "/finance_ML/zhanghaohan/LOB_data/20250704/final_result_for_merge_vocab24336_multidaypool(03_10)_samp_20260318_1743.joblib",
+      "observed": {
+        "seq_len": 234736,
+        "windows": 234686,
+        "test": 46938
+      },
+      "expected_test_windows": 46938
+    },
+    {
+      "day": "20250707",
+      "data_path": "/finance_ML/zhanghaohan/LOB_data/20250707/final_result_for_merge_vocab24336_multidaypool(03_10)_samp_20260318_1743.joblib",
+      "observed": {
+        "seq_len": 318558,
+        "windows": 318508,
+        "test": 63703
+      },
+      "expected_test_windows": 63703
+    },
+    {
+      "day": "20250708",
+      "data_path": "/finance_ML/zhanghaohan/LOB_data/20250708/final_result_for_merge_vocab24336_multidaypool(03_10)_samp_20260318_1743.joblib",
+      "observed": {
+        "seq_len": 238855,
+        "windows": 238805,
+        "test": 47761
+      },
+      "expected_test_windows": 47761
+    },
+    {
+      "day": "20250709",
+      "data_path": "/finance_ML/zhanghaohan/LOB_data/20250709/final_result_for_merge_vocab24336_multidaypool(03_10)_samp_20260318_1743.joblib",
+      "observed": {
+        "seq_len": 586508,
+        "windows": 586458,
+        "test": 117293
+      },
+      "expected_test_windows": 117293
+    }
+  ]
+}

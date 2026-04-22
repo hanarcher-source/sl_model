@@ -1,0 +1,18 @@
+LOB-Bench-style aggregate scores (lower is better)
+Aggregation across metric configs with available comparative losses.
+
+stock	before_setting	W_mean_before	W_mean_after	W_med_before	W_med_after	W_IQM_before	W_IQM_after	L1_mean_before	L1_mean_after	L1_med_before	L1_med_after	L1_IQM_before	L1_IQM_after	nW_before	nW_after
+000617XSHE	T13_k0	0.437511	0.502765	0.388687	0.386289	0.396591	0.424306	0.445102	0.416033	0.461925	0.458546	0.435417	0.408591	20	20
+002263XSHE	T13_k0	0.685905	0.743879	0.439653	0.466044	0.501758	0.554474	0.479135	0.491146	0.488658	0.528565	0.466707	0.487633	18	18
+002366XSHE	T13_k0	0.44277	0.461694	0.389058	0.415028	0.373845	0.44301	0.346334	0.335563	0.320072	0.361767	0.307651	0.344698	20	20
+
+Wrote overall_scores_lobbench_style.json
+
+NOTE: 000981 uses AFTER variant best_T10_k50_pretrained_win50, so we run it separately too.
+LOB-Bench-style aggregate scores (lower is better)
+Aggregation across metric configs with available comparative losses.
+
+stock	before_setting	W_mean_before	W_mean_after	W_med_before	W_med_after	W_IQM_before	W_IQM_after	L1_mean_before	L1_mean_after	L1_med_before	L1_med_after	L1_IQM_before	L1_IQM_after	nW_before	nW_after
+000981XSHE	T10_k50	1.8677	1.28047	0.709305	1.11729	0.792273	1.15205	0.675483	0.763377	0.655675	0.829328	0.712887	0.819046	20	17
+
+Wrote overall_scores_lobbench_style.json

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH -J replay_000617
+#SBATCH -p batch
+#SBATCH -N 1
+#SBATCH --cpus-per-task=64
+#SBATCH --gres=gpu:0
+#SBATCH -o /finance_ML/zhanghaohan/stock_language_model/logs/run_replay_decoded_real_tokens_000617XSHE.out
+#SBATCH --reservation=finai
+
+source /finance_ML/zhanghaohan/conda_env/etc/profile.d/conda.sh
+conda activate /finance_ML/zhanghaohan/mycondaenv
+
+cd /finance_ML/zhanghaohan/stock_language_model
+python -u scripts/hist_script/replay_decoded_real_tokens_fixed_start.py \
+  --stock 000617_XSHE \
+  --processed-real-flow-path /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/final_result_for_merge_realflow_20250710_000617XSHE_20260404_1602.joblib \
+  --bin-record-path /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/bin_record_realflow_20250710_000617XSHE_20260404_1602.json \
+  --real-ref-dir /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134

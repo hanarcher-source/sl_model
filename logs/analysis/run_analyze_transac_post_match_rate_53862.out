@@ -1,0 +1,27 @@
+scripts/hist_script/analyze_transac_post_match_rate.py:44: DtypeWarning: Columns (0,1,2,3,4,5,6,7,9,11) have mixed types. Specify dtype option on import or set low_memory=False.
+  order_post = pd.read_csv(order_post_dir, header=None, names=col_names)
+/finance_ML/zhanghaohan/stock_language_model/utility/sim_helper_unified.py:60: DtypeWarning: Columns (2,27,47) have mixed types. Specify dtype option on import or set low_memory=False.
+  lob_info = pd.read_csv(
+scripts/hist_script/analyze_transac_post_match_rate.py:100: DtypeWarning: Columns (0,1,2,3,4,5,6,7,8,9,12) have mixed types. Specify dtype option on import or set low_memory=False.
+  order_transac = pd.read_csv(order_transac_dir, header=None, names=order_transac_col_names)
+=== Transaction/cancel legs vs filtered OrdType=50 post table ===
+Stocks: ['000617_XSHE', '000981_XSHE', '002263_XSHE', '002366_XSHE']  Day: 20250710
+Unique post keys (ChannelNo, ApplSeqNum, SecurityID) in match table: 1361490
+Expanded transac legs (ExecType 52 or 70, bid/offer): 2322053
+
+ALL cancel+txn legs: total_legs=2322053  unmatched_to_post_table=60822  (2.6193%)
+ExecType 52 (cancel): total_legs=304655  unmatched_to_post_table=18257  (5.9927%)
+ExecType 70 (transaction_complete): total_legs=2017398  unmatched_to_post_table=42565  (2.1099%)
+
+  [000617_XSHE] ALL: total_legs=1044341  unmatched_to_post_table=21017  (2.0125%)
+  [000617_XSHE] cancel: total_legs=116041  unmatched_to_post_table=5313  (4.5786%)
+  [000617_XSHE] txn_complete: total_legs=928300  unmatched_to_post_table=15704  (1.6917%)
+  [000981_XSHE] ALL: total_legs=125779  unmatched_to_post_table=7605  (6.0463%)
+  [000981_XSHE] cancel: total_legs=38525  unmatched_to_post_table=3182  (8.2596%)
+  [000981_XSHE] txn_complete: total_legs=87254  unmatched_to_post_table=4423  (5.0691%)
+  [002263_XSHE] ALL: total_legs=565923  unmatched_to_post_table=17534  (3.0983%)
+  [002263_XSHE] cancel: total_legs=73287  unmatched_to_post_table=4828  (6.5878%)
+  [002263_XSHE] txn_complete: total_legs=492636  unmatched_to_post_table=12706  (2.5792%)
+  [002366_XSHE] ALL: total_legs=586010  unmatched_to_post_table=14666  (2.5027%)
+  [002366_XSHE] cancel: total_legs=76802  unmatched_to_post_table=4934  (6.4243%)
+  [002366_XSHE] txn_complete: total_legs=509208  unmatched_to_post_table=9732  (1.9112%)

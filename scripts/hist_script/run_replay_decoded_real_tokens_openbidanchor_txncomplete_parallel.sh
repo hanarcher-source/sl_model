@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /finance_ML/zhanghaohan/stock_language_model
+
+sbatch scripts/hist_script/run_replay_decoded_real_tokens_openbidanchor_txncomplete_000617XSHE.sh
+sbatch scripts/hist_script/run_replay_decoded_real_tokens_openbidanchor_txncomplete_000981XSHE.sh
+sbatch scripts/hist_script/run_replay_decoded_real_tokens_openbidanchor_txncomplete_002263XSHE.sh
+sbatch scripts/hist_script/run_replay_decoded_real_tokens_openbidanchor_txncomplete_002366XSHE.sh

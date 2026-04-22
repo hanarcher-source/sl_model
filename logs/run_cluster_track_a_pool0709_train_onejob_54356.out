@@ -1,0 +1,7 @@
+### CLUSTER_TRACK_A_META job_id=54356 run_name=pool0709_train_54356 out_root=/finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54356
+### CLUSTER_TRACK_A_META stride=2 k=8:48:4
+2026-04-12T14:22:59+08:00
+### STOCK_BEGIN tag=000617XSHE
+2026-04-12T14:22:59+08:00
+[load] /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/pool_0709_0710_openbidanchor_txncomplete/final_result_for_merge_realflow_openbidanchor_txncomplete_20250709_000617XSHE_20260406_1233.joblib
+slurmstepd-dgx015: error: *** JOB 54356 ON dgx015 CANCELLED AT 2026-04-12T14:25:38 ***

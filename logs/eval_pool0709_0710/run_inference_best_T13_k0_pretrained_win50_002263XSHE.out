@@ -1,0 +1,86 @@
+[2026-04-07 11:17:38] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/best_T13_k0_pretrained_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260407_111738
+[2026-04-07 11:17:38] [INFO] checkpoint: /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_0710_train0709_pretrained_gpt2_win50/002263XSHE/model_cache/blankGPT2_20250709_txncomplete_002263XSHE_win50_20260406_211029_best.pt
+[2026-04-07 11:17:38] [INFO] device: cuda greedy=False
+/finance_ML/zhanghaohan/stock_language_model/scripts/hist_script/replay_decoded_real_tokens_openbidanchor_txncomplete_fixed_start.py:116: DtypeWarning: Columns (1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,88) have mixed types. Specify dtype option on import or set low_memory=False.
+  lob_info = pd.read_csv(lob_snap_path, header=None, names=columns)
+[2026-04-07 11:28:46] [INFO] tokenizable_rows=36305 token_exact_match_rate_all=0.001487 tail_after_seed=0.000110
+[2026-04-07 11:28:54] [INFO] Running eval vs clean reference...
+2026-04-07 11:28:54 [INFO] ======================================================================
+2026-04-07 11:28:54 [INFO] decoded real-token open-anchor txn-complete evaluation
+2026-04-07 11:28:54 [INFO] ======================================================================
+2026-04-07 11:28:54 [INFO] Evaluating: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/best_T13_k0_pretrained_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260407_111738
+2026-04-07 11:28:54 [INFO] 
+── loading data ───────────────────────────────────────
+2026-04-07 11:28:54 [INFO] Loading LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/best_T13_k0_pretrained_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260407_111738
+2026-04-07 11:28:54 [INFO] Loaded 15,626 rows | 10 book levels | date 2025-07-10
+2026-04-07 11:28:54 [INFO] Loading real reference LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002263XSHE_20260405_132652
+2026-04-07 11:28:54 [INFO] Loading LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002263XSHE_20260405_132652
+2026-04-07 11:28:54 [INFO] Loaded 16,122 rows | 10 book levels | date 2025-07-10
+2026-04-07 11:28:54 [INFO] 
+── computing metrics ──────────────────────────────────
+/finance_ML/zhanghaohan/mycondaenv/lib/python3.8/site-packages/statsmodels/tsa/stattools.py:693: RuntimeWarning: invalid value encountered in divide
+  acf = avf[: nlags + 1] / avf[0]
+2026-04-07 11:28:55 [WARNING] Reference metric log_time_to_cancel skipped: <lambda>() got an unexpected keyword argument 'include_groups'
+2026-04-07 11:28:56 [WARNING] Reference metric ofi_up skipped: empty real or generated sample after cleaning
+2026-04-07 11:28:56 [WARNING] Reference metric ofi_down skipped: empty real or generated sample after cleaning
+2026-04-07 11:28:56 [WARNING] Reference conditional metric spread | volatility skipped: Invalid frequency: 0.1s
+2026-04-07 11:28:56 [INFO] Computed now (generated-only): 15 metric groups
+2026-04-07 11:28:56 [INFO] Computed (with real reference LOB data): 20 benchmark metric configs
+2026-04-07 11:28:56 [INFO] Failed (with real reference LOB data): 4 benchmark metric configs
+2026-04-07 11:28:56 [INFO] Skipped (needs true order-ID linkage): 2 metrics
+2026-04-07 11:28:56 [INFO] 
+── generating plots ───────────────────────────────────
+2026-04-07 11:28:57 [INFO] saved mid_price.png
+2026-04-07 11:28:58 [INFO] saved spread.png
+2026-04-07 11:28:58 [INFO] saved returns_dist.png
+/finance_ML/zhanghaohan/mycondaenv/lib/python3.8/site-packages/statsmodels/tsa/stattools.py:693: RuntimeWarning: invalid value encountered in divide
+  acf = avf[: nlags + 1] / avf[0]
+2026-04-07 11:28:58 [INFO] saved autocorr.png
+2026-04-07 11:28:59 [INFO] saved inter_arrival_time.png
+2026-04-07 11:28:59 [INFO] saved l1_volume.png
+2026-04-07 11:29:00 [INFO] saved volume_per_minute.png
+2026-04-07 11:29:01 [INFO] saved orderbook_imbalance.png
+2026-04-07 11:29:02 [INFO] saved orderflow_imbalance.png
+2026-04-07 11:29:02 [INFO] saved event_type_counts.png
+2026-04-07 11:29:02 [INFO] Skipped time-to-fill/time-to-cancel plots: requires true order-ID linkage (not available in synthetic IDs).
+2026-04-07 11:29:03 [INFO] saved overview_panel.png
+2026-04-07 11:29:03 [INFO] Wrote metrics summary: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/best_T13_k0_pretrained_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260407_111738/metrics_summary.json
+2026-04-07 11:29:03 [INFO] 
+── all computed metrics summary ─────────────────────
+2026-04-07 11:29:03 [INFO]   acf_returns_1min: [NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN]
+2026-04-07 11:29:03 [INFO]   direction_counts: {"-1": 9879, "1": 5747}
+2026-04-07 11:29:03 [INFO]   direction_fractions: {"-1": 0.6322, "1": 0.3678}
+2026-04-07 11:29:03 [INFO]   event_type_counts: {"1": 6268, "2": 471, "3": 3691, "4": 5196}
+2026-04-07 11:29:03 [INFO]   event_type_fractions: {"1": 0.4011, "2": 0.0301, "3": 0.2362, "4": 0.3325}
+2026-04-07 11:29:03 [INFO]   iat_ms: {"mean": 3705.1299261674176, "median": 50.0, "n": 10429, "n_exec_excluded": 5196, "p95": 260.0, "std": 139865.0790707752}
+2026-04-07 11:29:03 [INFO]   l1_volume: {"ask_mean": 76200.0, "ask_median": 76200.0, "bid_mean": 39914.82785101754, "bid_median": 37960.0}
+2026-04-07 11:29:03 [INFO]   mid_price: {"end_cny": 4.345, "end_price_int": 43450.0, "mean_cny": 4.345, "mean_price_int": 43450.0, "mean_ticks_0p01": 434.5, "start_cny": 4.345, "start_price_int": 43450.0, "std_cny": 0.0, "std_price_int": 0.0, "std_ticks_0p01": 0.0, "total_return_bps": 0.0}
+2026-04-07 11:29:03 [INFO]   ob_imbalance: {"mean": -0.3347952409208317, "median": -0.33496846531184304, "std": 0.1666514180681846}
+2026-04-07 11:29:03 [INFO]   orderflow_imbalance: {"mean": -1.396109751384774, "n": 15526, "std": 41.473941860691575}
+2026-04-07 11:29:03 [INFO]   returns_1min: {"kurtosis": 0.0, "mean": 0.0, "n": 14, "skew": 0.0, "std": 0.0}
+2026-04-07 11:29:03 [INFO]   spread_ticks: {"mean": 1.0, "median": 1.0, "n": 15626, "pct_zero_spread": 0.0, "std": 0.0, "tick_size_cny": 0.01, "tick_size_price_int": 100}
+2026-04-07 11:29:03 [INFO]   total_volume_5lvl: {"ask_mean": 1002952.8170997056, "bid_mean": 3903096.3600409576}
+2026-04-07 11:29:03 [INFO]   volatility_1min: 0.0
+2026-04-07 11:29:03 [INFO]   volume_per_minute: {"mean": 885547.1532846715, "n": 822, "total": 727919760.0}
+2026-04-07 11:29:03 [INFO]   [real-vs-generated comparative metrics]
+2026-04-07 11:29:03 [INFO]   ask_cancellation_depth: {"l1_by_group": 0.6501561427606664, "n_generated": 3908, "n_real": 1117, "wasserstein": 1.0846761628824129}
+2026-04-07 11:29:03 [INFO]   ask_cancellation_levels: {"l1_by_group": 0.4248499142367067, "n_generated": 583, "n_real": 800, "wasserstein": 0.9113709686235493}
+2026-04-07 11:29:03 [INFO]   ask_volume: {"l1_by_group": 0.6322794785371423, "n_generated": 15626, "n_real": 16122, "wasserstein": 0.6391694373951701}
+2026-04-07 11:29:03 [INFO]   ask_volume | spread: {"n_generated": 15626, "n_real": 16122, "num_condition_groups": 2, "per_group": {"1": {"n": 31735, "wasserstein": 0.03308114767804502}, "2": {"n": 13, "wasserstein": null}}, "weighted_wasserstein": null}
+2026-04-07 11:29:03 [INFO]   ask_volume_touch: {"l1_by_group": 0.0005582433941198211, "n_generated": 15626, "n_real": 16122, "wasserstein": 0.03306124050997595}
+2026-04-07 11:29:03 [INFO]   bid_cancellation_depth: {"l1_by_group": 0.2958946169464666, "n_generated": 254, "n_real": 1908, "wasserstein": 0.20227166136630875}
+2026-04-07 11:29:03 [INFO]   bid_cancellation_levels: {"l1_by_group": 0.280310159220085, "n_generated": 248, "n_real": 1714, "wasserstein": 0.30250835436952117}
+2026-04-07 11:29:03 [INFO]   bid_volume: {"l1_by_group": 0.8366297138548695, "n_generated": 15626, "n_real": 16122, "wasserstein": 0.905587698455219}
+2026-04-07 11:29:03 [INFO]   bid_volume_touch: {"l1_by_group": 0.9814539139064633, "n_generated": 15626, "n_real": 16122, "wasserstein": 1.6610075234484696}
+2026-04-07 11:29:03 [INFO]   limit_ask_order_depth: {"l1_by_group": 0.8098700816066499, "n_generated": 5950, "n_real": 4432, "wasserstein": 1.2272953723498512}
+2026-04-07 11:29:03 [INFO]   limit_ask_order_levels: {"l1_by_group": 0.7556390977443608, "n_generated": 399, "n_real": 3724, "wasserstein": 2.3748390651137052}
+2026-04-07 11:29:03 [INFO]   limit_bid_order_depth: {"l1_by_group": 0.2790342034978892, "n_generated": 318, "n_real": 2628, "wasserstein": 0.23875199290387297}
+2026-04-07 11:29:03 [INFO]   limit_bid_order_levels: {"l1_by_group": 0.28225094238018306, "n_generated": 300, "n_real": 2476, "wasserstein": 0.38199786665880126}
+2026-04-07 11:29:03 [INFO]   log_inter_arrival_time: {"l1_by_group": 0.1548560332485578, "n_generated": 15625, "n_real": 16121, "wasserstein": 0.36307119023284845}
+2026-04-07 11:29:03 [INFO]   ofi: {"l1_by_group": 0.6677356136921935, "n_generated": 15526, "n_real": 16022, "wasserstein": 0.46636275373401476}
+2026-04-07 11:29:03 [INFO]   ofi_stay: {"l1_by_group": 0.6675895400204724, "n_generated": 15525, "n_real": 16013, "wasserstein": 0.46572424803141393}
+2026-04-07 11:29:03 [INFO]   orderbook_imbalance: {"l1_by_group": 0.9821362113881653, "n_generated": 15626, "n_real": 16122, "wasserstein": 1.896463599022768}
+2026-04-07 11:29:03 [INFO]   spread: {"l1_by_group": 0.0008063515692842109, "n_generated": 15626, "n_real": 16122, "wasserstein": 0.03985593847906024}
+2026-04-07 11:29:03 [INFO]   spread | time: {"n_generated": 15626, "n_real": 16122, "num_condition_groups": 8, "per_group": {"10": {"n": 16285, "wasserstein": 0.02855003992120108}, "12": {"n": 1552, "wasserstein": null}, "13": {"n": 5747, "wasserstein": null}, "15": {"n": 1756, "wasserstein": null}, "16": {"n": 3081, "wasserstein": null}, "17": {"n": 1546, "wasserstein": null}, "19": {"n": 511, "wasserstein": null}, "20": {"n": 1270, "wasserstein": null}}, "weighted_wasserstein": null}
+2026-04-07 11:29:03 [INFO]   vol_per_min: {"l1_by_group": 0.1385834505234492, "n_generated": 822, "n_real": 545, "wasserstein": 0.19581435459392602}
+[2026-04-07 11:29:03] [DONE] metrics_summary: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/best_T13_k0_pretrained_win50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260407_111738/metrics_summary.json

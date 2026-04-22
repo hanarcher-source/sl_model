@@ -1,0 +1,354 @@
+[
+  {
+    "stock": "000617XSHE",
+    "variant": "blank_3ep_openanchor",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_182708/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.3750048419150623,
+        "median": 0.33485405522500694,
+        "iqm": 0.33805284745465813
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.3729069255820549,
+        "median": 0.36983711944545783,
+        "iqm": 0.35086829482789034
+      }
+    },
+    "json_lobbench_style_overall": null
+  },
+  {
+    "stock": "000617XSHE",
+    "variant": "sentence_s2ip_k3",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k3/sentence_preset_s2ip_k3_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_000617XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.48325478440863473,
+        "median": 0.3731011052560207,
+        "iqm": 0.3757224341909298
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.38780153326989264,
+        "median": 0.32834287922760275,
+        "iqm": 0.3564355310310717
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.48325478440863473,
+        "median": 0.3731011052560207,
+        "iqm": 0.3757224341909298
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.38780153326989264,
+        "median": 0.32834287922760275,
+        "iqm": 0.3564355310310717
+      }
+    }
+  },
+  {
+    "stock": "000617XSHE",
+    "variant": "sentence_s2ip_k5",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k5/sentence_preset_s2ip_k5_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_000617XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.4724754672248802,
+        "median": 0.39608416599339613,
+        "iqm": 0.381432818881647
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.408929077028129,
+        "median": 0.3880701020751821,
+        "iqm": 0.3919434632759561
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.4724754672248802,
+        "median": 0.39608416599339613,
+        "iqm": 0.381432818881647
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.408929077028129,
+        "median": 0.3880701020751821,
+        "iqm": 0.3919434632759561
+      }
+    }
+  },
+  {
+    "stock": "000981XSHE",
+    "variant": "blank_3ep_openanchor",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_182710/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 18,
+        "mean": 0.8910065611774033,
+        "median": 0.8708655422455047,
+        "iqm": 0.9280147768282523
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.6078066227105628,
+        "median": 0.6929329294715765,
+        "iqm": 0.6459088858287731
+      }
+    },
+    "json_lobbench_style_overall": null
+  },
+  {
+    "stock": "000981XSHE",
+    "variant": "sentence_s2ip_k3",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k3/sentence_preset_s2ip_k3_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_000981XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 19,
+        "mean": 0.87927230212069,
+        "median": 0.7830742754221666,
+        "iqm": 0.900895539281234
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.6684425461635146,
+        "median": 0.724946463274619,
+        "iqm": 0.7204787459040681
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 19,
+        "mean": 0.87927230212069,
+        "median": 0.7830742754221666,
+        "iqm": 0.900895539281234
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.6684425461635146,
+        "median": 0.724946463274619,
+        "iqm": 0.7204787459040681
+      }
+    }
+  },
+  {
+    "stock": "000981XSHE",
+    "variant": "sentence_s2ip_k5",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k5/sentence_preset_s2ip_k5_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_000981XSHE_20260408_114904/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 19,
+        "mean": 0.8461209468717359,
+        "median": 0.7468250267190883,
+        "iqm": 0.8311048506007891
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.6176231080981681,
+        "median": 0.6889478046909353,
+        "iqm": 0.6544295609868446
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 19,
+        "mean": 0.8461209468717359,
+        "median": 0.7468250267190883,
+        "iqm": 0.8311048506007891
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.6176231080981681,
+        "median": 0.6889478046909353,
+        "iqm": 0.6544295609868446
+      }
+    }
+  },
+  {
+    "stock": "002263XSHE",
+    "variant": "blank_3ep_openanchor",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_182710/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 21,
+        "mean": 0.8491658281910149,
+        "median": 0.7334521593893053,
+        "iqm": 0.6545139402517556
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.5824871345313831,
+        "median": 0.6931511737913889,
+        "iqm": 0.6090164513081999
+      }
+    },
+    "json_lobbench_style_overall": null
+  },
+  {
+    "stock": "002263XSHE",
+    "variant": "sentence_s2ip_k3",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k3/sentence_preset_s2ip_k3_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_002263XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 18,
+        "mean": 0.7082602656091946,
+        "median": 0.48169533784396357,
+        "iqm": 0.5209224689359668
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.4908085934162261,
+        "median": 0.4240495558254756,
+        "iqm": 0.47631376669694314
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 18,
+        "mean": 0.7082602656091946,
+        "median": 0.48169533784396357,
+        "iqm": 0.5209224689359668
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.4908085934162261,
+        "median": 0.4240495558254756,
+        "iqm": 0.47631376669694314
+      }
+    }
+  },
+  {
+    "stock": "002263XSHE",
+    "variant": "sentence_s2ip_k5",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k5/sentence_preset_s2ip_k5_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_002263XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 18,
+        "mean": 0.7383780726564997,
+        "median": 0.4632981227111468,
+        "iqm": 0.508187225277299
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.4939976357226189,
+        "median": 0.4718837376060123,
+        "iqm": 0.4942425682087459
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 18,
+        "mean": 0.7383780726564997,
+        "median": 0.4632981227111468,
+        "iqm": 0.508187225277299
+      },
+      "l1_by_group": {
+        "n": 18,
+        "mean": 0.4939976357226189,
+        "median": 0.4718837376060123,
+        "iqm": 0.4942425682087459
+      }
+    }
+  },
+  {
+    "stock": "002366XSHE",
+    "variant": "blank_3ep_openanchor",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_182710/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 21,
+        "mean": 0.5672230840785869,
+        "median": 0.4477155723829625,
+        "iqm": 0.44597197511928477
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.37430852910027884,
+        "median": 0.3385656265696446,
+        "iqm": 0.34045589193494397
+      }
+    },
+    "json_lobbench_style_overall": null
+  },
+  {
+    "stock": "002366XSHE",
+    "variant": "sentence_s2ip_k3",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k3/sentence_preset_s2ip_k3_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_002366XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.4838126435617759,
+        "median": 0.4136760731555656,
+        "iqm": 0.41860028832958174
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.3538873576530376,
+        "median": 0.36414918021072046,
+        "iqm": 0.35756456847564
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.4838126435617759,
+        "median": 0.4136760731555656,
+        "iqm": 0.41860028832958174
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.3538873576530376,
+        "median": 0.36414918021072046,
+        "iqm": 0.35756456847564
+      }
+    }
+  },
+  {
+    "stock": "002366XSHE",
+    "variant": "sentence_s2ip_k5",
+    "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_model_variants/sentence_preset_s2ip_k5/sentence_preset_s2ip_k5_ep3/fixed_start_model_blankgpt2_tokens_dynamic_anchor_txncomplete_002366XSHE_20260408_114903/metrics_summary.json",
+    "derived_six": {
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.45254042615153167,
+        "median": 0.4869454577239922,
+        "iqm": 0.4500824743582905
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.3668149950222263,
+        "median": 0.3940104034790257,
+        "iqm": 0.3768969000977722
+      }
+    },
+    "json_lobbench_style_overall": {
+      "description": "LOB-Bench-style aggregates: mean, median, and IQM across per-metric losses in reference_comparison.metrics (Wasserstein uses weighted_wasserstein when finite, else wasserstein; conditional metrics with null weighted_wasserstein are omitted).",
+      "wasserstein": {
+        "n": 20,
+        "mean": 0.45254042615153167,
+        "median": 0.4869454577239922,
+        "iqm": 0.4500824743582905
+      },
+      "l1_by_group": {
+        "n": 20,
+        "mean": 0.3668149950222263,
+        "median": 0.3940104034790257,
+        "iqm": 0.3768969000977722
+      }
+    }
+  }
+]

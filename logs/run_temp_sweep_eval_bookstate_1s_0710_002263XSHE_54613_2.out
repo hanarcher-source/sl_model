@@ -1,0 +1,8 @@
+[sweep] stock=002263_XSHE temp=1.3
+scripts/inference_eval_bookstate_parallelheads_1s_fixed_start.py:68: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  obj = torch.load(ckpt_path, map_location="cpu")
+[ok] wrote /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0710_bookstate_eval_1s/bsph_sweep_T300_ctx60_start1000/eval_bookstate_1s_002263XSHE_100000_T300_ctx60_20260417_145841.json
+[token_l1_avg_slots] 1.919
+[lobbench6] W_mean=1.03675 W_median=1.03262 W_iqm=1.03522 | L1_mean=0.9595 L1_median=0.966667 L1_iqm=0.966
+[snapshot_metrics] spread,mid_return_1s_log,bid_depth_10,ask_depth_10,depth_imbalance_10
+[snapshot_lobbench6] W_mean=1.10417 W_median=1.12028 W_iqm=1.1312 | L1_mean=0.885975 L1_median=0.843333 L1_iqm=0.878889

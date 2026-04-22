@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "scripts/train_bookstate_parallelheads_anchor5m.py", line 314, in <module>
+    main()
+  File "scripts/train_bookstate_parallelheads_anchor5m.py", line 203, in main
+    raise RuntimeError(f"Not enough continuous windows. Got lens train={len(train_ds)} val={len(val_ds)} test={len(test_ds)}")
+RuntimeError: Not enough continuous windows. Got lens train=0 val=0 test=0

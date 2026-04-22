@@ -1,0 +1,165 @@
+{
+  "stock_tag": "002263XSHE",
+  "day": "20250709",
+  "joblib": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/pool_0709_0710_openbidanchor_txncomplete/final_result_for_merge_realflow_openbidanchor_txncomplete_20250709_002263XSHE_20260406_1233.joblib",
+  "window_len": 50,
+  "stride": 2,
+  "max_windows": 0,
+  "n_train_windows_total": 575738,
+  "n_windows_used": 287869,
+  "feature_dim": 12,
+  "k_sweep": [
+    {
+      "k": 8,
+      "inertia": 1021064.3694286089,
+      "silhouette_full_sample": false,
+      "silhouette": 0.17314008978265466,
+      "calinski_harabasz": 51990.16907823482,
+      "davies_bouldin": 1.4257111602803325,
+      "min_cluster_frac": 0.05699120085872393,
+      "max_cluster_frac": 0.18264210456839744,
+      "n_nonempty_clusters": 8,
+      "effective_clusters_exp_entropy": 7.484634278629661
+    },
+    {
+      "k": 12,
+      "inertia": 875184.0589369443,
+      "silhouette_full_sample": false,
+      "silhouette": 0.1563509652606604,
+      "calinski_harabasz": 42943.11866783826,
+      "davies_bouldin": 1.5175196577398393,
+      "min_cluster_frac": 0.044117289461525905,
+      "max_cluster_frac": 0.1328729387325485,
+      "n_nonempty_clusters": 12,
+      "effective_clusters_exp_entropy": 11.149897223404766
+    },
+    {
+      "k": 16,
+      "inertia": 793608.1326348501,
+      "silhouette_full_sample": false,
+      "silhouette": 0.14120135337158934,
+      "calinski_harabasz": 36623.65137759818,
+      "davies_bouldin": 1.5425688008826208,
+      "min_cluster_frac": 0.02839138635976781,
+      "max_cluster_frac": 0.0915138483129479,
+      "n_nonempty_clusters": 16,
+      "effective_clusters_exp_entropy": 15.304245604543508
+    },
+    {
+      "k": 20,
+      "inertia": 715850.7796104902,
+      "silhouette_full_sample": false,
+      "silhouette": 0.14425504948118056,
+      "calinski_harabasz": 33696.65760124241,
+      "davies_bouldin": 1.4945241008860757,
+      "min_cluster_frac": 0.018497997352962633,
+      "max_cluster_frac": 0.07259204707696904,
+      "n_nonempty_clusters": 20,
+      "effective_clusters_exp_entropy": 19.052239432825438
+    },
+    {
+      "k": 24,
+      "inertia": 682414.299693503,
+      "silhouette_full_sample": false,
+      "silhouette": 0.1324186145177502,
+      "calinski_harabasz": 29837.369616779346,
+      "davies_bouldin": 1.5839112847386538,
+      "min_cluster_frac": 0.017824079702920426,
+      "max_cluster_frac": 0.07682313830249175,
+      "n_nonempty_clusters": 24,
+      "effective_clusters_exp_entropy": 22.76039090981312
+    },
+    {
+      "k": 28,
+      "inertia": 635406.9183311806,
+      "silhouette_full_sample": false,
+      "silhouette": 0.13796756138458846,
+      "calinski_harabasz": 28069.44142106024,
+      "davies_bouldin": 1.5196749269565388,
+      "min_cluster_frac": 0.009188207135884726,
+      "max_cluster_frac": 0.06736050078334242,
+      "n_nonempty_clusters": 28,
+      "effective_clusters_exp_entropy": 26.16787426668682
+    },
+    {
+      "k": 32,
+      "inertia": 597818.8779119885,
+      "silhouette_full_sample": false,
+      "silhouette": 0.13934563713449355,
+      "calinski_harabasz": 26561.51029420094,
+      "davies_bouldin": 1.4901951068876944,
+      "min_cluster_frac": 0.003157686308702917,
+      "max_cluster_frac": 0.05845367163536192,
+      "n_nonempty_clusters": 32,
+      "effective_clusters_exp_entropy": 29.500634862681146
+    },
+    {
+      "k": 36,
+      "inertia": 571376.195893526,
+      "silhouette_full_sample": false,
+      "silhouette": 0.13562887204967614,
+      "calinski_harabasz": 24982.697398426502,
+      "davies_bouldin": 1.476676969669156,
+      "min_cluster_frac": 0.003102105471586034,
+      "max_cluster_frac": 0.05673066568473854,
+      "n_nonempty_clusters": 36,
+      "effective_clusters_exp_entropy": 32.98970922438661
+    },
+    {
+      "k": 40,
+      "inertia": 552006.5549034879,
+      "silhouette_full_sample": false,
+      "silhouette": 0.12796127482602052,
+      "calinski_harabasz": 23469.264086044892,
+      "davies_bouldin": 1.516586989449752,
+      "min_cluster_frac": 0.0032341099597386312,
+      "max_cluster_frac": 0.0426443972779285,
+      "n_nonempty_clusters": 40,
+      "effective_clusters_exp_entropy": 37.220031207095296
+    },
+    {
+      "k": 44,
+      "inertia": 534675.9443196052,
+      "silhouette_full_sample": false,
+      "silhouette": 0.12906404491341478,
+      "calinski_harabasz": 22200.769353507203,
+      "davies_bouldin": 1.5199683472366632,
+      "min_cluster_frac": 0.0031542125063831116,
+      "max_cluster_frac": 0.041876686965251556,
+      "n_nonempty_clusters": 44,
+      "effective_clusters_exp_entropy": 40.90963683732036
+    },
+    {
+      "k": 48,
+      "inertia": 515146.3143745334,
+      "silhouette_full_sample": false,
+      "silhouette": 0.12997766149297904,
+      "calinski_harabasz": 21329.762003747175,
+      "davies_bouldin": 1.519666490943136,
+      "min_cluster_frac": 0.0018689056480551917,
+      "max_cluster_frac": 0.04031000211901942,
+      "n_nonempty_clusters": 48,
+      "effective_clusters_exp_entropy": 44.056275263138325
+    }
+  ],
+  "recommendation": {
+    "recommended_k": 8,
+    "recommended_silhouette": 0.17314008978265466,
+    "plateau_k_at_eps": 8,
+    "sil_eps": 0.015,
+    "feasible_ks": [
+      8,
+      12,
+      16,
+      20,
+      24
+    ]
+  },
+  "notes": {
+    "silhouette": "Subsampled unless n <= silhouette_subsample; higher is more separated clusters.",
+    "davies_bouldin": "Lower is better (compact, well-separated).",
+    "calinski_harabasz": "Higher is better.",
+    "min_cluster_frac": "Drop K with tiny clusters before trusting silhouette.",
+    "plateau_k_at_eps": "Smallest K in ascending order that stays within sil_eps of best silhouette (parsimony)."
+  }
+}

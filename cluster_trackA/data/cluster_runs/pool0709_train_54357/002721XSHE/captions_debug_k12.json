@@ -1,0 +1,608 @@
+{
+  "stock": "002721XSHE",
+  "k": 12,
+  "edges": {
+    "pm_abs_mean": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "log_interval_mean": [
+      0.45335039753962664,
+      0.7969638416305175,
+      1.1402256710098344,
+      1.5912667629913804
+    ],
+    "log_qty_mean": [
+      6.609560303040691,
+      6.78818334350348,
+      6.939526782818397,
+      7.120244580332494
+    ],
+    "frac_side_99": [
+      0.02,
+      0.06,
+      0.1,
+      0.14
+    ],
+    "frac_side_129": [
+      0.22,
+      0.28,
+      0.32,
+      0.4
+    ],
+    "mid_return": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "captions": [
+    {
+      "stock": "002721XSHE",
+      "cluster": 0,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "medium",
+        "cancels": "normal cancels",
+        "executions": "low executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "more side49",
+        "less side50",
+        "less side130"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:medium|cxl:normal cancels|exe:low executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 1.1354684429476294,
+        "log_qty_mean": 6.9290296075395865,
+        "frac_side_49": 0.29040010206685074,
+        "frac_side_50": 0.0750569022709498,
+        "frac_side_99": 0.08287114059705265,
+        "frac_side_129": 0.2769992344985888,
+        "frac_side_130": 0.27467262056646646,
+        "mid_return": 0.0,
+        "tod_hour": 9.735873947434213
+      },
+      "top_deltas": [
+        [
+          "frac_side_49",
+          1.0746024382533912
+        ],
+        [
+          "frac_side_50",
+          -0.398629743979729
+        ],
+        [
+          "frac_side_130",
+          -0.2997010160317403
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 1,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "large",
+        "cancels": "normal cancels",
+        "executions": "normal executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "more side50",
+        "less side49",
+        "more side130"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:large|cxl:normal cancels|exe:normal executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.9232745095497217,
+        "log_qty_mean": 7.033291949551762,
+        "frac_side_49": 0.08433078567027523,
+        "frac_side_50": 0.2024182272611936,
+        "frac_side_99": 0.07400949034662836,
+        "frac_side_129": 0.3042242909406961,
+        "frac_side_130": 0.3350172057811349,
+        "mid_return": 0.0,
+        "tod_hour": 9.771423310513939
+      },
+      "top_deltas": [
+        [
+          "frac_side_50",
+          0.757506489022412
+        ],
+        [
+          "frac_side_49",
+          -0.5449908597168819
+        ],
+        [
+          "frac_side_130",
+          0.09798969992565613
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 2,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "small",
+        "cancels": "high cancels",
+        "executions": "high executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "less side49",
+        "less side50",
+        "more side130"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:small|cxl:high cancels|exe:high executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 1.0630800545800254,
+        "log_qty_mean": 6.710046638091396,
+        "frac_side_49": 0.12442901490556624,
+        "frac_side_50": 0.11770610677977254,
+        "frac_side_99": 0.11106613900800333,
+        "frac_side_129": 0.3250712102182281,
+        "frac_side_130": 0.32172752908834235,
+        "mid_return": 0.0,
+        "tod_hour": 10.868895392466063
+      },
+      "top_deltas": [
+        [
+          "frac_side_49",
+          -0.2298404799050128
+        ],
+        [
+          "frac_side_50",
+          -0.011476967066129884
+        ],
+        [
+          "frac_side_130",
+          0.010406348080621153
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 3,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "fast",
+        "size": "large",
+        "cancels": "low cancels",
+        "executions": "very high executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side130",
+        "less side49",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:fast|sz:large|cxl:low cancels|exe:very high executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.5555986812556821,
+        "log_qty_mean": 7.016992457958371,
+        "frac_side_49": 0.07085100074127657,
+        "frac_side_50": 0.05358413639732053,
+        "frac_side_99": 0.05209266123052658,
+        "frac_side_129": 0.40279318013339604,
+        "frac_side_130": 0.4206790214973722,
+        "mid_return": 0.0,
+        "tod_hour": 10.790037064491571
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          0.6625293135664179
+        ],
+        [
+          "frac_side_49",
+          -0.6509346737249422
+        ],
+        [
+          "frac_side_50",
+          -0.5935511037502588
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 4,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very slow",
+        "size": "large",
+        "cancels": "very high cancels",
+        "executions": "low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "less side130",
+        "more side50",
+        "more side49"
+      ],
+      "sig": "spr:very tight|tmp:very slow|sz:large|cxl:very high cancels|exe:low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 2.1038493302734906,
+        "log_qty_mean": 7.041132722120371,
+        "frac_side_49": 0.20495874034117206,
+        "frac_side_50": 0.16670360110801502,
+        "frac_side_99": 0.163417407785366,
+        "frac_side_129": 0.23224551683919703,
+        "frac_side_130": 0.23267473392623497,
+        "mid_return": 0.0,
+        "tod_hour": 10.60092967876735
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          -0.5764809383269275
+        ],
+        [
+          "frac_side_50",
+          0.4333030988097346
+        ],
+        [
+          "frac_side_49",
+          0.40307957769295016
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 5,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very fast",
+        "size": "large",
+        "cancels": "low cancels",
+        "executions": "very high executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "less side49",
+        "more side130",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:very fast|sz:large|cxl:low cancels|exe:very high executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.4043518411056834,
+        "log_qty_mean": 7.000259568762945,
+        "frac_side_49": 0.0627399267399109,
+        "frac_side_50": 0.043595325309599996,
+        "frac_side_99": 0.02961381475666688,
+        "frac_side_129": 0.43566998081280905,
+        "frac_side_130": 0.42838095238091706,
+        "mid_return": 0.0,
+        "tod_hour": 9.738320832608252
+      },
+      "top_deltas": [
+        [
+          "frac_side_49",
+          -0.7146833254973953
+        ],
+        [
+          "frac_side_130",
+          0.7132875778984229
+        ],
+        [
+          "frac_side_50",
+          -0.6842256191418964
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 6,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very fast",
+        "size": "large",
+        "cancels": "very low cancels",
+        "executions": "very low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side130",
+        "less side49",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:very fast|sz:large|cxl:very low cancels|exe:very low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.17034758434022618,
+        "log_qty_mean": 6.948441866348162,
+        "frac_side_49": 0.026011964107677237,
+        "frac_side_50": 0.02650049850448691,
+        "frac_side_99": 0.015721169823862208,
+        "frac_side_129": 0.09652376204718928,
+        "frac_side_130": 0.8352426055167743,
+        "mid_return": 0.0,
+        "tod_hour": 10.087477844244757
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          3.39464003985681
+        ],
+        [
+          "frac_side_49",
+          -1.0033452338660922
+        ],
+        [
+          "frac_side_50",
+          -0.8394057624687772
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 7,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very slow",
+        "size": "small",
+        "cancels": "high cancels",
+        "executions": "low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side50",
+        "less side130",
+        "more side49"
+      ],
+      "sig": "spr:very tight|tmp:very slow|sz:small|cxl:high cancels|exe:low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 1.6695636904626254,
+        "log_qty_mean": 6.685886306016373,
+        "frac_side_49": 0.17695350841041665,
+        "frac_side_50": 0.19242572959200774,
+        "frac_side_99": 0.10210991645746186,
+        "frac_side_129": 0.264832727681414,
+        "frac_side_130": 0.2636781178586117,
+        "mid_return": 0.0,
+        "tod_hour": 10.016453127536609
+      },
+      "top_deltas": [
+        [
+          "frac_side_50",
+          0.6667985082879136
+        ],
+        [
+          "frac_side_130",
+          -0.37215841445328823
+        ],
+        [
+          "frac_side_49",
+          0.1829736117185403
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 8,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "large",
+        "cancels": "high cancels",
+        "executions": "very low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side50",
+        "less side49",
+        "less side130"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:large|cxl:high cancels|exe:very low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.995865442363046,
+        "log_qty_mean": 6.96293411325945,
+        "frac_side_49": 0.05664094039420096,
+        "frac_side_50": 0.40916409403940507,
+        "frac_side_99": 0.13835787223935606,
+        "frac_side_129": 0.1839373070529362,
+        "frac_side_130": 0.21189978627401546,
+        "mid_return": 0.0,
+        "tod_hour": 10.129206245546023
+      },
+      "top_deltas": [
+        [
+          "frac_side_50",
+          2.6342645050373514
+        ],
+        [
+          "frac_side_49",
+          -0.7626180572791725
+        ],
+        [
+          "frac_side_130",
+          -0.713394694157671
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 9,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "normal",
+        "size": "very small",
+        "cancels": "low cancels",
+        "executions": "high executions",
+        "drift": "down",
+        "session": "open/morning"
+      },
+      "traits": [
+        "more side130",
+        "less side50",
+        "less side49"
+      ],
+      "sig": "spr:very tight|tmp:normal|sz:very small|cxl:low cancels|exe:high executions|dr:down|sess:open/morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.8085679029119639,
+        "log_qty_mean": 6.440799006839545,
+        "frac_side_49": 0.1262326580048174,
+        "frac_side_50": 0.08606254129042663,
+        "frac_side_99": 0.05493778903323121,
+        "frac_side_129": 0.3636957718563758,
+        "frac_side_130": 0.3690712398149767,
+        "mid_return": 0.0,
+        "tod_hour": 9.778260570359922
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          0.3224170139585327
+        ],
+        [
+          "frac_side_50",
+          -0.2987248628179319
+        ],
+        [
+          "frac_side_49",
+          -0.21566482131324174
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 10,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "very fast",
+        "size": "large",
+        "cancels": "very low cancels",
+        "executions": "very high executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "less side130",
+        "less side49",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:very fast|sz:large|cxl:very low cancels|exe:very high executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 0.1981732028214568,
+        "log_qty_mean": 6.941520587520912,
+        "frac_side_49": 0.03324050225370281,
+        "frac_side_50": 0.02221023824855176,
+        "frac_side_99": 0.018142305215712074,
+        "frac_side_129": 0.8083531873792661,
+        "frac_side_130": 0.11805376690276537,
+        "mid_return": 0.0,
+        "tod_hour": 10.202571635543958
+      },
+      "top_deltas": [
+        [
+          "frac_side_130",
+          -1.3318709087299778
+        ],
+        [
+          "frac_side_49",
+          -0.9465328362702506
+        ],
+        [
+          "frac_side_50",
+          -0.8783510649872271
+        ]
+      ]
+    },
+    {
+      "stock": "002721XSHE",
+      "cluster": 11,
+      "buckets": {
+        "spread": "very tight",
+        "tempo": "slow",
+        "size": "large",
+        "cancels": "very high cancels",
+        "executions": "very low executions",
+        "drift": "down",
+        "session": "late morning"
+      },
+      "traits": [
+        "more side49",
+        "less side130",
+        "less side50"
+      ],
+      "sig": "spr:very tight|tmp:slow|sz:large|cxl:very high cancels|exe:very low executions|dr:down|sess:late morning",
+      "feature_means": {
+        "pm_mean": 0.0,
+        "pm_std": 0.0,
+        "pm_abs_mean": 0.0,
+        "log_interval_mean": 1.2043458675040244,
+        "log_qty_mean": 6.947390626457294,
+        "frac_side_49": 0.39854605671701376,
+        "frac_side_50": 0.053565721382722566,
+        "frac_side_99": 0.18574870627195683,
+        "frac_side_129": 0.1929000206996292,
+        "frac_side_130": 0.1692394949285399,
+        "mid_return": 0.0,
+        "tod_hour": 10.56569723314642
+      },
+      "top_deltas": [
+        [
+          "frac_side_49",
+          1.924571111012631
+        ],
+        [
+          "frac_side_130",
+          -0.9945400818967738
+        ],
+        [
+          "frac_side_50",
+          -0.5937182680413778
+        ]
+      ]
+    }
+  ]
+}

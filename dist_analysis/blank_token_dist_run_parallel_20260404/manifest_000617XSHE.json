@@ -1,0 +1,24 @@
+{
+  "created_at": "20260404_114312",
+  "project_root": "/finance_ML/zhanghaohan/stock_language_model",
+  "source_root": "/finance_ML/zhanghaohan/GPT2_new_head_multi_d",
+  "analysis_root": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404",
+  "device": "cuda",
+  "default_seed": 42,
+  "stocks": [
+    {
+      "stock": "000617_XSHE",
+      "experiment_name": "blankGPT2_multiday_continue_617_stock_win50",
+      "checkpoint_path": "/finance_ML/zhanghaohan/GPT2_new_head_multi_d/model_cache/blankGPT2_multiday_continue_617_stock_win50_20260325_202035.pt",
+      "metadata_path": "/finance_ML/zhanghaohan/GPT2_new_head_multi_d/model_cache/blankGPT2_multiday_continue_617_stock_win50_20260325_202035.json",
+      "sample_count": 296677,
+      "predicted_plot": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_predicted_distribution.png",
+      "true_plot": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_true_distribution.png",
+      "predicted_counts_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_predicted_counts.csv",
+      "true_counts_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_true_counts.csv",
+      "predicted_samples_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_predicted_samples.csv",
+      "true_samples_csv": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_true_samples.csv",
+      "summary_json": "/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404/000617XSHE/blankGPT2_multiday_continue_617_stock_win50_distribution_summary.json"
+    }
+  ]
+}

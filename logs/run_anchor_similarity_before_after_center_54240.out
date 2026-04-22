@@ -1,0 +1,37 @@
+=== Anchor similarity (raw vs centered) ===
+device: cuda
+anchor file: /finance_ML/zhanghaohan/GPT2_new_head/sentence_semantic_anchor/preset_anchors/preset_anchors.txt
+anchor_count: 128 anchor_max_tokens: 128
+pretrained: gpt2 local_files_only: True
+
+[Pairwise cosine similarity (raw anchors, off-diagonal)]
+  count: 16256
+  mean/std: 0.998533 / 0.000747
+  min/max:  0.993611 / 0.999730
+  quantiles:
+    p00: 0.993611
+    p01: 0.996016
+    p05: 0.997051
+    p10: 0.997518
+    p50: 0.998722
+    p90: 0.999281
+    p95: 0.999375
+    p99: 0.999519
+    p100: 0.999730
+
+[Pairwise cosine similarity (centered anchors, off-diagonal)]
+  count: 16256
+  mean/std: -0.004769 / 0.515090
+  min/max:  -0.946166 / 0.960670
+  quantiles:
+    p00: -0.946166
+    p01: -0.884044
+    p05: -0.792848
+    p10: -0.709294
+    p50: -0.005880
+    p90: 0.700693
+    p95: 0.792430
+    p99: 0.887255
+    p100: 0.960670
+
+=== Done ===

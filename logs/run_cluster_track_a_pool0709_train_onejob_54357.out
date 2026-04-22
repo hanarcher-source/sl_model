@@ -1,0 +1,169 @@
+### CLUSTER_TRACK_A_META job_id=54357 run_name=pool0709_train_54357 out_root=/finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357
+### CLUSTER_TRACK_A_META stride=2 k=8:48:4
+2026-04-12T14:25:42+08:00
+### STOCK_BEGIN tag=000617XSHE
+2026-04-12T14:25:42+08:00
+[load] /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/pool_0709_0710_openbidanchor_txncomplete/final_result_for_merge_realflow_openbidanchor_txncomplete_20250709_000617XSHE_20260406_1233.joblib
+[load] rows=1178715 sec=0.57
+[features_build] window_starts_to_scan=353600 report_every=17680
+[features_build] windows_done=1 elapsed_sec=0.0 rate_hz=217.7
+[features_build] windows_done=17680 elapsed_sec=34.6 rate_hz=511.1
+[features_build] windows_done=35360 elapsed_sec=69.3 rate_hz=510.2
+[features_build] windows_done=53040 elapsed_sec=103.6 rate_hz=511.9
+[features_build] windows_done=70720 elapsed_sec=138.2 rate_hz=511.8
+[features_build] windows_done=88400 elapsed_sec=172.7 rate_hz=511.9
+[features_build] windows_done=106080 elapsed_sec=207.2 rate_hz=511.9
+[features_build] windows_done=123760 elapsed_sec=241.8 rate_hz=511.7
+[features_build] windows_done=141440 elapsed_sec=276.3 rate_hz=511.9
+[features_build] windows_done=159120 elapsed_sec=310.9 rate_hz=511.8
+[features_build] windows_done=176800 elapsed_sec=345.2 rate_hz=512.1
+[features_build] windows_done=194480 elapsed_sec=379.8 rate_hz=512.1
+[features_build] windows_done=212160 elapsed_sec=414.1 rate_hz=512.3
+[features_build] windows_done=229840 elapsed_sec=448.4 rate_hz=512.5
+[features_build] windows_done=247520 elapsed_sec=483.4 rate_hz=512.1
+[features_build] windows_done=265200 elapsed_sec=517.8 rate_hz=512.2
+[features_build] windows_done=282880 elapsed_sec=552.1 rate_hz=512.4
+[features_build] windows_done=300560 elapsed_sec=586.8 rate_hz=512.2
+[features_build] windows_done=318240 elapsed_sec=621.2 rate_hz=512.3
+[features_build] windows_done=335920 elapsed_sec=655.6 rate_hz=512.4
+[features_build] windows_done=353600 elapsed_sec=690.0 rate_hz=512.5
+[features] n_windows=353600 dim=12 train_starts_used=353600
+[k_sweep] n_samples=353600 backend=MiniBatchKMeans n_k=11 ks=[8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48] sil_subsample=15000
+[k_sweep] step=1/11 k=8 inertia=1.329e+06 silhouette=0.1858 min_clust_frac=0.0445 sec=2.09
+[k_sweep] step=2/11 k=12 inertia=1.002e+06 silhouette=0.1837 min_clust_frac=0.0428 sec=2.06
+[k_sweep] step=3/11 k=16 inertia=8.132e+05 silhouette=0.2098 min_clust_frac=0.0077 sec=2.10
+[k_sweep] step=4/11 k=20 inertia=7.63e+05 silhouette=0.1867 min_clust_frac=0.0067 sec=2.33
+[k_sweep] step=5/11 k=24 inertia=6.791e+05 silhouette=0.1751 min_clust_frac=0.0029 sec=2.08
+[k_sweep] step=6/11 k=28 inertia=6.364e+05 silhouette=0.1768 min_clust_frac=0.0029 sec=2.12
+[k_sweep] step=7/11 k=32 inertia=5.918e+05 silhouette=0.1771 min_clust_frac=0.0019 sec=2.13
+[k_sweep] step=8/11 k=36 inertia=5.553e+05 silhouette=0.1742 min_clust_frac=0.0019 sec=2.35
+[k_sweep] step=9/11 k=40 inertia=5.323e+05 silhouette=0.1715 min_clust_frac=0.0019 sec=2.17
+[k_sweep] step=10/11 k=44 inertia=5.14e+05 silhouette=0.1682 min_clust_frac=0.0018 sec=2.16
+[k_sweep] step=11/11 k=48 inertia=4.95e+05 silhouette=0.1672 min_clust_frac=0.0018 sec=2.21
+[k_sweep] total_sec=25.07
+{
+  "recommended_k": 8,
+  "recommended_silhouette": 0.1857680297446881,
+  "plateau_k_at_eps": 12,
+  "sil_eps": 0.015,
+  "feasible_ks": [
+    8,
+    12
+  ]
+}
+[done] stock=000617XSHE total_sec=718.5 wrote /finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357/000617XSHE/k_sweep_metrics.json labels_k_8.npz
+### STOCK_END tag=000617XSHE exit=0
+2026-04-12T14:37:43+08:00
+### STOCK_BEGIN tag=002263XSHE
+2026-04-12T14:37:43+08:00
+[load] /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/pool_0709_0710_openbidanchor_txncomplete/final_result_for_merge_realflow_openbidanchor_txncomplete_20250709_002263XSHE_20260406_1233.joblib
+[load] rows=959614 sec=0.50
+[features_build] window_starts_to_scan=287869 report_every=14393
+[features_build] windows_done=1 elapsed_sec=0.0 rate_hz=229.8
+[features_build] windows_done=14393 elapsed_sec=28.6 rate_hz=503.4
+[features_build] windows_done=28786 elapsed_sec=57.0 rate_hz=505.1
+[features_build] windows_done=43179 elapsed_sec=85.5 rate_hz=504.8
+[features_build] windows_done=57572 elapsed_sec=114.3 rate_hz=503.7
+[features_build] windows_done=71965 elapsed_sec=142.4 rate_hz=505.2
+[features_build] windows_done=86358 elapsed_sec=171.1 rate_hz=504.8
+[features_build] windows_done=100751 elapsed_sec=199.7 rate_hz=504.5
+[features_build] windows_done=115144 elapsed_sec=227.9 rate_hz=505.3
+[features_build] windows_done=129537 elapsed_sec=256.6 rate_hz=504.8
+[features_build] windows_done=143930 elapsed_sec=285.0 rate_hz=505.1
+[features_build] windows_done=158323 elapsed_sec=313.8 rate_hz=504.5
+[features_build] windows_done=172716 elapsed_sec=342.0 rate_hz=505.0
+[features_build] windows_done=187109 elapsed_sec=370.9 rate_hz=504.5
+[features_build] windows_done=201502 elapsed_sec=399.3 rate_hz=504.6
+[features_build] windows_done=215895 elapsed_sec=427.7 rate_hz=504.8
+[features_build] windows_done=230288 elapsed_sec=455.8 rate_hz=505.3
+[features_build] windows_done=244681 elapsed_sec=484.8 rate_hz=504.7
+[features_build] windows_done=259074 elapsed_sec=513.3 rate_hz=504.8
+[features_build] windows_done=273467 elapsed_sec=541.4 rate_hz=505.1
+[features_build] windows_done=287860 elapsed_sec=569.7 rate_hz=505.2
+[features] n_windows=287869 dim=12 train_starts_used=287869
+[k_sweep] n_samples=287869 backend=MiniBatchKMeans n_k=11 ks=[8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48] sil_subsample=15000
+[k_sweep] step=1/11 k=8 inertia=1.021e+06 silhouette=0.1731 min_clust_frac=0.0570 sec=2.12
+[k_sweep] step=2/11 k=12 inertia=8.752e+05 silhouette=0.1564 min_clust_frac=0.0441 sec=2.00
+[k_sweep] step=3/11 k=16 inertia=7.936e+05 silhouette=0.1412 min_clust_frac=0.0284 sec=2.02
+[k_sweep] step=4/11 k=20 inertia=7.159e+05 silhouette=0.1443 min_clust_frac=0.0185 sec=2.02
+[k_sweep] step=5/11 k=24 inertia=6.824e+05 silhouette=0.1324 min_clust_frac=0.0178 sec=2.03
+[k_sweep] step=6/11 k=28 inertia=6.354e+05 silhouette=0.1380 min_clust_frac=0.0092 sec=2.07
+[k_sweep] step=7/11 k=32 inertia=5.978e+05 silhouette=0.1393 min_clust_frac=0.0032 sec=2.27
+[k_sweep] step=8/11 k=36 inertia=5.714e+05 silhouette=0.1356 min_clust_frac=0.0031 sec=2.09
+[k_sweep] step=9/11 k=40 inertia=5.52e+05 silhouette=0.1280 min_clust_frac=0.0032 sec=2.10
+[k_sweep] step=10/11 k=44 inertia=5.347e+05 silhouette=0.1291 min_clust_frac=0.0032 sec=2.12
+[k_sweep] step=11/11 k=48 inertia=5.151e+05 silhouette=0.1300 min_clust_frac=0.0019 sec=2.12
+[k_sweep] total_sec=22.98
+{
+  "recommended_k": 8,
+  "recommended_silhouette": 0.17314008978265466,
+  "plateau_k_at_eps": 8,
+  "sil_eps": 0.015,
+  "feasible_ks": [
+    8,
+    12,
+    16,
+    20,
+    24
+  ]
+}
+[done] stock=002263XSHE total_sec=595.7 wrote /finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357/002263XSHE/k_sweep_metrics.json labels_k_8.npz
+### STOCK_END tag=002263XSHE exit=0
+2026-04-12T14:47:41+08:00
+### STOCK_BEGIN tag=002721XSHE
+2026-04-12T14:47:41+08:00
+[load] /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/pool_0709_0710_openbidanchor_txncomplete/final_result_for_merge_realflow_openbidanchor_txncomplete_20250709_002721XSHE_20260410_1533.joblib
+[load] rows=1091436 sec=0.58
+[features_build] window_starts_to_scan=327416 report_every=16370
+[features_build] windows_done=1 elapsed_sec=0.0 rate_hz=229.9
+[features_build] windows_done=16370 elapsed_sec=32.7 rate_hz=500.9
+[features_build] windows_done=32740 elapsed_sec=65.2 rate_hz=502.1
+[features_build] windows_done=49110 elapsed_sec=98.0 rate_hz=501.3
+[features_build] windows_done=65480 elapsed_sec=130.7 rate_hz=501.1
+[features_build] windows_done=81850 elapsed_sec=163.4 rate_hz=500.9
+[features_build] windows_done=98220 elapsed_sec=196.2 rate_hz=500.7
+[features_build] windows_done=114590 elapsed_sec=228.7 rate_hz=501.0
+[features_build] windows_done=130960 elapsed_sec=261.3 rate_hz=501.1
+[features_build] windows_done=147330 elapsed_sec=293.9 rate_hz=501.3
+[features_build] windows_done=163700 elapsed_sec=326.8 rate_hz=500.9
+[features_build] windows_done=180070 elapsed_sec=359.3 rate_hz=501.2
+[features_build] windows_done=196440 elapsed_sec=392.2 rate_hz=500.8
+[features_build] windows_done=212810 elapsed_sec=424.5 rate_hz=501.3
+[features_build] windows_done=229180 elapsed_sec=457.0 rate_hz=501.5
+[features_build] windows_done=245550 elapsed_sec=490.1 rate_hz=501.0
+[features_build] windows_done=261920 elapsed_sec=522.6 rate_hz=501.2
+[features_build] windows_done=278290 elapsed_sec=555.1 rate_hz=501.3
+[features_build] windows_done=294660 elapsed_sec=588.0 rate_hz=501.1
+[features_build] windows_done=311030 elapsed_sec=620.7 rate_hz=501.1
+[features_build] windows_done=327400 elapsed_sec=653.2 rate_hz=501.2
+[features] n_windows=327416 dim=12 train_starts_used=327416
+[k_sweep] n_samples=327416 backend=MiniBatchKMeans n_k=11 ks=[8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48] sil_subsample=15000
+[k_sweep] step=1/11 k=8 inertia=1.255e+06 silhouette=0.1410 min_clust_frac=0.0460 sec=2.32
+[k_sweep] step=2/11 k=12 inertia=1.039e+06 silhouette=0.1499 min_clust_frac=0.0368 sec=2.05
+[k_sweep] step=3/11 k=16 inertia=9.3e+05 silhouette=0.1469 min_clust_frac=0.0246 sec=2.07
+[k_sweep] step=4/11 k=20 inertia=8.574e+05 silhouette=0.1462 min_clust_frac=0.0207 sec=2.07
+[k_sweep] step=5/11 k=24 inertia=7.819e+05 silhouette=0.1514 min_clust_frac=0.0075 sec=2.08
+[k_sweep] step=6/11 k=28 inertia=7.41e+05 silhouette=0.1411 min_clust_frac=0.0093 sec=2.10
+[k_sweep] step=7/11 k=32 inertia=7.026e+05 silhouette=0.1348 min_clust_frac=0.0033 sec=2.32
+[k_sweep] step=8/11 k=36 inertia=6.643e+05 silhouette=0.1367 min_clust_frac=0.0011 sec=2.13
+[k_sweep] step=9/11 k=40 inertia=6.413e+05 silhouette=0.1317 min_clust_frac=0.0012 sec=2.16
+[k_sweep] step=10/11 k=44 inertia=6.13e+05 silhouette=0.1334 min_clust_frac=0.0012 sec=2.21
+[k_sweep] step=11/11 k=48 inertia=5.937e+05 silhouette=0.1319 min_clust_frac=0.0012 sec=2.17
+[k_sweep] total_sec=23.86
+{
+  "recommended_k": 12,
+  "recommended_silhouette": 0.1499214300232035,
+  "plateau_k_at_eps": 20,
+  "sil_eps": 0.015,
+  "feasible_ks": [
+    8,
+    12,
+    16,
+    20
+  ]
+}
+[done] stock=002721XSHE total_sec=680.5 wrote /finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357/002721XSHE/k_sweep_metrics.json labels_k_12.npz
+### STOCK_END tag=002721XSHE exit=0
+2026-04-12T14:59:04+08:00
+### CLUSTER_TRACK_A_DONE out_root=/finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357
+2026-04-12T14:59:04+08:00

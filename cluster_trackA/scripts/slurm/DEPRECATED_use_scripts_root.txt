@@ -1,0 +1,7 @@
+Use the repo-root Slurm drivers (same pattern as run_train_pool0709_*.sh):
+
+  sbatch scripts/run_cluster_track_a_pool0709_train_onejob.sh
+  sbatch scripts/run_cluster_track_a_pool0709_train_array.sh
+
+Previous *.slurm files omitted --reservation=finai and --gres=gpu:1, which caused
+ReqNodeNotAvail on dgx nodes. Do not submit the old .slurm copies.

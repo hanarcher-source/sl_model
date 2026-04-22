@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /finance_ML/zhanghaohan/stock_language_model
+
+sbatch scripts/hist_script/run_preprocess_real_lob_20250710_openbidanchor_000617XSHE.sh
+sbatch scripts/hist_script/run_preprocess_real_lob_20250710_openbidanchor_000981XSHE.sh
+sbatch scripts/hist_script/run_preprocess_real_lob_20250710_openbidanchor_002263XSHE.sh
+sbatch scripts/hist_script/run_preprocess_real_lob_20250710_openbidanchor_002366XSHE.sh

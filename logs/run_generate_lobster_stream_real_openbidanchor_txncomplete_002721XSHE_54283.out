@@ -1,0 +1,16 @@
+[2026-04-10 19:23:12] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002721XSHE_20260410_192312
+[2026-04-10 19:23:13] [INFO] Loading and normalizing snapshot table...
+scripts/hist_script/generate_lobster_stream_real_openbidanchor_txncomplete_fixed_start.py:107: DtypeWarning: Columns (1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,88) have mixed types. Specify dtype option on import or set low_memory=False.
+  lob_info = pd.read_csv(lob_snap_path, header=None, names=columns)
+[2026-04-10 19:28:42] [INFO] Loading processed real-flow orders...
+[2026-04-10 19:28:51] [INFO] Window rows=129693 tokenizable_rows=129693
+[2026-04-10 19:28:51] [INFO] Tokenizable side counts={129.0: 40342, 130.0: 39778, 50.0: 18305, 49.0: 18128, 99.0: 13140}
+[2026-04-10 19:29:02] [INFO] Exported message rows: 49846
+[2026-04-10 19:29:02] [INFO] Exported orderbook rows: 49846
+[2026-04-10 19:29:02] [INFO] Rejected crossing posts: 15524
+[2026-04-10 19:29:02] [INFO] Zero-remove cancel/exec events: 64323
+[2026-04-10 19:29:02] [DONE] Clean fixed-start real-flow export complete.
+[2026-04-10 19:29:02] [DONE] Raw real-flow log: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002721XSHE_20260410_192312/raw_realflow_log.csv
+[2026-04-10 19:29:02] [DONE] LOBSTER message CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002721XSHE_20260410_192312/002721XSHE_2025-07-10_36000000_36600000_message_10.csv
+[2026-04-10 19:29:02] [DONE] LOBSTER orderbook CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002721XSHE_20260410_192312/002721XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[2026-04-10 19:29:02] [DONE] Notes JSON: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002721XSHE_20260410_192312/generation_notes.json

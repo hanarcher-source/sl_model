@@ -1,0 +1,13 @@
+[2026-04-05 19:57:28] Starting pipeline for 4 stock(s): ['000617_XSHE', '000981_XSHE', '002263_XSHE', '002366_XSHE']
+[2026-04-05 19:57:28] --- begin 000617_XSHE ---
+
+[000617_XSHE] preprocess joblib: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/final_result_for_merge_realflow_openbidanchor_txncomplete_splitcancel_20250710_000617XSHE_20260405_1942.joblib
+[000617_XSHE] preprocess bin_record: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/bin_record_realflow_openbidanchor_txncomplete_splitcancel_20250710_000617XSHE_20260405_1942.json
+
+========================================================================
+/finance_ML/zhanghaohan/mycondaenv/bin/python -u /finance_ML/zhanghaohan/stock_language_model/scripts/hist_script/generate_lobster_stream_real_openbidanchor_txncomplete_fixed_start.py --stock 000617_XSHE --split-cancel-sides --processed-real-flow-path /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/final_result_for_merge_realflow_openbidanchor_txncomplete_splitcancel_20250710_000617XSHE_20260405_1942.joblib --lob-snap-path /finance_ML/zhanghaohan/LOB_data/20250710/mdl_6_28_0.csv --trade-date-str 2025-07-10 --start-time 10:00:00 --sim-lookahead-minutes 10
+========================================================================
+
+[2026-04-05 19:57:41] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_splitcancel_000617XSHE_20260405_195741
+[2026-04-05 19:57:41] [INFO] Loading and normalizing snapshot table...
+slurmstepd-dgx063: error: *** JOB 53855 ON dgx063 CANCELLED AT 2026-04-05T19:58:50 ***

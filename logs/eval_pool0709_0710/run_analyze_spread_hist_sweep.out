@@ -1,0 +1,94 @@
+Sweep root: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep
+Settings: ['T07_k0', 'T13_k0', 'T10_k50', 'T10_k200']
+Stocks: ['000617_XSHE', '000981_XSHE', '002263_XSHE', '002366_XSHE']
+Output dir: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/spread_hist_reports
+
+==========================================================================================
+STOCK: 000617_XSHE
+[Clean ref] orderbook=/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_000617XSHE_20260405_132652/000617XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[Clean ref] spread_ticks mean=1.09593 median=1 p95=2 std=0.418758 n=30961
+
+Per-setting mean spread + gap vs clean ref (ticks):
+ setting  temperature top_k  spread_mean_ticks  mean_gap_vs_ref_ticks  abs_mean_gap_vs_ref_ticks  spread_wasserstein_vs_ref
+T10_k200            1  None            1.14636              0.0504365                  0.0504365                   0.121943
+ T10_k50            1  None            1.61543               0.519505                   0.519505                   0.990196
+  T13_k0          1.3  None           0.451571              -0.644356                   0.644356                   0.987917
+  T07_k0          0.7  None            4.90885                3.81292                    3.81292                    4.39316
+
+[BEST] setting=T10_k200 temp=1.0 top_k=None
+[BEST] mean_gap_vs_ref_ticks=0.0504365 | ref_mean=1.09593 gen_mean=1.14636
+
+Histogram (pct) for spreads with >=1% mass in gen or ref:
+ spread_ticks  pct_gen  pct_ref  delta_pct_gen_minus_ref
+            1  88.9893  93.2367                 -4.24735
+            2  8.52406  5.07736                  3.44671
+            3  1.49733 0.855916                 0.641411
+
+Wrote histogram CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/spread_hist_reports/spread_hist_best_000617XSHE_T10_k200.csv
+
+==========================================================================================
+STOCK: 000981_XSHE
+[Clean ref] orderbook=/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_000981XSHE_20260405_132652/000981XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[Clean ref] spread_ticks mean=1.00025 median=1 p95=1 std=0.0158104 n=8000
+
+Per-setting mean spread + gap vs clean ref (ticks):
+ setting  temperature top_k  spread_mean_ticks  mean_gap_vs_ref_ticks  abs_mean_gap_vs_ref_ticks  spread_wasserstein_vs_ref
+  T07_k0          0.7  None                  1               -0.00025                    0.00025                  0.0161419
+T10_k200            1  None                  1               -0.00025                    0.00025                  0.0182063
+  T13_k0          1.3  None                  1               -0.00025                    0.00025                  0.0216521
+ T10_k50            1  None            1.04281              0.0425635                  0.0425635                   0.460068
+
+[BEST] setting=T07_k0 temp=0.7 top_k=None
+[BEST] mean_gap_vs_ref_ticks=-0.00025 | ref_mean=1.00025 gen_mean=1
+
+Histogram (pct) for spreads with >=1% mass in gen or ref:
+ spread_ticks  pct_gen  pct_ref  delta_pct_gen_minus_ref
+            1      100   99.975                    0.025
+
+Wrote histogram CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/spread_hist_reports/spread_hist_best_000981XSHE_T07_k0.csv
+
+==========================================================================================
+STOCK: 002263_XSHE
+[Clean ref] orderbook=/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002263XSHE_20260405_132652/002263XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[Clean ref] spread_ticks mean=1.00081 median=1 p95=1 std=0.0283858 n=16122
+
+Per-setting mean spread + gap vs clean ref (ticks):
+ setting  temperature top_k  spread_mean_ticks  mean_gap_vs_ref_ticks  abs_mean_gap_vs_ref_ticks  spread_wasserstein_vs_ref
+  T07_k0          0.7  None                  1           -0.000806352                0.000806352                  0.0289441
+ T10_k50            1  None                  1           -0.000806352                0.000806352                  0.0296661
+T10_k200            1  None                  1           -0.000806352                0.000806352                  0.0348293
+  T13_k0          1.3  None                  1           -0.000806352                0.000806352                  0.0395997
+
+[BEST] setting=T07_k0 temp=0.7 top_k=None
+[BEST] mean_gap_vs_ref_ticks=-0.000806352 | ref_mean=1.00081 gen_mean=1
+
+Histogram (pct) for spreads with >=1% mass in gen or ref:
+ spread_ticks  pct_gen  pct_ref  delta_pct_gen_minus_ref
+            1      100  99.9194                0.0806352
+
+Wrote histogram CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/spread_hist_reports/spread_hist_best_002263XSHE_T07_k0.csv
+
+==========================================================================================
+STOCK: 002366_XSHE
+[Clean ref] orderbook=/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_openbidanchor_txncomplete_002366XSHE_20260405_132652/002366XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[Clean ref] spread_ticks mean=1.07931 median=1 p95=2 std=0.639104 n=18950
+
+Per-setting mean spread + gap vs clean ref (ticks):
+ setting  temperature top_k  spread_mean_ticks  mean_gap_vs_ref_ticks  abs_mean_gap_vs_ref_ticks  spread_wasserstein_vs_ref
+  T13_k0          1.3  None             1.1473              0.0679878                  0.0679878                   0.303524
+T10_k200            1  None            1.42401               0.344698                   0.344698                   0.680456
+ T10_k50            1  None            1.70637               0.627054                   0.627054                   0.973706
+  T07_k0          0.7  None            1.83582               0.756507                   0.756507                    1.33569
+
+[BEST] setting=T13_k0 temp=1.3 top_k=None
+[BEST] mean_gap_vs_ref_ticks=0.0679878 | ref_mean=1.07931 gen_mean=1.1473
+
+Histogram (pct) for spreads with >=1% mass in gen or ref:
+ spread_ticks  pct_gen  pct_ref  delta_pct_gen_minus_ref
+            0        0  10.0475                 -10.0475
+            1  85.5954  76.9393                   8.6561
+            2   14.079  9.31398                    4.765
+            3 0.325595  2.90765                 -2.58206
+
+Wrote histogram CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/spread_hist_reports/spread_hist_best_002366XSHE_T13_k0.csv
+

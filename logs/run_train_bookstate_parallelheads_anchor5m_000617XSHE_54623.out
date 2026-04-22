@@ -1,0 +1,18 @@
+scripts/train_bookstate_parallelheads_anchor5m.py:213: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
+Epoch 1/3:   0%|          | 0/11 [00:00<?, ?batch/s]scripts/train_bookstate_parallelheads_anchor5m.py:253: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  autocast_ctx = torch.cuda.amp.autocast(enabled=use_amp) if device.type == "cuda" else nullcontext()
+Epoch 1/3:   9%|▉         | 1/11 [00:00<00:03,  2.60batch/s]Epoch 1/3:  18%|█▊        | 2/11 [00:00<00:01,  4.52batch/s]Epoch 1/3:  36%|███▋      | 4/11 [00:00<00:01,  6.96batch/s]Epoch 1/3:  55%|█████▍    | 6/11 [00:00<00:00,  8.23batch/s]Epoch 1/3:  73%|███████▎  | 8/11 [00:01<00:00,  8.95batch/s]Epoch 1/3:  91%|█████████ | 10/11 [00:01<00:00,  9.40batch/s]Epoch 1/3: 100%|██████████| 11/11 [00:01<00:00,  8.16batch/s]
+
+[Epoch 1] train_ce=4.9125 val_ce=6.0695 test_ce=3.8568
+  -> new best /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_bookstate_parallelheads_anchor5m/000617XSHE/bookstate_ph_000617XSHE_20260417_150521_best.pt
+Epoch 2/3:   0%|          | 0/11 [00:00<?, ?batch/s]Epoch 2/3:  18%|█▊        | 2/11 [00:00<00:00, 10.27batch/s]Epoch 2/3:  36%|███▋      | 4/11 [00:00<00:00, 10.30batch/s]Epoch 2/3:  55%|█████▍    | 6/11 [00:00<00:00, 10.30batch/s]Epoch 2/3:  73%|███████▎  | 8/11 [00:00<00:00, 10.29batch/s]Epoch 2/3:  91%|█████████ | 10/11 [00:00<00:00, 10.29batch/s]Epoch 2/3: 100%|██████████| 11/11 [00:01<00:00, 10.47batch/s]
+
+[Epoch 2] train_ce=3.0331 val_ce=5.4992 test_ce=2.8311
+  -> new best /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_bookstate_parallelheads_anchor5m/000617XSHE/bookstate_ph_000617XSHE_20260417_150521_best.pt
+Epoch 3/3:   0%|          | 0/11 [00:00<?, ?batch/s]Epoch 3/3:   9%|▉         | 1/11 [00:00<00:01,  9.77batch/s]Epoch 3/3:  18%|█▊        | 2/11 [00:00<00:00,  9.46batch/s]Epoch 3/3:  27%|██▋       | 3/11 [00:00<00:00,  9.65batch/s]Epoch 3/3:  45%|████▌     | 5/11 [00:00<00:00,  9.98batch/s]Epoch 3/3:  64%|██████▎   | 7/11 [00:00<00:00, 10.13batch/s]Epoch 3/3:  82%|████████▏ | 9/11 [00:00<00:00, 10.20batch/s]Epoch 3/3: 100%|██████████| 11/11 [00:01<00:00, 10.58batch/s]Epoch 3/3: 100%|██████████| 11/11 [00:01<00:00, 10.26batch/s]
+
+[Epoch 3] train_ce=2.0972 val_ce=5.2344 test_ce=2.4941
+  -> new best /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_bookstate_parallelheads_anchor5m/000617XSHE/bookstate_ph_000617XSHE_20260417_150521_best.pt
+[done] best_val 5.234401226043701 final_test 2.4940668530762196
+[out] /finance_ML/zhanghaohan/stock_language_model/training_runs/pool_0709_bookstate_parallelheads_anchor5m/000617XSHE/bookstate_ph_000617XSHE_20260417_150521_best.pt

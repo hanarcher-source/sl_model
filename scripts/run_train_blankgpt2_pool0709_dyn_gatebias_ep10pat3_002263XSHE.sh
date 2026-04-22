@@ -1,0 +1,31 @@
+#!/bin/bash
+#SBATCH -J tr_dygb_2263
+#SBATCH -p batch
+#SBATCH -N 1
+#SBATCH --cpus-per-task=8
+#SBATCH --gres=gpu:1
+#SBATCH -o /finance_ML/zhanghaohan/stock_language_model/logs/run_train_blankgpt2_pool0709_dyn_gatebias_ep10pat3_002263XSHE.out
+#SBATCH --reservation=finai
+
+source /finance_ML/zhanghaohan/conda_env/etc/profile.d/conda.sh
+conda activate /finance_ML/zhanghaohan/mycondaenv
+
+ROOT=/finance_ML/zhanghaohan/stock_language_model
+cd "$ROOT"
+
+python -u scripts/train_blankgpt2_dynamic_anchor_variants_txncomplete_single_day.py \
+  --variant dyn_gatebias \
+  --reg-mode margin_gated \
+  --stock 002263_XSHE \
+  --day 20250709 \
+  --data-dir "$ROOT/saved_LOB_stream/processed_real_flow/pool_0709_0710_openbidanchor_txncomplete" \
+  --output-root "$ROOT/training_runs/pool_0709_0710_train0709_blank_gpt2_dynamic_anchor_variants_win50" \
+  --epochs 10 \
+  --patience 3 \
+  --window-len 50 \
+  --vocab-size 40560 \
+  --anchor-count 128 \
+  --reg-lambda 1e-2 \
+  --margin-m 1.0 \
+  --reg-warmup-steps 20
+

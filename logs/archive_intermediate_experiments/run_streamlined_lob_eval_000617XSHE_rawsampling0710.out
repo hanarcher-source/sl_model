@@ -1,0 +1,354 @@
+[2026-04-04 12:29:32] [INFO] Starting streamlined LOB eval pipeline
+[2026-04-04 12:29:32] [INFO] checkpoint=/finance_ML/zhanghaohan/GPT2_new_head_multi_d/model_cache/blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035.pt
+[2026-04-04 12:29:32] [INFO] fixed config day=20250710 stock=000617_XSHE start=10:00:00 warmup=50 lookahead_min=10
+[2026-04-04 12:29:32] [INFO] sampling config temperature=1.0 top_p=1.0
+[2026-04-04 12:29:32] [INFO] run_tag=raw_sampling
+[2026-04-04 12:29:32] [INFO] Using user-provided processed real-flow file: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/processed_real_flow/final_result_for_merge_realflow_20250710_000617XSHE_20260402_2219.joblib
+[2026-04-04 12:29:32] [INFO] Reusing real-flow LOBSTER stream: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134
+[2026-04-04 12:29:32] [INFO] No matching generated LOBSTER stream found. Generating...
+[2026-04-04 12:29:32] [INFO] Experiment folder: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932
+[2026-04-04 12:29:32] [INFO] Loading snapshot table...
+scripts/run_streamlined_lob_eval_pipeline.py:224: DtypeWarning: Columns (1,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,88) have mixed types. Specify dtype option on import or set low_memory=False.
+  lob_info = pd.read_csv(lob_snap_path, header=None, names=columns)
+[2026-04-04 12:35:24] [INFO] Loading processed model input data...
+[2026-04-04 12:36:21] [INFO] processed_lob_data filtered rows: 669394
+[2026-04-04 12:36:22] [INFO] Loading bin record...
+[2026-04-04 12:36:22] [INFO] Building model...
+[2026-04-04 12:36:24] [INFO] Starting fixed-start generation...
+[2026-04-04 12:36:24] [INFO] stock=000617_XSHE start_time=10:00:00 lookahead_min=10 temperature=1.0 top_p=1.0
+[2026-04-04 12:36:25] [PROGRESS] step=200 sim_t_ms=1870/600000 progress=0.31% messages=273
+[2026-04-04 12:36:27] [PROGRESS] step=400 sim_t_ms=4080/600000 progress=0.68% messages=488
+[2026-04-04 12:36:28] [PROGRESS] step=600 sim_t_ms=6000/600000 progress=1.00% messages=672
+[2026-04-04 12:36:30] [PROGRESS] step=800 sim_t_ms=13730/600000 progress=2.29% messages=875
+[2026-04-04 12:36:32] [PROGRESS] step=1000 sim_t_ms=18490/600000 progress=3.08% messages=1124
+[2026-04-04 12:36:33] [PROGRESS] step=1200 sim_t_ms=19820/600000 progress=3.30% messages=1367
+[2026-04-04 12:36:35] [PROGRESS] step=1400 sim_t_ms=20800/600000 progress=3.47% messages=1605
+[2026-04-04 12:36:37] [PROGRESS] step=1600 sim_t_ms=22760/600000 progress=3.79% messages=1921
+[2026-04-04 12:36:39] [PROGRESS] step=1800 sim_t_ms=24340/600000 progress=4.06% messages=2239
+[2026-04-04 12:36:40] [PROGRESS] step=2000 sim_t_ms=24930/600000 progress=4.16% messages=2627
+[2026-04-04 12:36:42] [PROGRESS] step=2200 sim_t_ms=27920/600000 progress=4.65% messages=3008
+[2026-04-04 12:36:43] [PROGRESS] step=2400 sim_t_ms=29000/600000 progress=4.83% messages=3368
+[2026-04-04 12:36:45] [PROGRESS] step=2600 sim_t_ms=31730/600000 progress=5.29% messages=3585
+[2026-04-04 12:36:46] [PROGRESS] step=2800 sim_t_ms=34280/600000 progress=5.71% messages=3795
+[2026-04-04 12:36:49] [PROGRESS] step=3000 sim_t_ms=36880/600000 progress=6.15% messages=4080
+[2026-04-04 12:36:50] [PROGRESS] step=3200 sim_t_ms=41090/600000 progress=6.85% messages=4365
+[2026-04-04 12:36:52] [PROGRESS] step=3400 sim_t_ms=42220/600000 progress=7.04% messages=4696
+[2026-04-04 12:36:53] [PROGRESS] step=3600 sim_t_ms=42580/600000 progress=7.10% messages=4900
+[2026-04-04 12:36:55] [PROGRESS] step=3800 sim_t_ms=49410/600000 progress=8.23% messages=5141
+[2026-04-04 12:36:57] [PROGRESS] step=4000 sim_t_ms=51430/600000 progress=8.57% messages=5393
+[2026-04-04 12:36:58] [PROGRESS] step=4200 sim_t_ms=53750/600000 progress=8.96% messages=5695
+[2026-04-04 12:37:00] [PROGRESS] step=4400 sim_t_ms=55040/600000 progress=9.17% messages=5883
+[2026-04-04 12:37:02] [PROGRESS] step=4600 sim_t_ms=56520/600000 progress=9.42% messages=6134
+[2026-04-04 12:37:04] [PROGRESS] step=4800 sim_t_ms=60910/600000 progress=10.15% messages=6386
+[2026-04-04 12:37:05] [PROGRESS] step=5000 sim_t_ms=62670/600000 progress=10.45% messages=6459
+[2026-04-04 12:37:07] [PROGRESS] step=5200 sim_t_ms=64030/600000 progress=10.67% messages=6705
+[2026-04-04 12:37:08] [PROGRESS] step=5400 sim_t_ms=64890/600000 progress=10.81% messages=6871
+[2026-04-04 12:37:10] [PROGRESS] step=5600 sim_t_ms=66980/600000 progress=11.16% messages=7104
+[2026-04-04 12:37:12] [PROGRESS] step=5800 sim_t_ms=67860/600000 progress=11.31% messages=7162
+[2026-04-04 12:37:13] [PROGRESS] step=6000 sim_t_ms=71800/600000 progress=11.97% messages=7381
+[2026-04-04 12:37:15] [PROGRESS] step=6200 sim_t_ms=84390/600000 progress=14.06% messages=7643
+[2026-04-04 12:37:17] [PROGRESS] step=6400 sim_t_ms=92320/600000 progress=15.39% messages=7892
+[2026-04-04 12:37:19] [PROGRESS] step=6600 sim_t_ms=94800/600000 progress=15.80% messages=8164
+[2026-04-04 12:37:20] [PROGRESS] step=6800 sim_t_ms=96740/600000 progress=16.12% messages=8420
+[2026-04-04 12:37:22] [PROGRESS] step=7000 sim_t_ms=97790/600000 progress=16.30% messages=8685
+[2026-04-04 12:37:24] [PROGRESS] step=7200 sim_t_ms=99460/600000 progress=16.58% messages=8934
+[2026-04-04 12:37:25] [PROGRESS] step=7400 sim_t_ms=101260/600000 progress=16.88% messages=8998
+[2026-04-04 12:37:27] [PROGRESS] step=7600 sim_t_ms=104170/600000 progress=17.36% messages=9146
+[2026-04-04 12:37:28] [PROGRESS] step=7800 sim_t_ms=104460/600000 progress=17.41% messages=9345
+[2026-04-04 12:37:30] [PROGRESS] step=8000 sim_t_ms=109620/600000 progress=18.27% messages=9576
+[2026-04-04 12:37:32] [PROGRESS] step=8200 sim_t_ms=112060/600000 progress=18.68% messages=9808
+[2026-04-04 12:37:34] [PROGRESS] step=8400 sim_t_ms=114050/600000 progress=19.01% messages=10072
+[2026-04-04 12:37:35] [PROGRESS] step=8600 sim_t_ms=116030/600000 progress=19.34% messages=10356
+[2026-04-04 12:37:37] [PROGRESS] step=8800 sim_t_ms=117510/600000 progress=19.59% messages=10651
+[2026-04-04 12:37:38] [PROGRESS] step=9000 sim_t_ms=120320/600000 progress=20.05% messages=10930
+[2026-04-04 12:37:40] [PROGRESS] step=9200 sim_t_ms=121840/600000 progress=20.31% messages=11209
+[2026-04-04 12:37:41] [PROGRESS] step=9400 sim_t_ms=123350/600000 progress=20.56% messages=11432
+[2026-04-04 12:37:42] [PROGRESS] step=9600 sim_t_ms=124440/600000 progress=20.74% messages=11624
+[2026-04-04 12:37:45] [PROGRESS] step=9800 sim_t_ms=127380/600000 progress=21.23% messages=11906
+[2026-04-04 12:37:46] [PROGRESS] step=10000 sim_t_ms=129710/600000 progress=21.62% messages=12190
+[2026-04-04 12:37:48] [PROGRESS] step=10200 sim_t_ms=133000/600000 progress=22.17% messages=12473
+[2026-04-04 12:37:50] [PROGRESS] step=10400 sim_t_ms=134250/600000 progress=22.38% messages=12810
+[2026-04-04 12:37:51] [PROGRESS] step=10600 sim_t_ms=137120/600000 progress=22.85% messages=13060
+[2026-04-04 12:37:53] [PROGRESS] step=10800 sim_t_ms=140960/600000 progress=23.49% messages=13161
+[2026-04-04 12:37:55] [PROGRESS] step=11000 sim_t_ms=147810/600000 progress=24.64% messages=13393
+[2026-04-04 12:37:56] [PROGRESS] step=11200 sim_t_ms=160320/600000 progress=26.72% messages=13656
+[2026-04-04 12:37:57] [PROGRESS] step=11400 sim_t_ms=162950/600000 progress=27.16% messages=14013
+[2026-04-04 12:37:59] [PROGRESS] step=11600 sim_t_ms=166170/600000 progress=27.70% messages=14242
+[2026-04-04 12:38:00] [PROGRESS] step=11800 sim_t_ms=171270/600000 progress=28.55% messages=14502
+[2026-04-04 12:38:02] [PROGRESS] step=12000 sim_t_ms=177160/600000 progress=29.53% messages=14801
+[2026-04-04 12:38:03] [PROGRESS] step=12200 sim_t_ms=182740/600000 progress=30.46% messages=14989
+[2026-04-04 12:38:04] [PROGRESS] step=12400 sim_t_ms=187700/600000 progress=31.28% messages=15201
+[2026-04-04 12:38:06] [PROGRESS] step=12600 sim_t_ms=197750/600000 progress=32.96% messages=15457
+[2026-04-04 12:38:07] [PROGRESS] step=12800 sim_t_ms=203490/600000 progress=33.91% messages=15714
+[2026-04-04 12:38:09] [PROGRESS] step=13000 sim_t_ms=208930/600000 progress=34.82% messages=16002
+[2026-04-04 12:38:10] [PROGRESS] step=13200 sim_t_ms=213780/600000 progress=35.63% messages=16275
+[2026-04-04 12:38:12] [PROGRESS] step=13400 sim_t_ms=217450/600000 progress=36.24% messages=16484
+[2026-04-04 12:38:14] [PROGRESS] step=13600 sim_t_ms=221420/600000 progress=36.90% messages=16816
+[2026-04-04 12:38:16] [PROGRESS] step=13800 sim_t_ms=224770/600000 progress=37.46% messages=17132
+[2026-04-04 12:38:17] [PROGRESS] step=14000 sim_t_ms=232100/600000 progress=38.68% messages=17399
+[2026-04-04 12:38:19] [PROGRESS] step=14200 sim_t_ms=234930/600000 progress=39.16% messages=17657
+[2026-04-04 12:38:20] [PROGRESS] step=14400 sim_t_ms=236350/600000 progress=39.39% messages=17896
+[2026-04-04 12:38:21] [PROGRESS] step=14600 sim_t_ms=241830/600000 progress=40.30% messages=18194
+[2026-04-04 12:38:23] [PROGRESS] step=14800 sim_t_ms=244080/600000 progress=40.68% messages=18552
+[2026-04-04 12:38:24] [PROGRESS] step=15000 sim_t_ms=252340/600000 progress=42.06% messages=18814
+[2026-04-04 12:38:26] [PROGRESS] step=15200 sim_t_ms=254470/600000 progress=42.41% messages=19043
+[2026-04-04 12:38:27] [PROGRESS] step=15400 sim_t_ms=257260/600000 progress=42.88% messages=19276
+[2026-04-04 12:38:28] [PROGRESS] step=15600 sim_t_ms=260170/600000 progress=43.36% messages=19634
+[2026-04-04 12:38:30] [PROGRESS] step=15800 sim_t_ms=262720/600000 progress=43.79% messages=19987
+[2026-04-04 12:38:31] [PROGRESS] step=16000 sim_t_ms=265200/600000 progress=44.20% messages=20303
+[2026-04-04 12:38:33] [PROGRESS] step=16200 sim_t_ms=265560/600000 progress=44.26% messages=20561
+[2026-04-04 12:38:34] [PROGRESS] step=16400 sim_t_ms=266580/600000 progress=44.43% messages=20771
+[2026-04-04 12:38:35] [PROGRESS] step=16600 sim_t_ms=269540/600000 progress=44.92% messages=21013
+[2026-04-04 12:38:37] [PROGRESS] step=16800 sim_t_ms=282270/600000 progress=47.05% messages=21282
+[2026-04-04 12:38:38] [PROGRESS] step=17000 sim_t_ms=283680/600000 progress=47.28% messages=21622
+[2026-04-04 12:38:40] [PROGRESS] step=17200 sim_t_ms=285710/600000 progress=47.62% messages=21969
+[2026-04-04 12:38:41] [PROGRESS] step=17400 sim_t_ms=288660/600000 progress=48.11% messages=22276
+[2026-04-04 12:38:43] [PROGRESS] step=17600 sim_t_ms=289910/600000 progress=48.32% messages=22543
+[2026-04-04 12:38:44] [PROGRESS] step=17800 sim_t_ms=291470/600000 progress=48.58% messages=22699
+[2026-04-04 12:38:46] [PROGRESS] step=18000 sim_t_ms=294890/600000 progress=49.15% messages=22972
+[2026-04-04 12:38:48] [PROGRESS] step=18200 sim_t_ms=301370/600000 progress=50.23% messages=23165
+[2026-04-04 12:38:51] [PROGRESS] step=18400 sim_t_ms=307320/600000 progress=51.22% messages=23430
+[2026-04-04 12:38:52] [PROGRESS] step=18600 sim_t_ms=309920/600000 progress=51.65% messages=23702
+[2026-04-04 12:38:55] [PROGRESS] step=18800 sim_t_ms=320350/600000 progress=53.39% messages=23947
+[2026-04-04 12:38:57] [PROGRESS] step=19000 sim_t_ms=324360/600000 progress=54.06% messages=24154
+[2026-04-04 12:38:59] [PROGRESS] step=19200 sim_t_ms=325380/600000 progress=54.23% messages=24409
+[2026-04-04 12:39:01] [PROGRESS] step=19400 sim_t_ms=327040/600000 progress=54.51% messages=24687
+[2026-04-04 12:39:03] [PROGRESS] step=19600 sim_t_ms=330780/600000 progress=55.13% messages=24891
+[2026-04-04 12:39:06] [PROGRESS] step=19800 sim_t_ms=332130/600000 progress=55.35% messages=25133
+[2026-04-04 12:39:07] [PROGRESS] step=20000 sim_t_ms=334070/600000 progress=55.68% messages=25457
+[2026-04-04 12:39:08] [DONE] Fixed-start generation complete.
+[2026-04-04 12:39:08] [DONE] Raw generation log: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932/raw_generation_log.csv
+[2026-04-04 12:39:08] [DONE] LOBSTER message CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932/000617XSHE_2025-07-10_36000000_36600000_message_10.csv
+[2026-04-04 12:39:08] [DONE] LOBSTER orderbook CSV: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932/000617XSHE_2025-07-10_36000000_36600000_orderbook_10.csv
+[2026-04-04 12:39:23] [INFO] Running evaluation for real-flow reference stream...
+2026-04-04 12:39:23 [INFO] ======================================================================
+2026-04-04 12:39:23 [INFO] real-flow reference evaluation — stylized fact evaluation
+2026-04-04 12:39:23 [INFO] ======================================================================
+2026-04-04 12:39:23 [INFO] Evaluating: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134
+2026-04-04 12:39:23 [INFO] 
+── loading data ───────────────────────────────────────
+2026-04-04 12:39:23 [INFO] Loading LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134
+2026-04-04 12:39:23 [INFO] Loaded 72,762 rows | 10 book levels | date 2025-07-10
+2026-04-04 12:39:23 [INFO] 
+── computing metrics ──────────────────────────────────
+2026-04-04 12:39:23 [INFO] Computed now (generated-only): 15 metric groups
+2026-04-04 12:39:23 [INFO] Skipped (needs real reference LOB data): 24 benchmark metric configs
+2026-04-04 12:39:23 [INFO] Skipped (needs true order-ID linkage): 2 metrics
+2026-04-04 12:39:23 [INFO] 
+── capability split (strict) ─────────────────────────
+2026-04-04 12:39:23 [INFO]   [computed] acf_returns_1min
+2026-04-04 12:39:23 [INFO]   [computed] direction_counts
+2026-04-04 12:39:23 [INFO]   [computed] direction_fractions
+2026-04-04 12:39:23 [INFO]   [computed] event_type_counts
+2026-04-04 12:39:23 [INFO]   [computed] event_type_fractions
+2026-04-04 12:39:23 [INFO]   [computed] iat_ms
+2026-04-04 12:39:23 [INFO]   [computed] l1_volume
+2026-04-04 12:39:23 [INFO]   [computed] mid_price
+2026-04-04 12:39:23 [INFO]   [computed] ob_imbalance
+2026-04-04 12:39:23 [INFO]   [computed] orderflow_imbalance
+2026-04-04 12:39:23 [INFO]   [computed] returns_1min
+2026-04-04 12:39:23 [INFO]   [computed] spread_ticks
+2026-04-04 12:39:23 [INFO]   [computed] total_volume_5lvl
+2026-04-04 12:39:23 [INFO]   [computed] volatility_1min
+2026-04-04 12:39:23 [INFO]   [computed] volume_per_minute
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] spread
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] orderbook_imbalance
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] log_inter_arrival_time
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] log_time_to_cancel
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ask_volume_touch
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] bid_volume_touch
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ask_volume
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] bid_volume
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] limit_ask_order_depth
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] limit_bid_order_depth
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ask_cancellation_depth
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] bid_cancellation_depth
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] limit_ask_order_levels
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] limit_bid_order_levels
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ask_cancellation_levels
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] bid_cancellation_levels
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] vol_per_min
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ofi
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ofi_up
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ofi_stay
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ofi_down
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] ask_volume | spread
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] spread | time
+2026-04-04 12:39:24 [INFO]   [skipped: needs real reference LOB data] spread | volatility
+2026-04-04 12:39:24 [INFO]   [skipped: needs true order-ID linkage] time_to_first_fill
+2026-04-04 12:39:24 [INFO]   [skipped: needs true order-ID linkage] time_to_cancel
+2026-04-04 12:39:24 [INFO] 
+── generating plots ───────────────────────────────────
+2026-04-04 12:39:25 [INFO] saved mid_price.png
+2026-04-04 12:39:26 [INFO] saved spread.png
+2026-04-04 12:39:26 [INFO] saved returns_dist.png
+2026-04-04 12:39:27 [INFO] saved autocorr.png
+2026-04-04 12:39:27 [INFO] saved inter_arrival_time.png
+2026-04-04 12:39:27 [INFO] saved l1_volume.png
+2026-04-04 12:39:28 [INFO] saved volume_per_minute.png
+2026-04-04 12:39:29 [INFO] saved orderbook_imbalance.png
+2026-04-04 12:39:30 [INFO] saved orderflow_imbalance.png
+2026-04-04 12:39:30 [INFO] saved event_type_counts.png
+2026-04-04 12:39:30 [INFO] Skipped time-to-fill/time-to-cancel plots: requires true order-ID linkage (not available in synthetic IDs).
+2026-04-04 12:39:32 [INFO] saved overview_panel.png
+2026-04-04 12:39:32 [INFO] Wrote metrics summary: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134/metrics_summary.json
+2026-04-04 12:39:32 [INFO] 
+── key metrics ────────────────────────────────────────
+2026-04-04 12:39:32 [INFO]   spread        mean=1.00 ticks(0.01)  median=1.00 ticks(0.01)
+2026-04-04 12:39:32 [INFO]   vol (1min)    0.003818
+2026-04-04 12:39:32 [INFO]   returns       skew=0.902  kurt=-0.237
+2026-04-04 12:39:32 [INFO]   IAT           mean=18.9ms  median=10.0ms
+2026-04-04 12:39:32 [INFO]   OB imbalance  mean=0.4827  std=0.6955
+2026-04-04 12:39:32 [INFO] 
+── all computed metrics summary ─────────────────────
+2026-04-04 12:39:32 [INFO]   acf_returns_1min: [1.0, -0.40405937001860365, 0.0937366874808657, -0.16414196106354023, -0.07411921381060468, -0.08466664360809548, 0.29511407334005185, -0.14839325513335974]
+2026-04-04 12:39:32 [INFO]   direction_counts: {"-1": 38283, "1": 34479}
+2026-04-04 12:39:32 [INFO]   direction_fractions: {"-1": 0.5261, "1": 0.4739}
+2026-04-04 12:39:32 [INFO]   event_type_counts: {"1": 26488, "2": 169, "3": 5080, "4": 41025}
+2026-04-04 12:39:32 [INFO]   event_type_fractions: {"1": 0.364, "2": 0.0023, "3": 0.0698, "4": 0.5638}
+2026-04-04 12:39:32 [INFO]   iat_ms: {"mean": 18.905659188303503, "median": 10.0, "n": 31736, "n_exec_excluded": 41025, "p95": 70.0, "std": 23.975917190464035}
+2026-04-04 12:39:32 [INFO]   l1_volume: {"ask_mean": 13508.136664742586, "ask_median": 1200.0, "bid_mean": 82199.82095049614, "bid_median": 21800.0}
+2026-04-04 12:39:32 [INFO]   mid_price: {"end_cny": 9.445, "end_price_int": 94450.0, "mean_cny": 9.384123443555701, "mean_price_int": 93841.23443555702, "mean_ticks_0p01": 938.4123443555702, "start_cny": 9.345, "start_price_int": 93450.0, "std_cny": 0.03601391029668563, "std_price_int": 360.1391029668566, "std_ticks_0p01": 3.6013910296685663, "total_return_bps": 107.00909577314066}
+2026-04-04 12:39:32 [INFO]   ob_imbalance: {"mean": 0.48272729400781356, "median": 0.8805970149253731, "std": 0.6955383222480783}
+2026-04-04 12:39:32 [INFO]   orderflow_imbalance: {"mean": 41.0200104593873, "n": 72662, "std": 1102.529912780277}
+2026-04-04 12:39:32 [INFO]   returns_1min: {"kurtosis": -0.23667689247788282, "mean": 0.0011826733384386519, "n": 9, "skew": 0.9018894790291314, "std": 0.0038176571497898775}
+2026-04-04 12:39:32 [INFO]   spread_ticks: {"mean": 1.0, "median": 1.0, "n": 2828, "pct_zero_spread": 0.9611335587257085, "std": 0.0, "tick_size_cny": 0.01, "tick_size_price_int": 100}
+2026-04-04 12:39:32 [INFO]   total_volume_5lvl: {"ask_mean": 544649.865644155, "bid_mean": 569203.1067590226}
+2026-04-04 12:39:32 [INFO]   volatility_1min: 0.003817657149789877
+2026-04-04 12:39:32 [INFO]   volume_per_minute: {"mean": 8775982.463702131, "n": 599, "total": 5256813495.757576}
+2026-04-04 12:39:32 [INFO] 
+======================================================================
+2026-04-04 12:39:32 [INFO] Evaluation complete
+2026-04-04 12:39:32 [INFO] ======================================================================
+[2026-04-04 12:39:32] [INFO] Running evaluation for generated stream with real-flow comparison metrics...
+2026-04-04 12:39:32 [INFO] ======================================================================
+2026-04-04 12:39:32 [INFO] generated stream evaluation — stylized fact evaluation
+2026-04-04 12:39:32 [INFO] ======================================================================
+2026-04-04 12:39:32 [INFO] Evaluating: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932
+2026-04-04 12:39:32 [INFO] 
+── loading data ───────────────────────────────────────
+2026-04-04 12:39:32 [INFO] Loading LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932
+2026-04-04 12:39:32 [INFO] Loaded 25,457 rows | 10 book levels | date 2025-07-10
+2026-04-04 12:39:32 [INFO] Loading real reference LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134
+2026-04-04 12:39:32 [INFO] Loading LOBSTER data from /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134
+2026-04-04 12:39:33 [INFO] Loaded 72,762 rows | 10 book levels | date 2025-07-10
+2026-04-04 12:39:33 [INFO] 
+── computing metrics ──────────────────────────────────
+2026-04-04 12:39:34 [WARNING] Reference metric log_time_to_cancel skipped: <lambda>() got an unexpected keyword argument 'include_groups'
+2026-04-04 12:39:37 [WARNING] Reference conditional metric spread | volatility skipped: Invalid frequency: 0.1s
+2026-04-04 12:39:37 [INFO] Computed now (generated-only): 15 metric groups
+2026-04-04 12:39:37 [INFO] Computed (with real reference LOB data): 22 benchmark metric configs
+2026-04-04 12:39:37 [INFO] Failed (with real reference LOB data): 2 benchmark metric configs
+2026-04-04 12:39:37 [INFO] Skipped (needs true order-ID linkage): 2 metrics
+2026-04-04 12:39:37 [INFO] 
+── capability split (strict) ─────────────────────────
+2026-04-04 12:39:37 [INFO]   [computed] acf_returns_1min
+2026-04-04 12:39:37 [INFO]   [computed] direction_counts
+2026-04-04 12:39:37 [INFO]   [computed] direction_fractions
+2026-04-04 12:39:37 [INFO]   [computed] event_type_counts
+2026-04-04 12:39:37 [INFO]   [computed] event_type_fractions
+2026-04-04 12:39:37 [INFO]   [computed] iat_ms
+2026-04-04 12:39:37 [INFO]   [computed] l1_volume
+2026-04-04 12:39:37 [INFO]   [computed] mid_price
+2026-04-04 12:39:37 [INFO]   [computed] ob_imbalance
+2026-04-04 12:39:37 [INFO]   [computed] orderflow_imbalance
+2026-04-04 12:39:37 [INFO]   [computed] returns_1min
+2026-04-04 12:39:37 [INFO]   [computed] spread_ticks
+2026-04-04 12:39:37 [INFO]   [computed] total_volume_5lvl
+2026-04-04 12:39:37 [INFO]   [computed] volatility_1min
+2026-04-04 12:39:37 [INFO]   [computed] volume_per_minute
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ask_cancellation_depth
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ask_cancellation_levels
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ask_volume
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ask_volume | spread
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ask_volume_touch
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] bid_cancellation_depth
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] bid_cancellation_levels
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] bid_volume
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] bid_volume_touch
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] limit_ask_order_depth
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] limit_ask_order_levels
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] limit_bid_order_depth
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] limit_bid_order_levels
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] log_inter_arrival_time
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ofi
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ofi_down
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ofi_stay
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] ofi_up
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] orderbook_imbalance
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] spread
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] spread | time
+2026-04-04 12:39:37 [INFO]   [computed: real-vs-generated] vol_per_min
+2026-04-04 12:39:37 [INFO]   [failed: real-vs-generated] log_time_to_cancel | <lambda>() got an unexpected keyword argument 'include_groups'
+2026-04-04 12:39:37 [INFO]   [failed: real-vs-generated] spread | volatility | Invalid frequency: 0.1s
+2026-04-04 12:39:37 [INFO]   [skipped: needs true order-ID linkage] time_to_first_fill
+2026-04-04 12:39:37 [INFO]   [skipped: needs true order-ID linkage] time_to_cancel
+2026-04-04 12:39:37 [INFO] 
+── generating plots ───────────────────────────────────
+2026-04-04 12:39:37 [INFO] saved mid_price.png
+2026-04-04 12:39:38 [INFO] saved spread.png
+2026-04-04 12:39:39 [INFO] saved returns_dist.png
+2026-04-04 12:39:39 [INFO] saved autocorr.png
+2026-04-04 12:39:39 [INFO] saved inter_arrival_time.png
+2026-04-04 12:39:40 [INFO] saved l1_volume.png
+2026-04-04 12:39:40 [INFO] saved volume_per_minute.png
+2026-04-04 12:39:41 [INFO] saved orderbook_imbalance.png
+2026-04-04 12:39:41 [INFO] saved orderflow_imbalance.png
+2026-04-04 12:39:42 [INFO] saved event_type_counts.png
+2026-04-04 12:39:42 [INFO] Skipped time-to-fill/time-to-cancel plots: requires true order-ID linkage (not available in synthetic IDs).
+2026-04-04 12:39:43 [INFO] saved overview_panel.png
+2026-04-04 12:39:43 [INFO] Wrote metrics summary: /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932/metrics_summary.json
+2026-04-04 12:39:43 [INFO] 
+── key metrics ────────────────────────────────────────
+2026-04-04 12:39:43 [INFO]   spread        mean=1.72 ticks(0.01)  median=2.00 ticks(0.01)
+2026-04-04 12:39:43 [INFO]   vol (1min)    0.007887
+2026-04-04 12:39:43 [INFO]   returns       skew=-0.997  kurt=1.485
+2026-04-04 12:39:43 [INFO]   IAT           mean=18.1ms  median=0.0ms
+2026-04-04 12:39:43 [INFO]   OB imbalance  mean=-0.1707  std=0.6807
+2026-04-04 12:39:43 [INFO] 
+── all computed metrics summary ─────────────────────
+2026-04-04 12:39:43 [INFO]   acf_returns_1min: [1.0, -0.499091468214627, -0.12439191238161112, 0.14678637768449015]
+2026-04-04 12:39:43 [INFO]   direction_counts: {"-1": 8267, "1": 17190}
+2026-04-04 12:39:43 [INFO]   direction_fractions: {"-1": 0.3247, "1": 0.6753}
+2026-04-04 12:39:43 [INFO]   event_type_counts: {"1": 14974, "2": 273, "3": 3230, "4": 6980}
+2026-04-04 12:39:43 [INFO]   event_type_fractions: {"1": 0.5882, "2": 0.0107, "3": 0.1269, "4": 0.2742}
+2026-04-04 12:39:43 [INFO]   iat_ms: {"mean": 18.080212167135745, "median": 0.0, "n": 18476, "n_exec_excluded": 6980, "p95": 80.0, "std": 90.74719307753602}
+2026-04-04 12:39:43 [INFO]   l1_volume: {"ask_mean": 165818.48505322702, "ask_median": 105000.0, "bid_mean": 103131.00683505519, "bid_median": 37800.0}
+2026-04-04 12:39:43 [INFO]   mid_price: {"end_cny": 9.635, "end_price_int": 96350.0, "mean_cny": 9.476919118513571, "mean_price_int": 94769.19118513571, "mean_ticks_0p01": 947.6919118513572, "start_cny": 9.345, "start_price_int": 93450.0, "std_cny": 0.09055073144288826, "std_price_int": 905.5073144288818, "std_ticks_0p01": 9.055073144288817, "total_return_bps": 310.32637774210724}
+2026-04-04 12:39:43 [INFO]   ob_imbalance: {"mean": -0.17074104362330222, "median": -0.27842195223356586, "std": 0.680707123817105}
+2026-04-04 12:39:43 [INFO]   orderflow_imbalance: {"mean": 203.25984935126394, "n": 25357, "std": 1591.0445290236844}
+2026-04-04 12:39:43 [INFO]   returns_1min: {"kurtosis": 1.4853401121795464, "mean": 0.0045134426556117544, "n": 5, "skew": -0.9966809638659967, "std": 0.00788747180938299}
+2026-04-04 12:39:43 [INFO]   spread_ticks: {"mean": 1.718811414196997, "median": 2.0, "n": 25442, "pct_zero_spread": 0.0005892288957850493, "std": 0.7093788151716844, "tick_size_cny": 0.01, "tick_size_price_int": 100}
+2026-04-04 12:39:43 [INFO]   total_volume_5lvl: {"ask_mean": 644831.6397454531, "bid_mean": 416546.7636799309}
+2026-04-04 12:39:43 [INFO]   volatility_1min: 0.00788747180938299
+2026-04-04 12:39:43 [INFO]   volume_per_minute: {"mean": 3738109.6226415094, "n": 318, "total": 1188718860.0}
+2026-04-04 12:39:43 [INFO]   [real-vs-generated comparative metrics]
+2026-04-04 12:39:43 [INFO]   ask_cancellation_depth: {"l1_by_group": 0.5984187488738872, "n_generated": 1079, "n_real": 3436, "wasserstein": 0.750337383409339}
+2026-04-04 12:39:43 [INFO]   ask_cancellation_levels: {"l1_by_group": 0.6163559031062342, "n_generated": 942, "n_real": 1818, "wasserstein": 1.2252401996238376}
+2026-04-04 12:39:43 [INFO]   ask_volume: {"l1_by_group": 0.5204217833923964, "n_generated": 25457, "n_real": 72762, "wasserstein": 0.9476778543850433}
+2026-04-04 12:39:43 [INFO]   ask_volume | spread: {"n_generated": 25457, "n_real": 72762, "num_condition_groups": 48, "per_group": {"1": {"n": 2, "wasserstein": null}, "10": {"n": 176, "wasserstein": null}, "11": {"n": 88, "wasserstein": null}, "12": {"n": 59, "wasserstein": null}, "13": {"n": 10, "wasserstein": null}, "14": {"n": 91, "wasserstein": null}, "15": {"n": 77, "wasserstein": null}, "16": {"n": 353, "wasserstein": null}, "17": {"n": 97, "wasserstein": null}, "18": {"n": 121, "wasserstein": null}, "19": {"n": 773, "wasserstein": null}, "2": {"n": 9, "wasserstein": null}, "20": {"n": 591, "wasserstein": null}, "21": {"n": 881, "wasserstein": null}, "22": {"n": 1369, "wasserstein": null}, "23": {"n": 2510, "wasserstein": null}, "24": {"n": 4776, "wasserstein": null}, "25": {"n": 2776, "wasserstein": null}, "26": {"n": 2480, "wasserstein": null}, "27": {"n": 1654, "wasserstein": null}, "28": {"n": 2339, "wasserstein": null}, "29": {"n": 972, "wasserstein": null}, "3": {"n": 40, "wasserstein": null}, "30": {"n": 1610, "wasserstein": null}, "31": {"n": 3157, "wasserstein": null}, "32": {"n": 3651, "wasserstein": null}, "33": {"n": 4786, "wasserstein": null}, "34": {"n": 8433, "wasserstein": null}, "35": {"n": 7198, "wasserstein": null}, "36": {"n": 3938, "wasserstein": null}, "37": {"n": 6463, "wasserstein": null}, "38": {"n": 3933, "wasserstein": null}, "39": {"n": 3786, "wasserstein": 0.7179612313090369}, "4": {"n": 18, "wasserstein": null}, "40": {"n": 12423, "wasserstein": 0.2239306177965104}, "41": {"n": 13966, "wasserstein": null}, "42": {"n": 1585, "wasserstein": null}, "43": {"n": 195, "wasserstein": null}, "44": {"n": 49, "wasserstein": null}, "45": {"n": 33, "wasserstein": null}, "46": {"n": 1, "wasserstein": null}, "47": {"n": 6, "wasserstein": null}, "48": {"n": 12, "wasserstein": null}, "5": {"n": 57, "wasserstein": null}, "6": {"n": 38, "wasserstein": null}, "7": {"n": 591, "wasserstein": null}, "8": {"n": 43, "wasserstein": null}, "9": {"n": 3, "wasserstein": null}}, "weighted_wasserstein": null}
+2026-04-04 12:39:43 [INFO]   ask_volume_touch: {"l1_by_group": 0.8340114148995839, "n_generated": 25457, "n_real": 72762, "wasserstein": 1.248827812224058}
+2026-04-04 12:39:43 [INFO]   bid_cancellation_depth: {"l1_by_group": 0.6503398165346541, "n_generated": 2402, "n_real": 1755, "wasserstein": 0.8347514125472497}
+2026-04-04 12:39:43 [INFO]   bid_cancellation_levels: {"l1_by_group": 0.6117490388449588, "n_generated": 2365, "n_real": 1405, "wasserstein": 1.1496577828602688}
+2026-04-04 12:39:43 [INFO]   bid_volume: {"l1_by_group": 0.45504265207294464, "n_generated": 25457, "n_real": 72762, "wasserstein": 0.8027590966466972}
+2026-04-04 12:39:43 [INFO]   bid_volume_touch: {"l1_by_group": 0.2650421270290386, "n_generated": 25457, "n_real": 72762, "wasserstein": 0.16035595673774017}
+2026-04-04 12:39:43 [INFO]   limit_ask_order_depth: {"l1_by_group": 0.5848270670477882, "n_generated": 8391, "n_real": 20696, "wasserstein": 0.37435576569400036}
+2026-04-04 12:39:43 [INFO]   limit_ask_order_levels: {"l1_by_group": 0.5736282034509593, "n_generated": 7838, "n_real": 18026, "wasserstein": 1.0566409199542515}
+2026-04-04 12:39:43 [INFO]   limit_bid_order_depth: {"l1_by_group": 0.39118834907114725, "n_generated": 6582, "n_real": 4902, "wasserstein": 0.2721218822248832}
+2026-04-04 12:39:43 [INFO]   limit_bid_order_levels: {"l1_by_group": 0.08263332621663805, "n_generated": 6211, "n_real": 15752, "wasserstein": 0.12799070137909072}
+2026-04-04 12:39:43 [INFO]   log_inter_arrival_time: {"l1_by_group": 0.036343013198606555, "n_generated": 25456, "n_real": 72761, "wasserstein": 0.02477687978378428}
+2026-04-04 12:39:43 [INFO]   ofi: {"l1_by_group": 0.41253421848344957, "n_generated": 25357, "n_real": 72662, "wasserstein": 0.2958444487509292}
+2026-04-04 12:39:43 [INFO]   ofi_down: {"l1_by_group": 0.504946259360537, "n_generated": 308, "n_real": 5267, "wasserstein": 0.5651924101919561}
+2026-04-04 12:39:43 [INFO]   ofi_stay: {"l1_by_group": 0.40445574714505406, "n_generated": 24722, "n_real": 62107, "wasserstein": 0.26377987016749477}
+2026-04-04 12:39:43 [INFO]   ofi_up: {"l1_by_group": 0.5322999694818056, "n_generated": 326, "n_real": 5287, "wasserstein": 0.7324049384325093}
+2026-04-04 12:39:43 [INFO]   orderbook_imbalance: {"l1_by_group": 0.474440276467323, "n_generated": 25457, "n_real": 72762, "wasserstein": 0.8734683959356025}
+2026-04-04 12:39:43 [INFO]   spread: {"l1_by_group": 0.9605443298299234, "n_generated": 25457, "n_real": 72762, "wasserstein": 1.3516349711649154}
+2026-04-04 12:39:43 [INFO]   spread | time: {"n_generated": 25457, "n_real": 72762, "num_condition_groups": 1, "per_group": {"10": {"n": 98219, "wasserstein": 1.3516349711649154}}, "weighted_wasserstein": 1.3516349711649152}
+2026-04-04 12:39:43 [INFO]   vol_per_min: {"l1_by_group": 0.36822901901492, "n_generated": 318, "n_real": 599, "wasserstein": 0.3752421757205916}
+2026-04-04 12:39:43 [INFO] 
+======================================================================
+2026-04-04 12:39:43 [INFO] Evaluation complete
+2026-04-04 12:39:43 [INFO] ======================================================================
+[2026-04-04 12:39:43] [DONE] Pipeline summary -> /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/streamlined_eval_pipeline_20260404_122932/pipeline_summary.json
+[2026-04-04 12:39:43] [DONE] Real-flow metrics -> /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_realflow_generate_lobster_000617XSHE_20260403_232134/metrics_summary.json
+[2026-04-04 12:39:43] [DONE] Generated metrics -> /finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/fixed_start_000617XSHE_blankGPT2_multiday_continue_617_stock_win50_20250709_20260325_202035_temp_1p0_topp_1p0_generate_lobster_raw_sampling_20260404_122932/metrics_summary.json

@@ -1,0 +1,578 @@
+{
+  "selection_rule": "rank_sum_over_six (W mean/median/iqm + L1 mean/median/iqm; lower is better)",
+  "stocks": {
+    "000617XSHE": {
+      "best_by_rank_sum_over_six": "T13_k400",
+      "best_rank_sum": 14,
+      "original_best_by_W_mean": "T13_k0",
+      "top_candidates": [
+        {
+          "setting": "T13_k400",
+          "rank_sum": 14,
+          "W": {
+            "n": 21,
+            "mean": 0.523950805366807,
+            "median": 0.4282407009683313,
+            "iqm": 0.3982043451235688
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.4121608145044623,
+            "median": 0.3790272134968873,
+            "iqm": 0.385206543541207
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_204122/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k200",
+          "rank_sum": 15,
+          "W": {
+            "n": 21,
+            "mean": 0.4482518003539456,
+            "median": 0.3613702889398787,
+            "iqm": 0.4092271892039681
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.42384834113160974,
+            "median": 0.4053686599814811,
+            "iqm": 0.40770235195127513
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_192338/metrics_summary.json"
+        },
+        {
+          "setting": "T12_k200",
+          "rank_sum": 15,
+          "W": {
+            "n": 21,
+            "mean": 0.5288987229473145,
+            "median": 0.435521076951011,
+            "iqm": 0.4104310983433721
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.41017808568449354,
+            "median": 0.3404599500605493,
+            "iqm": 0.37268974728500437
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_201753/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k0",
+          "rank_sum": 16,
+          "W": {
+            "n": 20,
+            "mean": 0.43751070582630575,
+            "median": 0.3886869998686949,
+            "iqm": 0.3965912912296383
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.44510203734950327,
+            "median": 0.4619254260208667,
+            "iqm": 0.43541696180316974
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k100",
+          "rank_sum": 31,
+          "W": {
+            "n": 21,
+            "mean": 0.7022725103790423,
+            "median": 0.69072903434498,
+            "iqm": 0.6375951182802307
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.46620684318382005,
+            "median": 0.4637323170470117,
+            "iqm": 0.4863470311818293
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_204122/metrics_summary.json"
+        },
+        {
+          "setting": "T14_k200",
+          "rank_sum": 35,
+          "W": {
+            "n": 21,
+            "mean": 0.7427642539148402,
+            "median": 0.6852078207108573,
+            "iqm": 0.6788360734396309
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.5097032067565038,
+            "median": 0.5432313164601228,
+            "iqm": 0.5420945215198277
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_201753/metrics_summary.json"
+        },
+        {
+          "setting": "T07_k0",
+          "rank_sum": 45,
+          "W": {
+            "n": 19,
+            "mean": 1.1923066500558495,
+            "median": 0.8248790048345246,
+            "iqm": 0.8061830716880212
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6893472684148617,
+            "median": 0.777030357966382,
+            "iqm": 0.7412183831748433
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k50",
+          "rank_sum": 45,
+          "W": {
+            "n": 20,
+            "mean": 1.169674335658766,
+            "median": 1.0816559104128847,
+            "iqm": 1.0796489021805606
+          },
+          "L1": {
+            "n": 19,
+            "mean": 0.7071270599096283,
+            "median": 0.6710926201062986,
+            "iqm": 0.6907483734419088
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000617XSHE_20260406_192338/metrics_summary.json"
+        }
+      ]
+    },
+    "000981XSHE": {
+      "best_by_rank_sum_over_six": "T12_k200",
+      "best_rank_sum": 13,
+      "original_best_by_W_mean": "T13_k400",
+      "top_candidates": [
+        {
+          "setting": "T12_k200",
+          "rank_sum": 13,
+          "W": {
+            "n": 19,
+            "mean": 0.7935633619178933,
+            "median": 0.7915420251737881,
+            "iqm": 0.7286761961943264
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.5796675783535338,
+            "median": 0.4632985704740184,
+            "iqm": 0.5815763951060666
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_201803/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k400",
+          "rank_sum": 18,
+          "W": {
+            "n": 19,
+            "mean": 0.7754564330179536,
+            "median": 0.8939573642405647,
+            "iqm": 0.7395587613547799
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.5763425627997492,
+            "median": 0.5669018657058802,
+            "iqm": 0.6090250807393018
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_204122/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k0",
+          "rank_sum": 21,
+          "W": {
+            "n": 18,
+            "mean": 0.8574107589304586,
+            "median": 0.8209399672330637,
+            "iqm": 0.869083299900754
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.5495837816757775,
+            "median": 0.581489878814062,
+            "iqm": 0.5565804891723013
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k100",
+          "rank_sum": 22,
+          "W": {
+            "n": 19,
+            "mean": 0.812500763864747,
+            "median": 0.7712269799013838,
+            "iqm": 0.7252574597472388
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.601023736846595,
+            "median": 0.6702720207985435,
+            "iqm": 0.6375810951793724
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_204122/metrics_summary.json"
+        },
+        {
+          "setting": "T14_k200",
+          "rank_sum": 26,
+          "W": {
+            "n": 19,
+            "mean": 0.8077433717987877,
+            "median": 0.8834918856746978,
+            "iqm": 0.7822192197230563
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6008562931930944,
+            "median": 0.6499182555189571,
+            "iqm": 0.6378182787051815
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_201754/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k50",
+          "rank_sum": 31,
+          "W": {
+            "n": 20,
+            "mean": 1.8676955568704756,
+            "median": 0.7093047293335994,
+            "iqm": 0.7922733109190443
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6754834923305739,
+            "median": 0.6556746803894942,
+            "iqm": 0.7128865857018306
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_192338/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k200",
+          "rank_sum": 40,
+          "W": {
+            "n": 19,
+            "mean": 0.9511845094371185,
+            "median": 0.8175297002963522,
+            "iqm": 0.901562649254349
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.7282099778532817,
+            "median": 0.8252979957805908,
+            "iqm": 0.8191781956242423
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_192337/metrics_summary.json"
+        },
+        {
+          "setting": "T07_k0",
+          "rank_sum": 45,
+          "W": {
+            "n": 17,
+            "mean": 1.2384712196666345,
+            "median": 1.3680246927971575,
+            "iqm": 1.1613095926855639
+          },
+          "L1": {
+            "n": 16,
+            "mean": 0.7329992888294905,
+            "median": 0.8096945042237422,
+            "iqm": 0.7752520324003376
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_000981XSHE_20260406_190358/metrics_summary.json"
+        }
+      ]
+    },
+    "002263XSHE": {
+      "best_by_rank_sum_over_six": "T13_k0",
+      "best_rank_sum": 6,
+      "original_best_by_W_mean": "T13_k0",
+      "top_candidates": [
+        {
+          "setting": "T13_k0",
+          "rank_sum": 6,
+          "W": {
+            "n": 18,
+            "mean": 0.6859046763495149,
+            "median": 0.4396528408212187,
+            "iqm": 0.5017575211011395
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.47913528972532343,
+            "median": 0.488657823462066,
+            "iqm": 0.4667072829871083
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k400",
+          "rank_sum": 12,
+          "W": {
+            "n": 19,
+            "mean": 0.7464178840340557,
+            "median": 0.5412194847786672,
+            "iqm": 0.6555565865389561
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6311687679751403,
+            "median": 0.6783484266944562,
+            "iqm": 0.7005773467502671
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_204120/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k200",
+          "rank_sum": 18,
+          "W": {
+            "n": 19,
+            "mean": 0.8262894748199774,
+            "median": 0.774924599943312,
+            "iqm": 0.7213956002408137
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6598341165201437,
+            "median": 0.7369399066511085,
+            "iqm": 0.7401422474684708
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_192338/metrics_summary.json"
+        },
+        {
+          "setting": "T14_k200",
+          "rank_sum": 26,
+          "W": {
+            "n": 19,
+            "mean": 0.8373567929240285,
+            "median": 0.774924599943312,
+            "iqm": 0.7421216648977735
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6648545740862083,
+            "median": 0.769027848107459,
+            "iqm": 0.7735251870890182
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_201751/metrics_summary.json"
+        },
+        {
+          "setting": "T12_k200",
+          "rank_sum": 28,
+          "W": {
+            "n": 19,
+            "mean": 0.8424607478872845,
+            "median": 0.774924599943312,
+            "iqm": 0.7489045728712205
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.6661205954101291,
+            "median": 0.769027848107459,
+            "iqm": 0.7669679258331299
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_201803/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k100",
+          "rank_sum": 33,
+          "W": {
+            "n": 19,
+            "mean": 0.8616731073104936,
+            "median": 0.774924599943312,
+            "iqm": 0.7588629511459958
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.673154568213078,
+            "median": 0.769027848107459,
+            "iqm": 0.7735956249416097
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_204122/metrics_summary.json"
+        },
+        {
+          "setting": "T07_k0",
+          "rank_sum": 34,
+          "W": {
+            "n": 19,
+            "mean": 1.0743856830920515,
+            "median": 0.774924599943312,
+            "iqm": 0.7678202194744871
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.674707239564551,
+            "median": 0.7572322332462309,
+            "iqm": 0.7523241097711924
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k50",
+          "rank_sum": 41,
+          "W": {
+            "n": 19,
+            "mean": 1.000254255404233,
+            "median": 0.774924599943312,
+            "iqm": 0.7673785048132706
+          },
+          "L1": {
+            "n": 18,
+            "mean": 0.689884614420042,
+            "median": 0.8300754891360588,
+            "iqm": 0.7739621162098232
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002263XSHE_20260406_192338/metrics_summary.json"
+        }
+      ]
+    },
+    "002366XSHE": {
+      "best_by_rank_sum_over_six": "T13_k0",
+      "best_rank_sum": 6,
+      "original_best_by_W_mean": "T13_k0",
+      "top_candidates": [
+        {
+          "setting": "T13_k0",
+          "rank_sum": 6,
+          "W": {
+            "n": 20,
+            "mean": 0.4427703150037505,
+            "median": 0.3890584179320484,
+            "iqm": 0.3738453736987017
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.3463340515854526,
+            "median": 0.3200718870760578,
+            "iqm": 0.30765065907590755
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k400",
+          "rank_sum": 13,
+          "W": {
+            "n": 21,
+            "mean": 0.6095700002556415,
+            "median": 0.42110260429756147,
+            "iqm": 0.4511561160381698
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.39654253988202665,
+            "median": 0.35257749777151925,
+            "iqm": 0.347834651606824
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k400/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_204121/metrics_summary.json"
+        },
+        {
+          "setting": "T12_k200",
+          "rank_sum": 21,
+          "W": {
+            "n": 21,
+            "mean": 0.6110814765820044,
+            "median": 0.44509758288162554,
+            "iqm": 0.47261400185667585
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.4086401213077268,
+            "median": 0.35687542184944976,
+            "iqm": 0.3635998822269484
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T12_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_201754/metrics_summary.json"
+        },
+        {
+          "setting": "T14_k200",
+          "rank_sum": 24,
+          "W": {
+            "n": 21,
+            "mean": 0.6524460239856537,
+            "median": 0.4774386645113355,
+            "iqm": 0.49371053819700245
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.4165314978995013,
+            "median": 0.341311967659072,
+            "iqm": 0.3599691925444509
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T14_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_201752/metrics_summary.json"
+        },
+        {
+          "setting": "T13_k100",
+          "rank_sum": 26,
+          "W": {
+            "n": 21,
+            "mean": 0.6494358584316269,
+            "median": 0.4415599907005056,
+            "iqm": 0.47867340442780026
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.4367437179053463,
+            "median": 0.3690401070890669,
+            "iqm": 0.39336079378631505
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T13_k100/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_204122/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k200",
+          "rank_sum": 36,
+          "W": {
+            "n": 21,
+            "mean": 0.8221484207243137,
+            "median": 0.6701694538075891,
+            "iqm": 0.6790653067591531
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.47944926470286653,
+            "median": 0.45064559800338755,
+            "iqm": 0.4564487561974813
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k200/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_192338/metrics_summary.json"
+        },
+        {
+          "setting": "T07_k0",
+          "rank_sum": 45,
+          "W": {
+            "n": 17,
+            "mean": 0.852791599239775,
+            "median": 0.7286814807926228,
+            "iqm": 0.7559115772024309
+          },
+          "L1": {
+            "n": 16,
+            "mean": 0.7176455755011572,
+            "median": 0.742110137178337,
+            "iqm": 0.7437652317373568
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T07_k0/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_190358/metrics_summary.json"
+        },
+        {
+          "setting": "T10_k50",
+          "rank_sum": 45,
+          "W": {
+            "n": 21,
+            "mean": 1.2471004219957993,
+            "median": 0.8420432848250027,
+            "iqm": 0.7993757720844933
+          },
+          "L1": {
+            "n": 20,
+            "mean": 0.6586615311732601,
+            "median": 0.6859132596921341,
+            "iqm": 0.6754761538935259
+          },
+          "metrics_path": "/finance_ML/zhanghaohan/stock_language_model/saved_LOB_stream/pool_0709_0710_eval_0710_sweep/T10_k50/fixed_start_model_blankgpt2_tokens_openbidanchor_txncomplete_002366XSHE_20260406_192338/metrics_summary.json"
+        }
+      ]
+    }
+  },
+  "source_sweep_json": "/finance_ML/zhanghaohan/stock_language_model/logs/eval_pool0709_0710/sweep_best_lobbench_aggregate.json"
+}

@@ -1,0 +1,16 @@
+{
+  "space": "standardized_features_euclidean",
+  "intra_mean_dist_to_centroid": 1.6627959757749509,
+  "intra_std_of_per_cluster_mean_dist": 0.24524434970014286,
+  "inter_centroid_pairwise_mean": 3.5315695598283163,
+  "inter_centroid_pairwise_min": 1.8414928225880207,
+  "inter_centroid_pairwise_max": 6.728393627698488,
+  "intra_over_inter_mean": 0.47083766795628,
+  "n_nonempty_clusters": 12,
+  "k": 12,
+  "n_points": 327416,
+  "features_npz": "/finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357/002721XSHE/train_window_features.npz",
+  "labels_npz": "/finance_ML/zhanghaohan/stock_language_model/cluster_trackA/data/cluster_runs/pool0709_train_54357/002721XSHE/labels_k_12.npz",
+  "note": "post-hoc from saved npz; centroids=cluster means on standardized X",
+  "stock_tag": "002721XSHE"
+}

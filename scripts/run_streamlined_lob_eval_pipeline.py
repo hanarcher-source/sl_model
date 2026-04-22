@@ -44,8 +44,9 @@ import torch
 PROJECT_ROOT = "/finance_ML/zhanghaohan/stock_language_model"
 SCRIPT_DIR = os.path.join(PROJECT_ROOT, "scripts")
 HIST_SCRIPT_DIR = os.path.join(SCRIPT_DIR, "hist_script")
+LOB_BENCH_DIR = os.path.join(PROJECT_ROOT, "LOB_bench")
 UTILITY_DIR = os.path.join(PROJECT_ROOT, "utility")
-for path in [PROJECT_ROOT, SCRIPT_DIR, HIST_SCRIPT_DIR, UTILITY_DIR]:
+for path in [PROJECT_ROOT, SCRIPT_DIR, HIST_SCRIPT_DIR, LOB_BENCH_DIR, UTILITY_DIR]:
     if path not in sys.path:
         sys.path.append(path)
 
@@ -248,6 +249,43 @@ def _sanitize_checkpoint_stem(ckpt_path: str) -> str:
     return stem[:80] if stem else "model"
 
 
+def _sanitize_label(label: str) -> str:
+    label = re.sub(r"[^A-Za-z0-9]+", "_", str(label)).strip("_")
+    return label[:80] if label else "run"
+
+
+def _float_tag(value: float) -> str:
+    return str(value).replace("-", "m").replace(".", "p")
+
+
+def _stock_tag(stock: str) -> str:
+    return str(stock).replace("_", "")
+
+
+def _normalize_stock_arg(stock: str) -> str:
+    stock = str(stock).strip()
+    if stock.endswith("_XSHE"):
+        prefix = stock.split("_", 1)[0]
+        return prefix.zfill(6) + "_XSHE"
+    if stock.isdigit():
+        return stock.zfill(6) + "_XSHE"
+    raise ValueError(f"Unsupported stock format: {stock}")
+
+
+def _infer_stock_from_checkpoint(ckpt_path: str) -> str:
+    stem = os.path.basename(ckpt_path)
+    m = re.search(r"_continue_(\d+)_stock_", stem)
+    if not m:
+        raise ValueError(f"Could not infer stock from checkpoint name: {ckpt_path}")
+    return _normalize_stock_arg(m.group(1))
+
+
+def _set_runtime_stock(stock: str):
+    global STOCK, SELECTED_STOCKS
+    STOCK = _normalize_stock_arg(stock)
+    SELECTED_STOCKS = [STOCK]
+
+
 def _read_notes_if_valid(exp_dir: str):
     notes_path = os.path.join(exp_dir, "generation_notes.json")
     if not os.path.isfile(notes_path):
@@ -280,7 +318,10 @@ def _iter_generation_dirs(pattern: str):
 
 
 def _find_matching_processed_realflow(day: str):
-    pattern = os.path.join(PROCESSED_REALFLOW_DIR, f"final_result_for_merge_realflow_{day}_*.joblib")
+    pattern = os.path.join(
+        PROCESSED_REALFLOW_DIR,
+        f"final_result_for_merge_realflow_{day}_{_stock_tag(STOCK)}_*.joblib",
+    )
     candidates = sorted(glob.glob(pattern))
     return candidates[-1] if candidates else None
 
@@ -305,7 +346,7 @@ def _find_matching_realflow_exp(processed_real_flow_path: str):
     return None
 
 
-def _find_matching_generated_exp(ckpt_path: str):
+def _find_matching_generated_exp(ckpt_path: str, temperature: float, top_p: float):
     for exp_dir in reversed(list(_iter_generation_dirs("fixed_start_*_generate_lobster_*"))):
         notes = _read_notes_if_valid(exp_dir)
         if notes is None:
@@ -331,6 +372,10 @@ def _find_matching_generated_exp(ckpt_path: str):
             continue
         if int(notes.get("window_len", WINDOW_LEN)) != WINDOW_LEN:
             continue
+        if float(notes.get("temperature", TEMPERATURE)) != float(temperature):
+            continue
+        if float(notes.get("top_p", TOP_P)) != float(top_p):
+            continue
         return exp_dir
     return None
 
@@ -347,9 +392,10 @@ def _write_json(path: str, payload: dict):
 def _build_processed_realflow_cache(output_dir: str, log):
     ts = time.strftime("%Y%m%d_%H%M")
     os.makedirs(output_dir, exist_ok=True)
+    stock_tag = _stock_tag(STOCK)
 
-    log(f"[INFO] Building processed real-flow cache for day={DAY}")
-    df_day = process_lob_data_real_flow(
+    log(f"[INFO] Building processed real-flow cache for day={DAY} stock={STOCK}")
+    df_day, bin_record = process_lob_data_real_flow(
         order_post_dir=ORDER_POST_PATH,
         lob_snap_dir=LOB_SNAP_PATH,
         order_transac_dir=ORDER_TRANSAC_PATH,
@@ -357,16 +403,25 @@ def _build_processed_realflow_cache(output_dir: str, log):
         selected_stocks=SELECTED_STOCKS,
         filter_bo=True,
         date_num_str=DAY,
+        price_bin_num=PRICE_BIN_NUM,
+        qty_bin_num=QTY_BIN_NUM,
+        interval_bin_num=INTERVAL_BIN_NUM,
+        n_side=N_SIDE,
+        existing_bin_record_path=BIN_RECORD_PATH if os.path.exists(BIN_RECORD_PATH) else None,
+        return_bin_record=True,
     )
     df_day = df_day.copy()
     df_day["TradeDate"] = DAY
 
-    cache_path = os.path.join(output_dir, f"final_result_for_merge_realflow_{DAY}_{ts}.joblib")
-    summary_path = os.path.join(output_dir, f"final_result_for_merge_realflow_{DAY}_{ts}.json")
+    cache_path = os.path.join(output_dir, f"final_result_for_merge_realflow_{DAY}_{stock_tag}_{ts}.joblib")
+    bin_record_path = os.path.join(output_dir, f"bin_record_realflow_{DAY}_{stock_tag}_{ts}.json")
+    summary_path = os.path.join(output_dir, f"final_result_for_merge_realflow_{DAY}_{stock_tag}_{ts}.json")
 
     joblib.dump(df_day, cache_path, compress=3)
+    _write_json(bin_record_path, bin_record)
     summary = {
         "day": DAY,
+        "stock": STOCK,
         "created_at": ts,
         "rows": int(len(df_day)),
         "stocks": int(df_day["SecurityID"].nunique()) if len(df_day) > 0 else 0,
@@ -379,6 +434,15 @@ def _build_processed_realflow_cache(output_dir: str, log):
         },
         "output": {
             "joblib": cache_path,
+            "bin_record": bin_record_path,
+        },
+        "binning": {
+            "price_bin_num": PRICE_BIN_NUM,
+            "qty_bin_num": QTY_BIN_NUM,
+            "interval_bin_num": INTERVAL_BIN_NUM,
+            "n_side": N_SIDE,
+            "existing_bin_record_path": BIN_RECORD_PATH if os.path.exists(BIN_RECORD_PATH) else None,
+            "tokenizable_rows": int(df_day["tokenizable_event"].fillna(False).astype(bool).sum()) if "tokenizable_event" in df_day.columns else 0,
         },
     }
     _write_json(summary_path, summary)
@@ -436,7 +500,7 @@ def _remove_liquidity(book, event_kind: str, resting_side: str, price: float, qt
 
 def _generate_realflow_stream(processed_real_flow_path: str):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    exp_dir = os.path.join(BASE_OUT_DIR, f"{REALFLOW_EXP_NAME}_{timestamp}")
+    exp_dir = os.path.join(BASE_OUT_DIR, f"{REALFLOW_EXP_NAME}_{_stock_tag(STOCK)}_{timestamp}")
     os.makedirs(exp_dir, exist_ok=True)
 
     run_log_path = os.path.join(exp_dir, "run.log")
@@ -685,10 +749,13 @@ def _generate_realflow_stream(processed_real_flow_path: str):
 # GENERATED STREAM
 # ============================================================
 
-def _generate_model_stream(ckpt_path: str):
+def _generate_model_stream(ckpt_path: str, temperature: float, top_p: float, run_tag: str = None):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     ckpt_tag = _sanitize_checkpoint_stem(ckpt_path)
-    exp_name = f"fixed_start_617_{ckpt_tag}_generate_lobster"
+    sampling_tag = f"temp_{_float_tag(temperature)}_topp_{_float_tag(top_p)}"
+    exp_name = f"fixed_start_{_stock_tag(STOCK)}_{ckpt_tag}_{sampling_tag}_generate_lobster"
+    if run_tag:
+        exp_name = f"{exp_name}_{_sanitize_label(run_tag)}"
     exp_dir = os.path.join(BASE_OUT_DIR, f"{exp_name}_{timestamp}")
     os.makedirs(exp_dir, exist_ok=True)
 
@@ -753,7 +820,11 @@ def _generate_model_stream(ckpt_path: str):
     stream_start_dt = pd.Timestamp(f"{TRADE_DATE_STR} {START_TIME_STR}")
 
     log("[INFO] Starting fixed-start generation...")
-    log(f"[INFO] stock={STOCK} start_time={START_TIME_STR} lookahead_min={SIM_LOOKAHEAD_MINUTES}")
+    log(
+        f"[INFO] stock={STOCK} start_time={START_TIME_STR} "
+        f"lookahead_min={SIM_LOOKAHEAD_MINUTES} "
+        f"temperature={temperature} top_p={top_p}"
+    )
 
     cur_t_ms = 0
     step = 0
@@ -768,8 +839,8 @@ def _generate_model_stream(ckpt_path: str):
         tok_next = sample_next_token(
             model,
             ctx,
-            temperature=TEMPERATURE,
-            top_p=TOP_P,
+            temperature=temperature,
+            top_p=top_p,
             use_sampling=USE_SAMPLING,
             sample_gen=sample_gen,
         )
@@ -925,6 +996,10 @@ def _generate_model_stream(ckpt_path: str):
         "start_time": START_TIME_STR,
         "warmup_order_num": WARMUP_ORDER_NUM,
         "window_len": WINDOW_LEN,
+        "use_sampling": USE_SAMPLING,
+        "temperature": float(temperature),
+        "top_p": float(top_p),
+        "sample_seed": int(SAMPLE_SEED),
         "sim_lookahead_minutes": SIM_LOOKAHEAD_MINUTES,
         "sim_lookahead_ms": SIM_LOOKAHEAD_MS,
         "generated_steps": int(step),
@@ -1044,15 +1119,39 @@ def main():
         help="Path to the model checkpoint used for generated LOB messages.",
     )
     parser.add_argument(
+        "--stock",
+        default=None,
+        help="Target stock code, e.g. 000617_XSHE or 617. If omitted, infer from checkpoint name.",
+    )
+    parser.add_argument(
         "--processed-real-flow-path",
         default=None,
         help="Optional prebuilt processed real-flow joblib path. If omitted, the latest cached file is reused or rebuilt.",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=TEMPERATURE,
+        help=f"Sampling temperature for generated stream (default: {TEMPERATURE}).",
+    )
+    parser.add_argument(
+        "--top-p",
+        type=float,
+        default=TOP_P,
+        help=f"Top-p nucleus sampling threshold for generated stream (default: {TOP_P}).",
+    )
+    parser.add_argument(
+        "--run-tag",
+        default=None,
+        help="Optional tag to append to generated experiment names for grouped sweeps.",
     )
     args = parser.parse_args()
 
     ckpt_path = os.path.abspath(args.ckpt_path)
     if not os.path.isfile(ckpt_path):
         raise FileNotFoundError(f"Checkpoint not found: {ckpt_path}")
+    runtime_stock = _normalize_stock_arg(args.stock) if args.stock else _infer_stock_from_checkpoint(ckpt_path)
+    _set_runtime_stock(runtime_stock)
 
     os.makedirs(BASE_OUT_DIR, exist_ok=True)
     os.makedirs(PROCESSED_REALFLOW_DIR, exist_ok=True)
@@ -1070,6 +1169,9 @@ def main():
         f"day={DAY} stock={STOCK} start={START_TIME_STR} "
         f"warmup={WARMUP_ORDER_NUM} lookahead_min={SIM_LOOKAHEAD_MINUTES}"
     )
+    log(f"[INFO] sampling config temperature={args.temperature} top_p={args.top_p}")
+    if args.run_tag:
+        log(f"[INFO] run_tag={args.run_tag}")
 
     if args.processed_real_flow_path:
         processed_real_flow_path = os.path.abspath(args.processed_real_flow_path)
@@ -1097,14 +1199,23 @@ def main():
         realflow_exp_dir = _generate_realflow_stream(processed_real_flow_path)
         realflow_status = "created"
 
-    existing_generated_exp = _find_matching_generated_exp(ckpt_path)
+    existing_generated_exp = _find_matching_generated_exp(
+        ckpt_path,
+        temperature=args.temperature,
+        top_p=args.top_p,
+    )
     if existing_generated_exp:
         generated_exp_dir = existing_generated_exp
         generated_status = "reused"
         log(f"[INFO] Reusing generated LOBSTER stream: {generated_exp_dir}")
     else:
         log("[INFO] No matching generated LOBSTER stream found. Generating...")
-        generated_exp_dir = _generate_model_stream(ckpt_path)
+        generated_exp_dir = _generate_model_stream(
+            ckpt_path,
+            temperature=args.temperature,
+            top_p=args.top_p,
+            run_tag=args.run_tag,
+        )
         generated_status = "created"
 
     log("[INFO] Running evaluation for real-flow reference stream...")
@@ -1134,6 +1245,9 @@ def main():
             "window_len": WINDOW_LEN,
             "sim_lookahead_minutes": SIM_LOOKAHEAD_MINUTES,
             "sim_lookahead_ms": SIM_LOOKAHEAD_MS,
+            "temperature": float(args.temperature),
+            "top_p": float(args.top_p),
+            "run_tag": args.run_tag,
         },
         "inputs": {
             "ckpt_path": ckpt_path,

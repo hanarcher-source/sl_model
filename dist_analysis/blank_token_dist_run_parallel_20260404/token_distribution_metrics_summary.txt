@@ -1,0 +1,13 @@
+Token distribution dissimilarity summary
+run_dir=/finance_ML/zhanghaohan/stock_language_model/dist_analysis/blank_token_dist_run_parallel_20260404
+
+stock | samples | unique_true | unique_pred | support_jaccard | L1_by_group | JS_bits | Wasserstein_zscore
+000617_XSHE | 296677 | 15036 | 12692 | 0.6994 | 0.226233 | 0.080571 | 0.064342
+000981_XSHE | 47703 | 5628 | 5984 | 0.4477 | 0.359621 | 0.196720 | 0.239008
+002263_XSHE | 247277 | 13206 | 11239 | 0.7053 | 0.207504 | 0.068951 | 0.027374
+002366_XSHE | 307919 | 13433 | 11819 | 0.7174 | 0.223858 | 0.079436 | 0.167039
+
+Notes:
+- L1_by_group is the exact discrete total-variation style distance over token probabilities.
+- JS_bits is Jensen-Shannon divergence in bits.
+- Wasserstein_zscore mirrors the lob_bench style more closely, but is less semantically clean because token IDs are categorical codes.
